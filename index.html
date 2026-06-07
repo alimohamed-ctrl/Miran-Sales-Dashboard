@@ -9,6 +9,10 @@
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        :root {
+            --sticky-top-spacing: 0px;
+        }
+        
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bs-body-bg);
@@ -18,10 +22,10 @@
         
         /* تباين فائق ومظهر احترافي ومريح للعين في الوضع الليلي */
         [data-bs-theme="dark"] {
-            --bs-body-bg: #090d16;      /* خلفية داكنة عميقة وعالية الفخامة */
-            --bs-body-color: #f8fafc;   /* نصوص أساسية ساطعة ناصعة البياض لسهولة القراءة */
-            --bs-card-bg: #111827;      /* خلفية كروت رمادية داكنة صريحة متباينة */
-            --bs-tertiary-bg: #1f2937;  /* حاويات الفلاتر والمؤشرات الفرعية لتظهر بوضوح */
+            --bs-body-bg: #090d16;      
+            --bs-body-color: #f8fafc;   
+            --bs-card-bg: #111827;      
+            --bs-tertiary-bg: #1f2937;  
             --bs-heading-color: #ffffff;
         }
 
@@ -215,6 +219,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -240,8 +245,10 @@
             </div>
         </nav>
 
+        <!-- المحتوى الرئيسي -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-4">
             
+            <!-- الحاوية العالمية المثبتة علوياً وتضم شريط التاريخ والـ KPIs لتعمل على كل الصفحات معاً -->
             <div class="global-sticky-container" id="globalStickyBar">
                 <div class="filter-section mb-2" id="dateFilterSection">
                     <div class="row align-items-end g-2">
@@ -265,6 +272,7 @@
                     </div>
                 </div>
 
+                <!-- كروت الـ KPIs الأساسية للفريق مدمجة بداخل الجزء الثابت لمنع اختفائها عند النزول -->
                 <div id="quickStats" class="row g-2">
                     <div class="col-md-6">
                         <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
@@ -289,6 +297,7 @@
                 </div>
             </div>
 
+            <!-- حاوية المزامنة السحابية الذكية ومكتشف الأخطاء -->
             <div class="card p-2 text-center my-3 text-white border-0 shadow-sm" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                 <div id="syncLoadingElement">
                     <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
@@ -309,10 +318,11 @@
 
             <div class="tab-content mt-2" id="v-pills-tabContent">
                 
+                <!-- الصفحة الرئيسية -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
-                    <div id="homeChartSection" class="row">
+                    <div id="homeChartSection" class="row d-none">
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية فئة الموظفين (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -350,6 +360,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -396,6 +407,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة أداء موظفي المبيعات -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -487,6 +499,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة "بيانات الموظفين" -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -500,6 +513,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -524,6 +538,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -548,6 +563,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل نوع الدورة -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -595,7 +611,6 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
-    // كود مخرجات قراءة وتعميد حقول شيتات المبيعات والليدز لمنع الـ Overwriting
     let leadsKeys = { date: 'التاريخ_0', employee: 'الموظف_6', status: 'الحالة 1_7', source: 'كود التسويق_11', course: 'نوع الدورة_5', client: 'رقم العميل_2' };
     let salesKeys = { date: 'التاريخ_15', employee: 'الموظف_9', course: 'نوع الدورة_11', client: 'رقم العميل_5' };
     let empKeys = { name: 'اسم الموظف_0', oldUser: 'اليوزر القديم_1', newUser: 'اليوزر الجديد_2', category: 'الفئة_3', supervisor: 'المشرف_4' };
@@ -717,6 +732,10 @@
         const loadingEl = document.getElementById('syncLoadingElement');
         const successEl = document.getElementById('syncSuccessElement');
         
+        const dateFilterSection = document.getElementById('dateFilterSection');
+        const stickyStatsContainer = document.getElementById('stickyStatsContainer');
+        const homeChartSection = document.getElementById('homeChartSection');
+        
         if(loadingEl) loadingEl.classList.remove('d-none');
         if(successEl) successEl.classList.add('d-none');
         container.style.background = "linear-gradient(135deg, #1e3a8a, #2563eb)";
@@ -730,7 +749,6 @@
             let salesSheet = resData['إتمام بيع'] || [];
             let employeesSheet = resData['بيانات الموظفين'] || [];
 
-            // كشف ديناميكي ذكي ومقاوم للأخطاء لمفاتيح الحقول منعاً لأي تغيير في أعمدة الشيت مستقبلاً
             if (leadsSheet.length > 0) {
                 let first = leadsSheet[0];
                 for(let k in first) {
@@ -762,7 +780,6 @@
                 }
             }
 
-            // تصفية التواريخ وتوحيدها
             rawLeads = leadsSheet.map(row => { row['التاريخ_الموحد'] = standardParseDate(row[leadsKeys.date]); return row; });
             rawSales = salesSheet.map(row => { row['التاريخ_الموحد'] = standardParseDate(row[salesKeys.date]); return row; });
 
@@ -786,7 +803,7 @@
             rawLeads.forEach(lead => {
                 let clientNum = String(lead[leadsKeys.client] || '').trim();
                 let courseName = normalizeCourseName(lead[leadsKeys.course]);
-                let sourceCode = String(lead[leadsKeys.source] || 'غير محدد').trim();
+                let sourceCode = String(lead[leadsKeys.source] || 'غير حدد').trim();
                 let employeeName = String(lead[leadsKeys.employee] || 'غير حدد').trim();
                 
                 if(clientNum) {
@@ -796,9 +813,10 @@
                 }
             });
 
-            document.getElementById('dateFilterSection').classList.remove('d-none');
-            document.getElementById('stickyStatsContainer').classList.remove('d-none');
-            document.getElementById('homeChartSection').classList.remove('d-none');
+            // حماية كاملة ومضمونة لعناصر الـ DOM للتأكد من عدم استدعاء مصفوفة null نهائياً واختفاء الشريط الأحمر
+            if(dateFilterSection) dateFilterSection.classList.remove('d-none');
+            if(stickyStatsContainer) stickyStatsContainer.classList.remove('d-none');
+            if(homeChartSection) homeChartSection.classList.remove('d-none');
 
             if(loadingEl) loadingEl.classList.add('d-none');
             if(successEl) successEl.classList.remove('d-none');
@@ -922,7 +940,7 @@
 
         let groupedBySuper = {};
         employeeDatabase.forEach(emp => {
-            let supervisor = emp.supervisor || 'غير محدد بمشرف';
+            let supervisor = emp.supervisor || 'غير حدد';
             if(!groupedBySuper[supervisor]) groupedBySuper[supervisor] = [];
             groupedBySuper[supervisor].push(emp);
         });
@@ -956,7 +974,7 @@
                         <td class="fw-bold text-start ps-3">${emp.name}</td>
                         <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
                         <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
-                        <td><span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">${emp.category || 'غير محدد'}</span></td>
+                        <td><span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">${emp.category || 'غير حدد'}</span></td>
                     </tr>
                 `;
             });
@@ -1021,7 +1039,7 @@
     function renderSupervisorCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
         leads.forEach(l => { let emp = String(l[leadsKeys.employee] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s[salesKeys.employee] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s[salesKeys.employee] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let tableHtml = `
         <div class="table-responsive">
@@ -1242,7 +1260,7 @@
         let rowsArray = Object.keys(matrix).filter(src => src !== 'غير حدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
-        document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة للفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
+        document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
         document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -1439,6 +1457,7 @@
         document.getElementById('employeeMainView').classList.remove('d-none');
     }
 
+    // دوال النسخ والتحميل المباشر للتقارير والجداول المخصصة
     function copyTableToClipboard(tableId) {
         let table = document.getElementById(tableId); if (!table) return;
         let text = ""; let rows = table.querySelectorAll('tr');
