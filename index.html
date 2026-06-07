@@ -442,7 +442,7 @@
 
                             <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
-                                <button class="btn btn-info btn-sm fw-bold px-3" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
+                                <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
@@ -513,7 +513,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                end text-muted mt-2
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1075,8 +1075,8 @@
 
     function renderSupervisorCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let tableHtml = `
         <div class="table-responsive">
@@ -1208,7 +1208,7 @@
                 if (emp.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
-                if (parseFloat(ccRate) >= 17.0) { statusText = "على التراك 🟢"; statusStyle = "color: #10b981;"; } 
+                if (parseFloat(ccRate) >= 17.0) { statusText = "on track 🟢"; statusStyle = "color: #10b981;"; } 
                 else { statusText = "دون التارجت 🔴"; statusStyle = "color: #ef4444;"; }
             }
 
@@ -1369,7 +1369,6 @@
 
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
 
-        /* التعديل المباشر والذكي هنا: الفلترة الحية بناءً على حقل الفئة القادم من قوقل شيت وليس الحروف الأولى من اليوزر */
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
