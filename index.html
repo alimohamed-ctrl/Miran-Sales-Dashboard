@@ -52,25 +52,23 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
             background-color: var(--bs-card-bg);
         }
-        .stat-card {
-            border-right: 5px solid #2563eb;
-        }
-        .header-title {
-            font-weight: 700;
-            color: var(--bs-heading-color);
-        }
         
-        /* تثبيت شريط المؤشرات الإجمالية (KPIs) في الصفحة الرئيسية */
+        /* تثبيت علوي ذكي ومحمي لبطاقات الـ KPIs لتبقى ظاهرة عند السكرول */
         .sticky-quick-stats {
             position: sticky;
             top: 0;
             z-index: 990;
             background-color: var(--bs-body-bg);
-            padding-top: 15px;
+            padding-top: 10px;
             padding-bottom: 15px;
-            border-bottom: 2px solid rgba(37, 99, 235, 0.15);
+            border-bottom: 3px solid #2563eb;
             margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
             transition: background-color 0.3s;
+        }
+        [data-bs-theme="dark"] .sticky-quick-stats {
+            background-color: #0f172a;
+            border-bottom: 3px solid #3b82f6;
         }
 
         .table-scroll-container {
@@ -78,7 +76,6 @@
             overflow: auto;
             border: 1px solid rgba(0,0,0,0.1);
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
         [data-bs-theme="dark"] .table-scroll-container {
             border: 1px solid #334155;
@@ -116,18 +113,9 @@
             background-color: var(--bs-card-bg) !important;
             box-shadow: inset -3px 0 0 rgba(0,0,0,0.1);
         }
-        .table-sticky-first th:first-child {
-            z-index: 7;
-            background-color: #1e3a8a !important;
-            box-shadow: inset -3px 0 0 rgba(0,0,0,0.2);
-        }
-        [data-bs-theme="dark"] .table-sticky-first th:first-child {
-            background-color: #1e293b !important;
-            box-shadow: inset -3px 0 0 #334155;
-        }
         [data-bs-theme="dark"] .table-sticky-first td:first-child {
-            box-shadow: inset -3px 0 0 #334155;
             color: #f8fafc !important;
+            box-shadow: inset -3px 0 0 #334155;
         }
 
         .table-bordered td {
@@ -176,10 +164,6 @@
             padding: 6px 16px;
             border-radius: 8px;
             font-weight: 700;
-            transition: all 0.2s ease-in-out;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
         .btn-supervisor-drilldown:hover {
             background-color: #2563eb;
@@ -212,6 +196,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -237,8 +222,10 @@
             </div>
         </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+        <!-- المحتوى الرئيسي -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
             
+            <!-- فلتر التاريخ والمزامنة -->
             <div class="filter-section d-none" id="dateFilterSection">
                 <div class="row align-items-end">
                     <div class="col-md-4 mb-2 mb-md-0">
@@ -257,33 +244,38 @@
 
             <div class="tab-content" id="v-pills-tabContent">
                 
+                <!-- الصفحة الرئيسية وحالة الربط الحية -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
                     
-                    <div class="card p-3 text-center mb-4 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); transition: all 0.4s ease;">
+                    <!-- حاوية حالة الربط مع الشيت (مساحة مدمجة لزيادة مساحة العرض) -->
+                    <div class="card p-2 text-center mb-3 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                         <div id="syncLoadingElement">
                             <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
-                            <span class="fw-bold">جاري جلب البيانات السحابية الحية من Google Sheets...</span>
+                            <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
                         </div>
                         <div id="syncSuccessElement" class="d-none w-100">
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
                                 <div>
-                                    <span class="mb-0 fw-bold">البيانات متصلة ومزامنة تلقائياً بنجاح 🟢</span>
-                                    <small class="text-white-50 ms-3">آخر تحديث: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
+                                    <span class="fw-bold">الاتصال المباشر بالبيانات نشط وتلقائي 🟢</span>
+                                    <small class="text-white-50 ms-3">آخر تحديث للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
                                 </div>
-                                <button class="btn btn-light btn-sm fw-bold" onclick="fetchGoogleSheetData()">
+                                <button class="btn btn-light btn-sm fw-bold shadow-sm" onclick="fetchGoogleSheetData()">
                                     <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للبيانات
                                 </button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- الجزء الثابت والمثبت علوياً (Sticky Container) -->
                     <div id="stickyStatsContainer" class="sticky-quick-stats d-none">
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded text-center shadow-sm" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);" id="homePeriodLabel"></div>
+                        <!-- مؤشر النطاق الزمني المحدد حالياً يظهر فوق الكروت مباشرة -->
+                        <div class="mb-2 text-primary fw-bold small p-2 rounded text-center" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(37,99,235,0.15);" id="homePeriodLabel"></div>
                         
+                        <!-- بطاقات الـ KPIs الإجمالية المحمية -->
                         <div id="quickStats" class="row">
-                            <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="col-md-6 mb-2 mb-md-0">
                                 <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
                                     <div class="row g-2">
                                         <div class="col-4">
                                             <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
@@ -309,7 +301,7 @@
 
                             <div class="col-md-6">
                                 <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
+                                    <h6 class="fw-bold mb-2" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
                                     <div class="row g-2">
                                         <div class="col-4">
                                             <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
@@ -335,9 +327,10 @@
                         </div>
                     </div>
 
+                    <!-- شارتات العرض بالصفحة الرئيسية -->
                     <div id="homeChartSection" class="row d-none">
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -375,9 +368,10 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
-                        <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين <small class="text-muted small fs-6">(اضغط على اسم المشرف للتشريح الفردي لفرقه)</small></h4>
+                        <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
                         <div id="supervisorTableContainer" class="mb-4"></div>
                         <div class="row">
                             <div class="col-md-12 mb-4">
@@ -421,6 +415,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة أداء موظفي المبيعات -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -500,9 +495,7 @@
                                             <table class="table table-bordered table-sm m-0 text-center align-middle">
                                                 <thead class="table-dark">
                                                     <tr>
-                                                        <th>الحالة البيعية للعميل</th>
-                                                        <th>التكرار</th>
-                                                        <th>النسبة المئوية</th>
+                                                        <th>الحالة البيعية للعميل</th><th>التكرار</th><th>النسبة المئوية</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="employeeStatusTableBody"></tbody>
@@ -515,20 +508,21 @@
                     </div>
                 </div>
 
+                <!-- صفحة "بيانات الموظفين" -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-users-rectangle me-2"></i> قاعدة بيانات الهيكل الإداري للموظفين والمشرفين</h4>
                             <span class="badge bg-primary p-2">مستخرجة حياً من ورقة Google Sheets</span>
                         </div>
-                        <p class="text-muted small">يعرض الجدول التالي توزيع التكوينات الرسمية للخطوط البيعية وقنوات التواصل المحددة مسبقاً لكل مشرف بداخل الشيت السحابي.</p>
-                        
+                        <p class="text-muted small">توزيع التكوينات الرسمية للخطوط البيعية وقنوات التواصل المحددة مسبقاً لكل مشرف بداخل الشيت السحابي.</p>
                         <div id="employeeDbTablesContainer" class="mt-2">
                             <div class="text-center p-4 text-muted"><div class="spinner-border spinner-border-sm me-2"></div>جاري معالجة الجداول السحابية للموظفين...</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- صفحة تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -554,6 +548,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -579,6 +574,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل نوع الدورة -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -595,7 +591,7 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-success"><i class="fa-solid fa-chart-bar me-2"></i> حجم الطلبات مقابل المبيعات الفعلية لكل منتج تدريبي وعاملي الحضور</h5>
+                                    <h5 class="fw-bold mb-3 text-success"><i class="fa-solid fa-chart-bar me-2"></i> حجم الطلبات مقابل المبيعات الفعلية لكل منتج تدريبيوعاملي الحضور</h5>
                                     <div style="position: relative; height: 420px;"><canvas id="courseMatrixChart"></canvas></div>
                                 </div>
                             </div>
@@ -609,7 +605,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -626,7 +621,6 @@
     let clientToEmployeeMap = {}; 
     let employeeFilterType = 'all'; 
     let homeEmployeeFilterType = 'all'; 
-
     let employeeDatabase = [];
     
     let dailyChartInstance = null;
@@ -646,6 +640,60 @@
     function normalizeEmpCode(code) {
         if (!code) return '';
         return String(code).replace(/\s+/g, '').toUpperCase().trim();
+    }
+
+    // دالة تحليل ومعالجة عبقرية للتواريخ تمنع تماماً أي تسريب أو إزاحة زمنية قادمة من السيرفر
+    function standardParseDate(val) {
+        if (!val) return '';
+        
+        let str = String(val).trim();
+        
+        // 1. إذا كان التاريخ كاملاً بصيغة ISO مضافاً إليه التوقيت الزمني (Z أو T) ناتجة عن السيرفر
+        if (str.includes('T')) {
+            let d = new Date(str);
+            if (!isNaN(d.getTime())) {
+                let y = d.getFullYear();
+                let m = String(d.getMonth() + 1).padStart(2, '0');
+                let day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`; // تُرجع التاريخ المحلي الصحيح للـ ليد دون إزاحة ساعات
+            }
+        }
+        
+        // 2. إذا كان يبدأ بالسنة القياسية YYYY-MM-DD
+        let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+        if (isoMatch) {
+            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+        }
+        
+        // 3. معالجة الصيغ النصية العربية والمحلية لـ شيت المبيعات DD/MM/YYYY
+        let regularMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+        if (regularMatch) {
+            let p1 = regularMatch[1].padStart(2, '0');
+            let p2 = regularMatch[2].padStart(2, '0');
+            let year = regularMatch[3];
+            
+            let day = p1;
+            let month = p2;
+            // فحص أمان للتواريخ المكتوبة بالنظام الأمريكي المعكوس داخل الشيت
+            if (parseInt(p2) > 12) {
+                day = p2;
+                month = p1;
+            }
+            return `${year}-${month}-${day}`;
+        }
+        
+        // 4. معالجة الأرقام التسلسلية المباشرة لشيتات قوقل
+        if (!isNaN(str) && Number(str) > 30000) {
+            let serial = Number(str);
+            let utc_days = Math.floor(serial - 25569);
+            let date = new Date(utc_days * 86400000);
+            let y = date.getUTCFullYear();
+            let m = String(date.getUTCMonth() + 1).padStart(2, '0');
+            let day = String(date.getUTCDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+        
+        return '';
     }
 
     function getSupervisorForEmp(empName) {
@@ -720,7 +768,6 @@
         if(rawLeads.length > 0) applyFilters();
     }
 
-    // دالة تهيئة الفلاتر لأول الشهر وحتى اليوم الحالي تلقائياً
     function setDefaultDateRange() {
         const today = new Date();
         const year = today.getFullYear();
@@ -744,7 +791,7 @@
 
         try {
             const response = await fetch(GOOGLE_WEB_APP_URL);
-            if (!response.ok) throw new Error("فشل في جلب الاستجابة السحابية.");
+            if (!response.ok) throw new Error("فشل في استدعاء خادم الشيت.");
             const resData = await response.json();
 
             let leadsSheet = resData['طلبات مران'] || resData['leads'] || [];
@@ -757,11 +804,11 @@
             if (employeesSheet && employeesSheet.length > 0) {
                 employeeDatabase = employeesSheet.map(row => {
                     return {
-                        name: String(row['اسم الموظف'] || row['اسم_الموظف'] || row['name'] || '').trim(),
-                        oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || row['oldUser'] || '').trim(),
-                        newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || row['newUser'] || '').trim(),
-                        category: String(row['الفئة'] || row['category'] || '').trim(),
-                        supervisor: String(row['المشرف'] || row['supervisor'] || '').trim()
+                        name: String(row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
+                        oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || '').trim(),
+                        newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '').trim(),
+                        category: String(row['الفئة'] || '').trim(),
+                        supervisor: String(row['المشرف'] || '').trim()
                     };
                 }).filter(emp => emp.name || emp.oldUser || emp.newUser);
             }
@@ -801,77 +848,11 @@
             renderEmployeeDatabasePane();
 
         } catch (error) {
-            console.error("Fetch error details: ", error);
+            console.error(error);
             if(loadingEl) loadingEl.classList.add('d-none');
             container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
-            container.innerHTML = `
-                <div class="p-2">
-                    <i class="fa-solid fa-triangle-exclamation fa-2x mb-2"></i>
-                    <h5 class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</h5>
-                    <p class="small mb-2 opacity-90">يرجى التأكد من نشر السكريبت بشكل صحيح على وضعيّة (Anyone).</p>
-                    <button class="btn btn-light btn-sm fw-bold px-3" onclick="fetchGoogleSheetData()">إعادة المحاولة</button>
-                </div>
-            `;
+            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑 يرجى مراجعة إعدادات النشر على Apps Script.</span>`;
         }
-    }
-
-    // مطوّرة بالكامل لتفكيك وتوحيد كافة أشكال صياغة التاريخ القادمة من جوجل شيت بدقة 100%
-    function standardParseDate(val) {
-        if (!val) return '';
-        
-        if (val instanceof Date) {
-            let y = val.getFullYear();
-            let m = String(val.getMonth() + 1).padStart(2, '0');
-            let d = String(val.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        }
-        
-        let str = String(val).trim();
-        
-        // التقاط التواريخ التي تبدأ بالسنة YYYY-MM-DD أو YYYY/MM/DD
-        let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-        if (isoMatch) {
-            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
-        }
-        
-        // التقاط التواريخ التي تبدأ باليوم أو الشهر وتنهي بالسنة DD/MM/YYYY أو MM/DD/YYYY
-        let generalMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-        if (generalMatch) {
-            let p1 = parseInt(generalMatch[1]);
-            let p2 = parseInt(generalMatch[2]);
-            let year = generalMatch[3];
-            let day = p1;
-            let month = p2;
-            
-            // قلب ذكي إذا تم اكتشاف نظام تدوين أمريكي للشهر أكبر من 12
-            if (p2 > 12) {
-                day = p2;
-                month = p1;
-            }
-            return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        }
-        
-        // معالجة الأرقام التسلسلية لملفات الإكسيل وجوجل شيت القديمة
-        if (!isNaN(str) && Number(str) > 30000) {
-            let serial = Number(str);
-            let utc_days = Math.floor(serial - 25569);
-            let date = new Date(utc_days * 86400000);
-            let y = date.getUTCFullYear();
-            let m = String(date.getUTCMonth() + 1).padStart(2, '0');
-            let d = String(date.getUTCDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        }
-        
-        // المحاولة الأخيرة كخيار أمان متأخر بالاعتماد على مفسر جافاسكريبت المباشر
-        let dParsed = new Date(str);
-        if (!isNaN(dParsed.getTime())) {
-            let y = dParsed.getFullYear();
-            let m = String(dParsed.getMonth() + 1).padStart(2, '0');
-            let d = String(dParsed.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        }
-        
-        return '';
     }
 
     function cleanSheetData(data) {
@@ -920,8 +901,6 @@
         if (s.includes('excel') || s.includes('إكسل') || s.includes('اكسل')) return 'دورة مهارات مايكروسوفت إكسيل (Excel)' + studyType;
         if (s.includes('kpi') || s.includes('مؤشرات')) return 'دورة مؤشرات قياس الأداء الرئيسية (KPIs)' + studyType;
         if (s.includes('power-bi') || s.includes('power bi') || s.includes('تحليل البيانات')) return 'دورة تحليل البيانات (Power-BI)' + studyType;
-        if (s.includes('aphri')) return 'دورة المشارك المهني في الموارد البشرية (aPHRi)' + studyType;
-        if (s.includes('موارد') || s.includes('hr')) return 'دورة إدارة الموارد البشرية (HR)' + studyType;
         
         return name.trim();
     }
@@ -1004,7 +983,7 @@
 
         let groupedBySuper = {};
         employeeDatabase.forEach(emp => {
-            let supervisor = emp.supervisor || 'غير محدد بمشرف';
+            let supervisor = emp.supervisor || 'غير حدد';
             if(!groupedBySuper[supervisor]) groupedBySuper[supervisor] = [];
             groupedBySuper[supervisor].push(emp);
         });
@@ -1041,7 +1020,7 @@
                         <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
                         <td>
                             <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
-                                ${emp.category || 'غير محدد'}
+                                ${emp.category || 'غير حدد'}
                             </span>
                         </td>
                     </tr>
@@ -1324,10 +1303,10 @@
 
     function renderSourceMatrix(filteredLeads, filteredSales, sortedDates) {
         let matrix = {};
-        filteredLeads.forEach(l => { let src = String(l['كود التسويق'] || 'غير محدد').trim(); if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalLeads++; });
-        filteredSales.forEach(s => { let clientNum = String(s['رقم العميل'] || '').trim(); let courseName = normalizeCourseName(s['نوع الدورة']); let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير محدد'; if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalSales++; });
+        filteredLeads.forEach(l => { let src = String(l['كود التسويق'] || 'غير حدد').trim(); if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalLeads++; });
+        filteredSales.forEach(s => { let clientNum = String(s['رقم العميل'] || '').trim(); let courseName = normalizeCourseName(s['نوع الدورة']); let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير حدد'; if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalSales++; });
 
-        let rowsArray = Object.keys(matrix).filter(src => src !== 'غير مححدد' && src !== 'غير محدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
+        let rowsArray = Object.keys(matrix).filter(src => src !== 'غير حدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
         document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
@@ -1348,9 +1327,9 @@
 
     function renderStatusMatrix(leads, sortedDates) {
         let matrix = {}; let totalGlobalLeads = leads.length;
-        leads.forEach(l => { let status = String(l['الحالة 1'] || 'غير محدد').trim(); if (!matrix[status]) matrix[status] = { total: 0 }; matrix[status].total++; });
+        leads.forEach(l => { let status = String(l['الحالة 1'] || 'غيرحدد').trim(); if (!matrix[status]) matrix[status] = { total: 0 }; matrix[status].total++; });
 
-        let rowsArray = Object.keys(matrix).filter(status => status !== 'غير محدد' && status !== 'null' && status !== '').map(status => { let total = matrix[status].total; return { status, total, pct: totalGlobalLeads > 0 ? parseFloat(((total / totalGlobalLeads) * 100).toFixed(1)) : 0 }; });
+        let rowsArray = Object.keys(matrix).filter(status => status !== 'غيرحدد' && status !== 'null' && status !== '').map(status => { let total = matrix[status].total; return { status, total, pct: totalGlobalLeads > 0 ? parseFloat(((total / totalGlobalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.pct - a.pct);
 
         document.getElementById('statusTableHeader').innerHTML = `<tr><th>الحالة البيعية للعميل</th><th>إجمالي التكرار الكلي للفترة</th><th>النسب المئوية من إجمالي التدفق</th></tr>`;
@@ -1518,7 +1497,7 @@
         if (employeeTimelineChartInstance) employeeTimelineChartInstance.destroy();
         employeeTimelineChartInstance = new Chart(document.getElementById('employeeTimelineChart').getContext('2d'), {
             type: 'line',
-            data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الالاتمامات المنجزة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'الإتمامات المحققة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
+            data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الالاتمامات المنجزة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'إعادة الاستهداف', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
             options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor } } }, plugins: { legend: { labels: { font: { family: 'Cairo' }, color: dynamicTextColor } } } }
         });
 
@@ -1552,25 +1531,8 @@
         });
     }
 
-    function downloadExcelTemplate() {
-        try {
-            const wb = XLSX.utils.book_new();
-            const headersLeads = ['التاريخ', 'الوقت', 'رقم العميل', 'ارسال', 'تواصل', 'نوع الدورة', 'الموظف', 'الحالة 1', 'الأسم', 'ملاحظات', 'تاريخ', 'كود التسويق'];
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([headersLeads]), "طلبات مران");
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([headersLeads]), "إتمام بيع");
-            
-            const headersSup = ['اسم الموظف', 'اليوزر القديم', 'اليوزر الجديد', 'الفئة', 'المشرف'];
-            const dataSup = [headersSup, ...employeeDatabase.map(emp => [emp.name, emp.oldUser, emp.newUser, emp.category, emp.supervisor])];
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(dataSup), "بيانات الموظفين");
-            
-            XLSX.writeFile(wb, "Data_Live_Template.xlsx");
-        } catch (error) {
-            alert("حدث خطأ ما أثناء تصدير ملف التمبلت.");
-        }
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
-        setDefaultDateRange(); // تهيئة الفلاتر لأول الشهر فور فتح المنصة
+        setDefaultDateRange(); 
         updateSupervisorMapsFromDatabase();
         fetchGoogleSheetData();
     });
