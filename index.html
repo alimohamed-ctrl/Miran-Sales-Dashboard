@@ -53,22 +53,22 @@
             background-color: var(--bs-card-bg);
         }
         
-        /* حاوية التثبيت العلوية لمنع تسريب النصوص خلف الهوامش */
+        /* حاوية التثبيت العلوية المدمجة لمنع تسريب النصوص خلف الهوامش */
         .sticky-filter-container {
             position: sticky;
             top: 0;
             z-index: 1020;
             background-color: var(--bs-body-bg);
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             transition: background-color 0.3s;
         }
         
         .filter-section {
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 0; /* الاعتماد على مسافة الحاوية */
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 0;
+            box-shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.05);
             background-color: #ffffff !important; /* خلفية بيضاء صلبة تمنع الشفافية */
             border: 1px solid #e2e8f0;
         }
@@ -79,13 +79,13 @@
 
         .sticky-quick-stats {
             position: sticky;
-            top: 135px; /* تم تعديله ليرتكز أسفل حاوية الفلتر مباشرة وبدون فجوات */
+            top: 63px; /* يرتكز بدقة هندسية أسفل صندوق الفلتر المدمج الجديد */
             z-index: 990;
             background-color: var(--bs-body-bg);
-            padding-top: 10px;
-            padding-bottom: 15px;
+            padding-top: 5px;
+            padding-bottom: 8px;
             border-bottom: 3px solid #2563eb;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
             transition: background-color 0.3s;
         }
@@ -219,20 +219,20 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
             
-            <!-- الحاوية الجديدة المربوطة والمصمتة بالكامل لمنع الشفافية والتشتيت -->
+            <!-- تم تعديل الحاوية لتصبح مدمجة وأفقية بالكامل لتوفير مساحة رأسية هائلة -->
             <div class="sticky-filter-container">
                 <div class="filter-section d-none" id="dateFilterSection">
-                    <div class="row align-items-end">
-                        <div class="col-md-4 mb-2 mb-md-0">
-                            <label class="form-label fw-bold">من تاريخ:</label>
-                            <input type="date" id="startDate" class="form-control">
+                    <div class="row align-items-center g-2">
+                        <div class="col-md-4 d-flex align-items-center gap-2">
+                            <label class="form-label fw-bold text-nowrap mb-0 small">من تاريخ:</label>
+                            <input type="date" id="startDate" class="form-control form-control-sm">
                         </div>
-                        <div class="col-md-4 mb-2 mb-md-0">
-                            <label class="form-label fw-bold">إلى تاريخ:</label>
-                            <input type="date" id="endDate" class="form-control">
+                        <div class="col-md-4 d-flex align-items-center gap-2">
+                            <label class="form-label fw-bold text-nowrap mb-0 small">إلى تاريخ:</label>
+                            <input type="date" id="endDate" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-primary w-100 fw-bold" onclick="applyFilters()"><i class="fa-solid fa-sync me-2"></i> تحديث ومزامنة الحسابات</button>
+                            <button class="btn btn-primary btn-sm w-100 fw-bold" onclick="applyFilters()"><i class="fa-solid fa-sync me-2"></i> تحديث ومزامنة الحسابات</button>
                         </div>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
                 
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
                     
-                    <div class="card p-2 text-center mb-3 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
+                    <div class="card p-2 text-center mb-2 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                         <div id="syncLoadingElement">
                             <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
                             <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
@@ -260,28 +260,29 @@
                         </div>
                     </div>
 
+                    <!-- تم تصغير مسافات الكروت بنسبة بسيطة مع الحفاظ على وضوحها الكامل -->
                     <div id="stickyStatsContainer" class="sticky-quick-stats d-none">
-                        <div id="quickStats" class="row">
-                            <div class="col-md-6 mb-2 mb-md-0">
-                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
-                                    <div class="row g-2">
+                        <div id="quickStats" class="row g-2">
+                            <div class="col-md-6">
+                                <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold text-primary mb-1 small"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
+                                    <div class="row g-1">
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                                <h4 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #3b82f6; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">إجمالي الليدز</span>
+                                                <h5 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h5>
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #10b981;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                                <h4 class="fw-bold text-success mb-0" id="totalSalesCount">0</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #10b981; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">إتمامات</span>
+                                                <h5 class="fw-bold text-success mb-0" id="totalSalesCount">0</h5>
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                                <h4 class="fw-bold mb-0 mt-1" id="totalConversionRate">0%</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #64748b; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">معدل التحويل</span>
+                                                <h5 class="fw-bold mb-0" id="totalConversionRate">0%</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -289,25 +290,25 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold mb-2" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
-                                    <div class="row g-2">
+                                <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold mb-1 small" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace" style="font-size: 0.7rem;">(بدون CC01 & CC02)</small></h6>
+                                    <div class="row g-1">
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                                <h4 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #6366f1; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">إجمالي الليدز</span>
+                                                <h5 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h5>
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #ec4899;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                                <h4 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #ec4899; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">إتمامات</span>
+                                                <h5 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h5>
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                                <h4 class="fw-bold mb-0 mt-1" id="cleanConversionRate">0%</h4>
+                                            <div class="card p-1 text-center h-100" style="border-right: 3px solid #64748b; border-radius: 6px;">
+                                                <span class="text-muted fw-bold d-block" style="font-size: 0.75rem;">معدل التحويل</span>
+                                                <h5 class="fw-bold mb-0" id="cleanConversionRate">0%</h5>
                                             </div>
                                         </div>
                                     </div>
