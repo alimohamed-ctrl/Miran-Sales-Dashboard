@@ -15,16 +15,6 @@
             color: var(--bs-body-color);
             transition: background-color 0.3s, color 0.3s;
         }
-        
-        /* تباين فائق ومظهر مريح ومميز جداً للوضع الليلي المطور للشركات */
-        [data-bs-theme="dark"] {
-            --bs-body-bg: #090d16;      
-            --bs-body-color: #f8fafc;   
-            --bs-card-bg: #111827;      
-            --bs-tertiary-bg: #1f2937;  
-            --bs-heading-color: #ffffff;
-        }
-
         .sidebar {
             background-color: #0f172a;
             color: white;
@@ -32,12 +22,11 @@
             top: 0;
             height: 100vh;
             overflow-y: auto;
-            z-index: 1030;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
         }
         [data-bs-theme="dark"] .sidebar {
-            background-color: #030712;
-            border-left: 1px solid #1f2937;
+            background-color: #020617;
         }
         .sidebar .nav-link {
             color: #94a3b8;
@@ -57,45 +46,46 @@
             background-color: #2563eb;
             color: white;
         }
-        
-        /* شريط التحكم بالفلاتر والـ KPIs المدمج والمثبّت علوياً في كل الصفحات عند السكرول */
-        .global-sticky-container {
-            position: sticky;
-            top: 0;
-            z-index: 1010;
-            background-color: var(--bs-body-bg);
-            padding-top: 12px;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #2563eb;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        [data-bs-theme="dark"] .global-sticky-container {
-            background-color: #090d16;
-            border-bottom: 3px solid #3b82f6;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-
         .card {
             border: none;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
             background-color: var(--bs-card-bg);
         }
-        [data-bs-theme="dark"] .card {
-            border: 1px solid #1f2937;
+        
+        .sticky-quick-stats {
+            position: sticky;
+            top: 0;
+            z-index: 990;
+            background-color: var(--bs-body-bg);
+            padding-top: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
+        }
+        [data-bs-theme="dark"] .sticky-quick-stats {
+            background-color: #0f172a;
+            border-bottom: 3px solid #3b82f6;
         }
 
         .table-scroll-container {
-            max-height: 650px; 
+            max-height: 750px; 
             overflow: auto;
             border: 1px solid rgba(0,0,0,0.1);
             border-radius: 8px;
         }
         [data-bs-theme="dark"] .table-scroll-container {
-            border: 1px solid #374151;
+            border: 1px solid #334155;
         }
 
+        .table {
+            border-collapse: collapse !important;
+            width: 100%;
+            margin: 0 !important;
+        }
+        
         .table-bordered thead th {
             position: sticky;
             top: 0;
@@ -109,9 +99,9 @@
             z-index: 6;
         }
         [data-bs-theme="dark"] .table-bordered thead th {
-            background-color: #1f2937 !important;
-            color: #ffffff !important;
-            border: 1px solid #4b5563 !important;
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border: 1px solid #334155 !important;
         }
 
         .table-sticky-first th:first-child,
@@ -123,9 +113,8 @@
             box-shadow: inset -3px 0 0 rgba(0,0,0,0.1);
         }
         [data-bs-theme="dark"] .table-sticky-first td:first-child {
-            color: #ffffff !important;
-            background-color: #111827 !important;
-            box-shadow: inset -3px 0 0 #374151;
+            color: #f8fafc !important;
+            box-shadow: inset -3px 0 0 #334155;
         }
 
         .table-bordered td {
@@ -136,25 +125,20 @@
             padding: 12px 8px;
         }
         [data-bs-theme="dark"] .table-bordered td {
-            border: 1px solid #374151 !important;
-            color: #f3f4f6 !important;
+            border: 1px solid #334155 !important;
+            color: #cbd5e1;
         }
         
         .filter-section {
-            background-color: var(--bs-tertiary-bg);
-            border-radius: 8px;
-            padding: 10px 20px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            background-color: var(--bs-card-bg);
             border: 1px solid rgba(0,0,0,0.05);
         }
         [data-bs-theme="dark"] .filter-section {
-            background-color: #1f2937;
-            border: 1px solid #374151;
-        }
-        
-        [data-bs-theme="dark"] .form-control {
-            background-color: #111827;
-            border-color: #4b5563;
-            color: #ffffff;
+            border: 1px solid #1e293b;
         }
 
         .btn-supervisor-drilldown {
@@ -196,7 +180,6 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -222,85 +205,108 @@
             </div>
         </nav>
 
-        <!-- المحتوى الرئيسي -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-4">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
             
-            <!-- الحاوية العالمية المثبتة علوياً وتضم شريط التاريخ والـ KPIs لتعمل على كل الصفحات معاً -->
-            <div class="global-sticky-container" id="globalStickyBar">
-                <div class="filter-section mb-2" id="dateFilterSection">
-                    <div class="row align-items-end g-2">
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <label class="form-label fw-bold mb-0 text-nowrap small text-primary"><i class="fa-solid fa-calendar-days"></i> من تاريخ:</label>
-                                <input type="date" id="startDate" class="form-control form-control-sm fw-bold">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <label class="form-label fw-bold mb-0 text-nowrap small text-success"><i class="fa-solid fa-calendar-check"></i> إلى تاريخ:</label>
-                                <input type="date" id="endDate" class="form-control form-control-sm fw-bold">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary btn-sm w-100 fw-bold shadow-sm" onclick="applyFilters()">
-                                <i class="fa-solid fa-sync me-1"></i> تحديث ومزامنة فترات التقرير الحالية
-                            </button>
-                        </div>
+            <div class="filter-section d-none" id="dateFilterSection">
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <label class="form-label fw-bold">من تاريخ:</label>
+                        <input type="date" id="startDate" class="form-control">
                     </div>
-                </div>
-
-                <!-- كروت الـ KPIs الأساسية للفريق مدمجة بداخل الجزء الثابت لمنع اختفائها عند النزول -->
-                <div id="quickStats" class="row g-2">
-                    <div class="col-md-6">
-                        <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                            <span class="fw-bold text-primary small d-block mb-1"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</span>
-                            <div class="row g-1 text-center">
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #3b82f6;"><span class="text-muted d-block small">ليدز</span><b class="text-primary" id="totalLeadsCount">0</b></div></div>
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #10b981;"><span class="text-muted d-block small">إتمام</span><b class="text-success" id="totalSalesCount">0</b></div></div>
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #64748b;"><span class="text-muted d-block small">تحويل</span><b id="totalConversionRate">0%</b></div></div>
-                            </div>
-                        </div>
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <label class="form-label fw-bold">إلى تاريخ:</label>
+                        <input type="date" id="endDate" class="form-control">
                     </div>
-                    <div class="col-md-6">
-                        <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                            <span class="fw-bold small d-block mb-1" style="color: #a78bfa;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية بدون المتجر <small class="text-muted font-monospace">(بدون CC01/CC02)</small></span>
-                            <div class="row g-1 text-center">
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #6366f1;"><span class="text-muted d-block small">ليدز</span><b style="color: #6366f1;" id="cleanLeadsCount">0</b></div></div>
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #ec4899;"><span class="text-muted d-block small">إتمام</span><b style="color: #ec4899;" id="cleanSalesCount">0</b></div></div>
-                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #64748b;"><span class="text-muted d-block small">تحويل</span><b id="cleanConversionRate">0%</b></div></div>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100 fw-bold" onclick="applyFilters()"><i class="fa-solid fa-sync me-2"></i> تحديث ومزامنة الحسابات</button>
                     </div>
                 </div>
             </div>
 
-            <!-- حاوية المزامنة السحابية الذكية ومكتشف الأخطاء -->
-            <div class="card p-2 text-center my-3 text-white border-0 shadow-sm" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
-                <div id="syncLoadingElement">
-                    <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
-                    <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
-                </div>
-                <div id="syncSuccessElement" class="d-none w-100">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
-                        <div>
-                            <span class="fw-bold">اتصال البيانات المباشر نشط وتلقائي 🟢</span>
-                            <small class="text-white-50 ms-3">آخر تحديث للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
-                        </div>
-                        <button class="btn btn-light btn-sm fw-bold shadow-sm" onclick="fetchGoogleSheetData()">
-                            <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للشيت
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content mt-2" id="v-pills-tabContent">
+            <div class="tab-content" id="v-pills-tabContent">
                 
-                <!-- الصفحة الرئيسية -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
+                    
+                    <div class="card p-2 text-center mb-3 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
+                        <div id="syncLoadingElement">
+                            <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
+                            <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
+                        </div>
+                        <div id="syncSuccessElement" class="d-none w-100">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
+                                <div>
+                                    <span class="fw-bold">الاتصال المباشر بالبيانات نشط وتلقائي 🟢</span>
+                                    <small class="text-white-50 ms-3">آخر تحديث للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
+                                </div>
+                                <button class="btn btn-light btn-sm fw-bold shadow-sm" onclick="fetchGoogleSheetData()">
+                                    <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للبيانات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="stickyStatsContainer" class="sticky-quick-stats d-none">
+                        <div class="mb-2 text-primary fw-bold small p-2 rounded text-center" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(37,99,235,0.15); font-size: 1rem;" id="homePeriodLabel"></div>
+                        
+                        <div id="quickStats" class="row">
+                            <div class="col-md-6 mb-2 mb-md-0">
+                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
+                                                <h4 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #10b981;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
+                                                <h4 class="fw-bold text-success mb-0" id="totalSalesCount">0</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
+                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
+                                                <h4 class="fw-bold mb-0 mt-1" id="totalConversionRate">0%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold mb-2" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
+                                                <h4 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #ec4899;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
+                                                <h4 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
+                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
+                                                <h4 class="fw-bold mb-0 mt-1" id="cleanConversionRate">0%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="homeChartSection" class="row d-none">
                         <div class="col-12 mb-3">
                             <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
-                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية فئة الموظفين (Slicers):</span>
+                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي إعادة استهداف</button>
@@ -323,7 +329,7 @@
 
                         <div class="col-md-6 mb-4">
                             <div class="card p-4 h-100">
-                                <h5 class="fw-bold mb-3" style="color: #a78bfa;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة اعادة إستهداف (TT / GG) (المستهدف 15 إتمام)</h5>
+                                <h5 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة اعادة إستهداف (TT / GG) (المستهدف 15 إتمام)</h5>
                                 <div style="position: relative; height: 350px;"><canvas id="ttggEmployeeTargetChart"></canvas></div>
                             </div>
                         </div>
@@ -337,7 +343,6 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -345,13 +350,13 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-line me-2"></i> نسبة تحقيق التارجت لكل مشرف (المستهدف البيعي هو: 17%)</h5>
+                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-line me-2"></i> نسبة تحقيق التارجت لكل مشرف (المستهدف البيعي لـ موظفين طلبات مران هو: 17%)</h5>
                                     <div style="position: relative; height: 360px;"><canvas id="supervisorTargetChart"></canvas></div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-danger"><i class="fa-solid fa-user-slash me-2"></i> عدد الموظفين دون التارجت في كل فريق (أقل من 17%)</h5>
+                                    <h5 class="fw-bold mb-3 text-danger"><i class="fa-solid fa-user-slash me-2"></i> عدد الموظفين دون التارجت في كل فريق (أقل من 17% - موظفين طلبات مران)</h5>
                                     <div style="position: relative; height: 360px;"><canvas id="underperformingCCChart"></canvas></div>
                                 </div>
                             </div>
@@ -375,7 +380,7 @@
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-bar me-2"></i> مقارنة حجم المبيعات والإغلاقات المحققة بين أفراد الفريق</h5>
+                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-bar me-2"></i> مقارنة حجم المبيعات والإغلاقات المحققة بين أفراد الفريق الحالي (CC مقابل TT/GG)</h5>
                                     <div style="position: relative; height: 380px;"><canvas id="teamPerformanceChart"></canvas></div>
                                 </div>
                             </div>
@@ -384,7 +389,6 @@
                     </div>
                 </div>
 
-                <!-- صفحة أداء موظفي المبيعات -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -397,14 +401,15 @@
                                 </div>
                             </div>
 
-                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); font-weight: bold;">
+                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
+                            <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="employeePeriodLabel"></div>
 
-                            <div class="table-scroll-container mt-2">
+                            <div class="table-scroll-container">
                                 <table class="table table-bordered table-hover text-center table-sticky-first" id="employeeTable">
                                     <thead id="employeeTableHeader"></thead>
                                     <tbody id="employeeTableBody"></tbody>
@@ -476,12 +481,11 @@
                     </div>
                 </div>
 
-                <!-- صفحة "بيانات الموظفين" -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-users-rectangle me-2"></i> قاعدة بيانات الهيكل الإداري للموظفين والمشرفين</h4>
-                            <span class="badge bg-primary p-2 fw-bold">مستخرجة حياً من ورقة قوقل شيت</span>
+                            <span class="badge bg-primary p-2">مستخرجة حياً من ورقة Google Sheets</span>
                         </div>
                         <p class="text-muted small">توزيع التكوينات الرسمية للخطوط البيعية وقنوات التواصل المحددة مسبقاً لكل مشرف بداخل الشيت السحابي.</p>
                         <div id="employeeDbTablesContainer" class="mt-2">
@@ -490,14 +494,14 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('sourceTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="table-scroll-container mt-2">
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="sourcePeriodLabel"></div>
+                        <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="sourceTable">
                                 <thead id="sourceTableHeader"></thead>
                                 <tbody id="sourceTableBody"></tbody>
@@ -515,14 +519,14 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('statusTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="table-scroll-container mt-2">
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="statusPeriodLabel"></div>
+                        <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="statusTable">
                                 <thead id="statusTableHeader"></thead>
                                 <tbody id="statusTableBody"></tbody>
@@ -540,14 +544,14 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل نوع الدورة -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-success mb-2"><i class="fa-solid fa-graduation-cap me-2"></i> الأداء المفصل والمقارن للدورات التدريبية</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('courseTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="table-scroll-container mt-2">
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="coursePeriodLabel"></div>
+                        <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="courseTable">
                                 <thead id="courseTableHeader"></thead>
                                 <tbody id="courseTableBody"></tbody>
@@ -587,7 +591,7 @@
     let employeeFilterType = 'all'; 
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
-
+    
     let dailyChartInstance = null;
     let employeeChartInstance = null;
     let supervisorTargetChartInstance = null;
@@ -602,20 +606,6 @@
     let teamChartInstance = null;
     let employeeTimelineChartInstance = null; 
 
-    // دالات أمان وحماية صارمة تمنع حدوث أي خطأ Null Reference نهائياً
-    function safeSetHTML(id, html) {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = html;
-    }
-    function safeClassRemove(id, className) {
-        const el = document.getElementById(id);
-        if (el && el.classList) el.classList.remove(className);
-    }
-    function safeClassAdd(id, className) {
-        const el = document.getElementById(id);
-        if (el && el.classList) el.classList.add(className);
-    }
-
     function normalizeEmpCode(code) {
         if (!code) return '';
         return String(code).replace(/\s+/g, '').toUpperCase().trim();
@@ -624,23 +614,47 @@
     function standardParseDate(val) {
         if (!val) return '';
         let str = String(val).trim();
+        
         if (str.includes('T')) {
             let d = new Date(str);
             if (!isNaN(d.getTime())) {
-                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                let y = d.getFullYear();
+                let m = String(d.getMonth() + 1).padStart(2, '0');
+                let day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
             }
         }
+        
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-        if (isoMatch) return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+        if (isoMatch) {
+            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+        }
         
         let regularMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
         if (regularMatch) {
             let p1 = regularMatch[1].padStart(2, '0');
             let p2 = regularMatch[2].padStart(2, '0');
             let year = regularMatch[3];
-            return parseInt(p2) > 12 ? `${year}-${p1}-${p2}` : `${year}-${p2}-${p1}`;
+            let day = p1;
+            let month = p2;
+            if (parseInt(p2) > 12) {
+                day = p2;
+                month = p1;
+            }
+            return `${year}-${month}-${day}`;
         }
-        return str;
+        
+        if (!isNaN(str) && Number(str) > 30000) {
+            let serial = Number(str);
+            let utc_days = Math.floor(serial - 25569);
+            let date = new Date(utc_days * 86400000);
+            let y = date.getUTCFullYear();
+            let m = String(date.getUTCMonth() + 1).padStart(2, '0');
+            let day = String(date.getUTCDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+        
+        return '';
     }
 
     function getSupervisorForEmp(empName) {
@@ -671,52 +685,93 @@
         
         employeeDatabase.forEach(row => {
             let sup = String(row.supervisor || '').trim();
-            if(superTeamSizes[sup] !== undefined) superTeamSizes[sup]++;
+            if(superTeamSizes[sup] !== undefined) {
+                superTeamSizes[sup]++;
+            }
         });
+    }
+
+    const customTopLabelsPlugin = {
+        id: 'customTopLabels',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.font = 'bold 11px Cairo';
+            ctx.textBaseline = 'bottom';
+            ctx.textAlign = 'center';
+            const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+            ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a'; 
+
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                if (!meta.hidden && meta.type === 'bar') {
+                    meta.data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        if (value !== undefined && value !== null && value !== 0) {
+                            ctx.fillText(value, bar.x, bar.y - 4);
+                        }
+                    });
+                }
+            });
+            ctx.restore();
+        }
+    };
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-bs-theme', newTheme);
+        
+        document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun me-2' : 'fa-solid fa-moon me-2';
+        document.getElementById('themeText').innerText = newTheme === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي';
+        
+        if(rawLeads.length > 0) applyFilters();
     }
 
     function setDefaultDateRange() {
         const today = new Date();
-        const elStart = document.getElementById('startDate');
-        const elEnd = document.getElementById('endDate');
-        if (elStart) elStart.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-        if (elEnd) elEnd.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        
+        document.getElementById('startDate').value = `${year}-${month}-01`;
+        document.getElementById('endDate').value = `${year}-${month}-${day}`;
     }
 
     async function fetchGoogleSheetData() {
-        safeClassRemove('syncLoadingElement', 'd-none');
-        safeClassAdd('syncSuccessElement', 'd-none');
         const container = document.getElementById('syncStatusContainer');
-        if (container) container.style.background = "linear-gradient(135deg, #1e3a8a, #2563eb)";
+        const loadingEl = document.getElementById('syncLoadingElement');
+        const successEl = document.getElementById('syncSuccessElement');
+        const dateFilterSection = document.getElementById('dateFilterSection');
+        const stickyStatsContainer = document.getElementById('stickyStatsContainer');
+        const homeChartSection = document.getElementById('homeChartSection');
+
+        if(loadingEl) loadingEl.classList.remove('d-none');
+        if(successEl) successEl.classList.add('d-none');
 
         try {
             const response = await fetch(GOOGLE_WEB_APP_URL);
-            if (!response.ok) throw new Error("استجابة الخادم غير صالحة HTTP " + response.status);
+            if (!response.ok) throw new Error("فشل استدعاء خادم الشيت.");
             const resData = await response.json();
 
-            let leadsSheet = resData['طلبات مران'] || [];
-            let salesSheet = resData['إتمام بيع'] || [];
-            let employeesSheet = resData['بيانات الموظفين'] || [];
+            let leadsSheet = resData['طلبات مران'] || resData['leads'] || [];
+            let salesSheet = resData['إتمام بيع'] || resData['sales'] || [];
+            let employeesSheet = resData['بيانات الموظفين'] || resData['employees'] || [];
 
-            rawLeads = leadsSheet.map(row => {
-                row['التاريخ_الموحد'] = standardParseDate(row['التاريخ_0'] || row['التاريخ']);
-                return row;
-            });
-            rawSales = salesSheet.map(row => {
-                row['التاريخ_الموحد'] = standardParseDate(row['التاريخ_15'] || row['التاريخ']);
-                return row;
-            });
+            rawLeads = cleanSheetData(leadsSheet);
+            rawSales = cleanSheetData(salesSheet);
 
-            if (employeesSheet.length > 0) {
+            if (employeesSheet && employeesSheet.length > 0) {
                 employeeDatabase = employeesSheet.map(row => {
                     return {
-                        name: String(row['اسم الموظف_0'] || row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
-                        oldUser: String(row['اليوزر القديم_1'] || row['اليوزر القديم'] || '').trim(),
-                        newUser: String(row['اليوزر الجديد_2'] || row['اليوزر الجديد'] || '').trim(),
-                        category: String(row['الفئة_3'] || row['الفئة'] || '').trim(),
-                        supervisor: String(row['المشرف_4'] || row['المشرف'] || '').trim()
+                        name: String(row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
+                        oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || '').trim(),
+                        newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '').trim(),
+                        category: String(row['الفئة'] || '').trim(),
+                        supervisor: String(row['المشرف'] || '').trim()
                     };
-                }).filter(emp => emp.name);
+                }).filter(emp => emp.name || emp.oldUser || emp.newUser);
             }
 
             updateSupervisorMapsFromDatabase();
@@ -725,90 +780,147 @@
             clientToEmployeeMap = {}; 
             
             rawLeads.forEach(lead => {
-                let clientNum = String(lead['رقم العميل_2'] || lead['رقم العميل'] || '').trim();
-                let courseName = normalizeCourseName(lead['نوع الدورة_5'] || lead['نوع الدورة']);
-                let sourceCode = String(lead['كود التسويق_11'] || lead['كود التسويق'] || 'غير حدد').trim();
-                let employeeName = String(lead['الموظف_6'] || lead['الموظف'] || 'غير حدد').trim();
+                let clientNum = String(lead['رقم العميل'] || '').trim();
+                let courseName = normalizeCourseName(lead['نوع الدورة']);
+                let sourceCode = String(lead['كود التسويق'] || 'غير محدد').trim();
+                let employeeName = String(lead['الموظف'] || 'غير حدد').trim();
                 
                 if(clientNum) {
-                    clientCourseToSourceMap[clientNum + "_" + courseName] = sourceCode;
+                    let key = clientNum + "_" + courseName;
+                    clientCourseToSourceMap[key] = sourceCode;
                     if(!clientCourseToSourceMap[clientNum]) clientCourseToSourceMap[clientNum] = sourceCode;
-                    if(employeeName && employeeName !== 'غير حدد') clientToEmployeeMap[clientNum] = employeeName;
+                    if(employeeName && employeeName !== 'غير حدد' && employeeName !== '') {
+                        clientToEmployeeMap[clientNum] = employeeName;
+                    }
                 }
             });
 
-            safeClassRemove('dateFilterSection', 'd-none');
-            safeClassRemove('stickyStatsContainer', 'd-none');
-            safeClassRemove('homeChartSection', 'd-none');
+            if(dateFilterSection) dateFilterSection.classList.remove('d-none');
+            if(stickyStatsContainer) stickyStatsContainer.classList.remove('d-none');
+            if(homeChartSection) homeChartSection.classList.remove('d-none');
 
-            safeClassAdd('syncLoadingElement', 'd-none');
-            safeClassRemove('syncSuccessElement', 'd-none');
-            if (container) container.style.background = "linear-gradient(135deg, #10b981, #059669)";
+            if(loadingEl) loadingEl.classList.add('d-none');
+            if(successEl) successEl.classList.remove('d-none');
             
-            const elUpdateTime = document.getElementById('lastUpdateTime');
-            if (elUpdateTime) elUpdateTime.innerText = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
-            
+            const now = new Date();
+            document.getElementById('lastUpdateTime').innerText = now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+
             applyFilters();
             renderEmployeeDatabasePane();
 
         } catch (error) {
             console.error(error);
-            safeClassAdd('syncLoadingElement', 'd-none');
-            if (container) {
-                container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
-                container.innerHTML = `
-                    <div class="p-2">
-                        <i class="fa-solid fa-triangle-exclamation fa-2x mb-2"></i>
-                        <h5 class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</h5>
-                        <p class="small mb-1 opacity-90">رمز الخطأ: <code class="bg-white text-danger px-2 py-0.5 rounded font-monospace">${error.message}</code></p>
-                        <p class="small mb-2 opacity-75">تأكد من عمل New Version للـ Web App بداخل الشيت وتغيير الرابط في سطر 274.</p>
-                        <button class="btn btn-light btn-sm fw-bold px-3 shadow-sm" onclick="fetchGoogleSheetData()">إعادة المحاولة</button>
-                    </div>
-                `;
-            }
+            if(loadingEl) loadingEl.classList.add('d-none');
+            container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
+            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</span>`;
         }
     }
 
-    function applyFilters() {
-        const elStart = document.getElementById('startDate');
-        const elEnd = document.getElementById('endDate');
-        if (!elStart || !elEnd) return;
+    function cleanSheetData(data) {
+        if(!Array.isArray(data)) return [];
+        return data.map(row => {
+            let cleaned = {};
+            for (let key in row) {
+                let cleanedKey = String(key).trim().replace(/[\u200B-\u200D\uFEFF]/g, "");
+                let val = row[key];
+                if (cleanedKey === 'التاريخ') {
+                    val = standardParseDate(val);
+                }
+                cleaned[cleanedKey] = val;
+            }
+            return cleaned;
+        });
+    }
+
+    function filterEmployees(type) {
+        employeeFilterType = type;
+        document.getElementById('btnEmpAll').className = type === 'all' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        document.getElementById('btnEmpCC').className = type === 'cc' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        document.getElementById('btnEmpTTGG').className = type === 'tt_gg' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        if(rawLeads.length > 0) applyFilters();
+    }
+
+    function filterHomeEmployees(type) {
+        homeEmployeeFilterType = type;
+        document.getElementById('btnHomeAll').className = type === 'all' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        document.getElementById('btnHomeCC').className = type === 'cc' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        document.getElementById('btnHomeTTGG').className = type === 'tt_gg' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
+        if(rawLeads.length > 0) applyFilters();
+    }
+
+    function normalizeCourseName(name) {
+        if (!name) return 'أخرى / غير محدد';
+        let s = String(name).toLowerCase().trim();
+        let studyType = ' - عن بعد'; 
+        if (s.includes('حضوري') || s.includes('onsite')) studyType = ' - حضوري';
+
+        if (s.includes('بكج إدارة المشاريع') || s.includes('11-بكج')) return 'بكج إدارة المشاريع والأعمال' + studyType;
+        if (s.includes('بكج البيانات')) return 'بكج البيانات (Power BI + Excel)' + studyType;
+        if (s.includes('التأسيسي')) return 'بكج الإدارة التأسيسي' + studyType;
+        if (s.includes('pmp') || s.includes('إدارة المشاريع')) return 'دورة إدارة المشاريع الاحترافية (PMP)' + studyType;
+        if (s.includes('excel') || s.includes('إكسل') || s.includes('اكسل')) return 'دورة مهارات مايكروسوفت إكسيل (Excel)' + studyType;
+        if (s.includes('kpi') || s.includes('مؤشرات')) return 'دورة مؤشرات قياس الأداء الرئيسية (KPIs)' + studyType;
+        if (s.includes('power-bi') || s.includes('power bi') || s.includes('تحليل البيانات')) return 'دورة تحليل البيانات (Power-BI)' + studyType;
         
-        const startDate = elStart.value;
-        const endDate = elEnd.value;
+        return name.trim();
+    }
+
+    function getDatesInRange(startDateStr, endDateStr) {
+        let dates = [];
+        let startParts = startDateStr.split('-');
+        let endParts = endDateStr.split('-');
+        let start = new Date(Date.UTC(Number(startParts[0]), Number(startParts[1]) - 1, Number(startParts[2])));
+        let end = new Date(Date.UTC(Number(endParts[0]), Number(endParts[1]) - 1, Number(endParts[2])));
+        let current = new Date(start.getTime());
+        while (current <= end) {
+            let y = current.getUTCFullYear();
+            let m = String(current.getUTCMonth() + 1).padStart(2, '0');
+            let d = String(current.getUTCDate()).padStart(2, '0');
+            dates.push(`${y}-${m}-${d}`);
+            current.setUTCDate(current.getUTCDate() + 1);
+        }
+        return dates;
+    }
+
+    function applyFilters() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
         if (!startDate || !endDate) return;
 
         hideSupervisorTeamDetails();
         hideEmployeeDetails();
 
-        const filteredLeads = rawLeads.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
-        const filteredSales = rawSales.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
+        const filteredLeads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const filteredSales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
 
-        safeSetText('totalLeadsCount', filteredLeads.length);
-        safeSetText('totalSalesCount', filteredSales.length);
+        document.getElementById('totalLeadsCount').innerText = filteredLeads.length;
+        document.getElementById('totalSalesCount').innerText = filteredSales.length;
         
         let totalConvRate = filteredLeads.length > 0 ? ((filteredSales.length / filteredLeads.length) * 100).toFixed(1) : 0;
-        const totalConvEl = document.getElementById('totalConversionRate');
-        if (totalConvEl) {
-            totalConvEl.innerHTML = totalConvRate + "%";
-            totalConvEl.style.color = parseFloat(totalConvRate) >= 16.5 ? "#10b981" : "#ef4444";
-        }
+        let totalConvEl = document.getElementById('totalConversionRate');
+        totalConvEl.innerHTML = totalConvRate + "%";
+        totalConvEl.style.color = parseFloat(totalConvRate) >= 16.5 ? "#10b981" : "#ef4444";
 
-        const noStoreLeads = filteredLeads.filter(item => { let emp = normalizeEmpCode(item['الموظف_6'] || item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
-        const noStoreSales = filteredSales.filter(item => { let emp = normalizeEmpCode(item['الموظف_9'] || item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
+        const noStoreLeads = filteredLeads.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
+        const noStoreSales = filteredSales.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
 
-        safeSetText('cleanLeadsCount', noStoreLeads.length);
-        safeSetText('cleanSalesCount', noStoreSales.length);
+        document.getElementById('cleanLeadsCount').innerText = noStoreLeads.length;
+        document.getElementById('cleanSalesCount').innerText = noStoreSales.length;
         
         let cleanConvRate = noStoreLeads.length > 0 ? ((noStoreSales.length / noStoreLeads.length) * 100).toFixed(1) : 0;
-        const cleanConvEl = document.getElementById('cleanConversionRate');
-        if (cleanConvEl) {
-            cleanConvEl.innerHTML = cleanConvRate + "%";
-            cleanConvEl.style.color = parseFloat(cleanConvRate) >= 16.5 ? "#10b981" : "#ef4444";
-        }
+        let cleanConvEl = document.getElementById('cleanConversionRate');
+        cleanConvEl.innerHTML = cleanConvRate + "%";
+        cleanConvEl.style.color = parseFloat(cleanConvRate) >= 16.5 ? "#10b981" : "#ef4444";
 
         let sortedDates = getDatesInRange(startDate, endDate);
-        safeSetHTML('homePeriodLabel', `<i class="fa-solid fa-calendar-days me-1"></i> إحصائيات الأداء للفترة من: <b>${startDate}</b> إلى: <b>${endDate}</b>`);
+
+        const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> الإحصائيات المعروضة حالياً للفترة من تاريخ: <b>${startDate}</b> إلى تاريخ اليوم: <b>${endDate}</b>`;
+        document.getElementById('homePeriodLabel').innerHTML = periodText;
+        document.getElementById('sourcePeriodLabel').innerHTML = periodText;
+        document.getElementById('statusPeriodLabel').innerHTML = periodText;
+        document.getElementById('coursePeriodLabel').innerHTML = periodText;
+        document.getElementById('employeePeriodLabel').innerHTML = periodText;
 
         renderDailyPerformanceChart(filteredLeads, filteredSales, sortedDates);
         renderEmployeeSalesChart(filteredLeads, filteredSales);
@@ -821,6 +933,14 @@
     }
 
     function renderEmployeeDatabasePane() {
+        const container = document.getElementById('employeeDbTablesContainer');
+        if(!container) return;
+
+        if(!employeeDatabase || employeeDatabase.length === 0) {
+            container.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
+            return;
+        }
+
         let groupedBySuper = {};
         employeeDatabase.forEach(emp => {
             let supervisor = emp.supervisor || 'غير حدد';
@@ -836,40 +956,46 @@
                 <div class="card p-3 mb-4 border shadow-sm" style="border-color: rgba(128,128,128,0.15) !important;">
                     <h5 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2">
                         <i class="fa-solid fa-user-tie text-secondary"></i>
-                        طاقم موظفي المشرف: <span class="text-success">${superName}</span>
-                        <span class="badge bg-secondary fs-6 ms-auto">${groupedBySuper[superName].length} موظف</span>
+                        طاقم موظفي المشرف المسؤول: <span class="text-success">${superName}</span>
+                        <span class="badge bg-secondary fs-6 ms-auto">${groupedBySuper[superName].length} موظفين</span>
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle m-0">
                             <thead class="${isDark ? 'table-dark' : 'table-light'}">
                                 <tr>
                                     <th style="background-color: #2563eb !important; color: white !important;">اسم الموظف البيعي</th>
-                                    <th>الكود القديم (مران)</th>
-                                    <th>الكود الجديد (استهداف)</th>
-                                    <th>الفئة المسجلة</th>
+                                    <th>الكود القديم بالمنظومة (مران)</th>
+                                    <th>الكود الجديد بالمنظومة (استهداف)</th>
+                                    <th>الفئة الوظيفية المسجلة</th>
                                 </tr>
                             </thead>
                             <tbody>
             `;
+
             groupedBySuper[superName].forEach(emp => {
                 outputHtml += `
                     <tr>
                         <td class="fw-bold text-start ps-3">${emp.name}</td>
                         <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
                         <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
-                        <td><span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">${emp.category || 'غير حدد'}</span></td>
+                        <td>
+                            <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
+                                ${emp.category || 'غير حدد'}
+                            </span>
+                        </td>
                     </tr>
                 `;
             });
+
             outputHtml += `</tbody></table></div></div>`;
         }
-        safeSetHTML('employeeDbTablesContainer', outputHtml);
+        container.innerHTML = outputHtml;
     }
 
     function renderHomeTargetCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف_6'] || l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف_9'] || s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let unionEmps = Array.from(new Set([...Object.keys(empLeads), ...Object.keys(empSales)]));
         let ccData = [];
@@ -887,34 +1013,42 @@
         ttggData.sort((a, b) => b.sales - a.sales);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxCc = document.getElementById('ccEmployeeTargetChart');
-        if (ctxCc) {
-            if (ccEmployeeTargetChartInstance) ccEmployeeTargetChartInstance.destroy();
-            ccEmployeeTargetChartInstance = new Chart(ctxCc.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: ccData.map(d => d.name), datasets: [{ label: 'نسبة تحويل الموظف (%)', data: ccData.map(d => d.rate), backgroundColor: '#3b82f6', borderRadius: 4, barPercentage: 0.45 }, { label: 'خط التارجت المطلوب (17%)', data: ccData.map(() => 17), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (ccEmployeeTargetChartInstance) ccEmployeeTargetChartInstance.destroy();
+        ccEmployeeTargetChartInstance = new Chart(document.getElementById('ccEmployeeTargetChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: {
+                labels: ccData.map(d => d.name),
+                datasets: [
+                    { label: 'نسبة تحويل الموظف (%)', data: ccData.map(d => d.rate), backgroundColor: '#3b82f6', borderRadius: 4, barPercentage: 0.45 },
+                    { label: 'خط التارجت المطلوب (17%)', data: ccData.map(() => 17), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
 
-        const ctxTt = document.getElementById('ttggEmployeeTargetChart');
-        if (ctxTt) {
-            if (ttggEmployeeTargetChartInstance) ttggEmployeeTargetChartInstance.destroy();
-            ttggEmployeeTargetChartInstance = new Chart(ctxTt.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: ttggData.map(d => d.name), datasets: [{ label: 'عدد الإتمامات والمبيعات', data: ttggData.map(d => d.sales), backgroundColor: '#7c3aed', borderRadius: 4, barPercentage: 0.45 }, { label: 'خط التارجت المطلوب (15 إتمام)', data: ttggData.map(() => 15), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (ttggEmployeeTargetChartInstance) ttggEmployeeTargetChartInstance.destroy();
+        ttggEmployeeTargetChartInstance = new Chart(document.getElementById('ttggEmployeeTargetChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: {
+                labels: ttggData.map(d => d.name),
+                datasets: [
+                    { label: 'عدد الإتمامات والمبيعات', data: ttggData.map(d => d.sales), backgroundColor: '#7c3aed', borderRadius: 4, barPercentage: 0.45 },
+                    { label: 'خط التارجت المطلوب (15 إتمام)', data: ttggData.map(() => 15), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderSupervisorCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف_6'] || l['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف_9'] || s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let tableHtml = `
         <div class="table-responsive">
@@ -966,59 +1100,59 @@
         });
 
         tableHtml += `</tbody></table></div>`;
-        safeSetHTML('supervisorTableContainer', tableHtml);
+        document.getElementById('supervisorTableContainer').innerHTML = tableHtml;
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxSup = document.getElementById('supervisorTargetChart');
-        if (ctxSup) {
-            if (supervisorTargetChartInstance) supervisorTargetChartInstance.destroy();
-            supervisorTargetChartInstance = new Chart(ctxSup.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: supervisorsList, datasets: [{ label: 'نسبة تحويل موظفي مران (%)', data: chartRates, backgroundColor: '#3b82f6', borderRadius: 4, barPercentage: 0.35 }, { label: 'خط التارجت المطلوب (17%)', data: supervisorsList.map(() => 17), borderColor: '#ef4444', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (supervisorTargetChartInstance) supervisorTargetChartInstance.destroy();
+        supervisorTargetChartInstance = new Chart(document.getElementById('supervisorTargetChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: {
+                labels: supervisorsList,
+                datasets: [
+                    { label: 'نسبة تحويل موظفي مران (%)', data: chartRates, backgroundColor: '#3b82f6', borderRadius: 4, barPercentage: 0.35 },
+                    { label: 'خط التارجت المطلوب (17%)', data: supervisorsList.map(() => 17), borderColor: '#ef4444', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
 
-        const ctxUnder = document.getElementById('underperformingCCChart');
-        if (ctxUnder) {
-            if (underperformingCCChartInstance) underperformingCCChartInstance.destroy();
-            underperformingCCChartInstance = new Chart(ctxUnder.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: supervisorsList, datasets: [{ label: 'عدد موظفي مران دون التارجت الفردي', data: chartLowCC, backgroundColor: '#f59e0b', borderRadius: 4, barPercentage: 0.35 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { stepSize: 1, color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (underperformingCCChartInstance) underperformingCCChartInstance.destroy();
+        underperformingCCChartInstance = new Chart(document.getElementById('underperformingCCChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: supervisorsList, datasets: [{ label: 'عدد موظفي مران دون التارجت الفردي', data: chartLowCC, backgroundColor: '#f59e0b', borderRadius: 4, barPercentage: 0.35 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { stepSize: 1, color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
 
-        const ctxTtSales = document.getElementById('ttggSalesChart');
-        if (ctxTtSales) {
-            if (ttggSalesChartInstance) ttggSalesChartInstance.destroy();
-            ttggSalesChartInstance = new Chart(ctxTtSales.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: supervisorsList, datasets: [{ label: 'مبيعات وإتمامات فئة اعادة إستهداف', data: chartTTGG, backgroundColor: '#7c3aed', borderRadius: 4, barPercentage: 0.35 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (ttggSalesChartInstance) ttggSalesChartInstance.destroy();
+        ttggSalesChartInstance = new Chart(document.getElementById('ttggSalesChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: supervisorsList, datasets: [{ label: 'مبيعات وإتمامات فئة اعادة إستهداف', data: chartTTGG, backgroundColor: '#7c3aed', borderRadius: 4, barPercentage: 0.35 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function showSupervisorTeamDetails(supName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
-        const leads = rawLeads.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
-        const sales = rawSales.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
+        const leads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const sales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
 
-        safeClassAdd('supervisorMainView', 'd-none');
-        safeClassRemove('supervisorDetailView', 'd-none');
-        safeSetHTML('supervisorDetailTitle', `<i class="fa-solid fa-users text-primary me-2"></i> تحليل فريق المشرف: <span class="text-success">${supName}</span>`);
+        document.getElementById('supervisorMainView').classList.add('d-none');
+        document.getElementById('supervisorDetailView').classList.remove('d-none');
+        document.getElementById('supervisorDetailTitle').innerHTML = `<i class="fa-solid fa-users text-primary me-2"></i> تحليل فريق المشرف: <span class="text-success">${supName}</span>`;
 
         let teamEmps = employeeDatabase.filter(e => e.supervisor === supName);
         let stats = {};
         teamEmps.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
 
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف_6'] || l['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف_9'] || s['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
+        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
+        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
 
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
@@ -1060,54 +1194,50 @@
         });
 
         tableHtml += `</tbody></table></div>`;
-        safeSetHTML('teamTableContainer', tableHtml);
+        document.getElementById('teamTableContainer').innerHTML = tableHtml;
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxTeam = document.getElementById('teamPerformanceChart');
-        if (ctxTeam) {
-            if (teamChartInstance) teamChartInstance.destroy();
-            let rowsData = Object.values(stats);
-            teamChartInstance = new Chart(ctxTeam.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: rowsData.map(r => r.name), datasets: [{ label: 'إتمامات CC', data: rowsData.map(r => r.ccSales), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'إتمامات TT / GG', data: rowsData.map(r => r.ttSales), backgroundColor: '#7c3aed', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (teamChartInstance) teamChartInstance.destroy();
+        let rowsData = Object.values(stats);
+        teamChartInstance = new Chart(document.getElementById('teamPerformanceChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: rowsData.map(r => r.name), datasets: [{ label: 'إتمامات CC', data: rowsData.map(r => r.ccSales), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'إتمامات TT / GG', data: rowsData.map(r => r.ttSales), backgroundColor: '#7c3aed', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function hideSupervisorTeamDetails() {
-        safeClassAdd('supervisorDetailView', 'd-none');
-        safeClassRemove('supervisorMainView', 'd-none');
+        document.getElementById('supervisorDetailView').classList.add('d-none');
+        document.getElementById('supervisorMainView').classList.remove('d-none');
     }
 
     function renderDailyPerformanceChart(leads, sales, sortedDates) {
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
-        leads.forEach(l => { if(dailyLeadsMap[l['التاريخ_الموحد']] !== undefined) dailyLeadsMap[l['التاريخ_الموحد']]++; });
-        sales.forEach(s => { if(dailySalesMap[s['التاريخ_الموحد']] !== undefined) dailySalesMap[s['التاريخ_الموحد']]++; });
+        leads.forEach(l => { if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; });
+        sales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxDaily = document.getElementById('dailyPerformanceChart');
-        if (ctxDaily) {
-            if (dailyChartInstance) dailyChartInstance.destroy();
-            dailyChartInstance = new Chart(ctxDaily.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin], 
-                data: { labels: sortedDates, datasets: [{ label: 'الليدز الواردة', data: sortedDates.map(d => dailyLeadsMap[d]), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الالاتمامات', data: sortedDates.map(d => dailySalesMap[d]), backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (dailyChartInstance) dailyChartInstance.destroy();
+        dailyChartInstance = new Chart(document.getElementById('dailyPerformanceChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin], 
+            data: { labels: sortedDates, datasets: [{ label: 'الليدز الواردة', data: sortedDates.map(d => dailyLeadsMap[d]), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الالاتمامات', data: sortedDates.map(d => dailySalesMap[d]), backgroundColor: '#10b981', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderEmployeeSalesChart(leads, sales) {
         let employeeLeadsMap = {}; let employeeSalesMap = {};
-        leads.forEach(l => { let emp = String(l['الموظف_6'] || l['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeLeadsMap[emp] = (employeeLeadsMap[emp] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف_9'] || s['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeSalesMap[emp] = (employeeSalesMap[emp] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeLeadsMap[emp] = (employeeLeadsMap[emp] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeSalesMap[emp] = (employeeSalesMap[emp] || 0) + 1; });
 
         let unionEmps = new Set([...Object.keys(employeeLeadsMap), ...Object.keys(employeeSalesMap)]);
         let empSortedArray = Array.from(unionEmps).map(name => { return { name: name, leadsCount: employeeLeadsMap[name] || 0, salesCount: employeeSalesMap[name] || 0 }; });
@@ -1119,18 +1249,16 @@
         empSortedArray.sort((a, b) => b.salesCount - a.salesCount);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxEmpChart = document.getElementById('employeeSalesChart');
-        if (ctxEmpChart) {
-            if (employeeChartInstance) employeeChartInstance.destroy();
-            employeeChartInstance = new Chart(ctxEmpChart.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin], 
-                data: { labels: empSortedArray.map(item => item.name), datasets: [{ label: 'الليدز الواردة', data: empSortedArray.map(item => item.leadsCount), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الاتمامات', data: empSortedArray.map(item => item.salesCount), backgroundColor: '#8b5cf6', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (employeeChartInstance) employeeChartInstance.destroy();
+        employeeChartInstance = new Chart(document.getElementById('employeeSalesChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin], 
+            data: { labels: empSortedArray.map(item => item.name), datasets: [{ label: 'الليدز الواردة', data: empSortedArray.map(item => item.leadsCount), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الاتمامات', data: empSortedArray.map(item => item.salesCount), backgroundColor: '#8b5cf6', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderSourceMatrix(filteredLeads, filteredSales, sortedDates) {
@@ -1141,22 +1269,20 @@
         let rowsArray = Object.keys(matrix).filter(src => src !== 'غير حدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
-        safeSetHTML('sourceTableHeader', `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة للفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`);
-        safeSetHTML('sourceTableBody', rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join(''));
+        document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
+        document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxSrcMatrix = document.getElementById('sourceMatrixChart');
-        if (ctxSrcMatrix) {
-            if (sourceMatrixChartInstance) sourceMatrixChartInstance.destroy();
-            sourceMatrixChartInstance = new Chart(ctxSrcMatrix.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: rowsArray.map(r => r.src), datasets: [{ label: 'ليدز السورس', data: rowsArray.map(r => r.totalLeads), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الالاتمامات', data: rowsArray.map(r => r.totalSales), backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (sourceMatrixChartInstance) sourceMatrixChartInstance.destroy();
+        sourceMatrixChartInstance = new Chart(document.getElementById('sourceMatrixChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: rowsArray.map(r => r.src), datasets: [{ label: 'ليدز السورس', data: rowsArray.map(r => r.totalLeads), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'الالاتمامات', data: rowsArray.map(r => r.totalSales), backgroundColor: '#10b981', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderStatusMatrix(leads, sortedDates) {
@@ -1166,22 +1292,20 @@
         let rowsArray = Object.keys(matrix).filter(status => status !== 'غيرحدد' && status !== 'null' && status !== '').map(status => { let total = matrix[status].total; return { status, total, pct: totalGlobalLeads > 0 ? parseFloat(((total / totalGlobalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.pct - a.pct);
 
-        safeSetHTML('statusTableHeader', `<tr><th>الحالة البيعية للعميل</th><th>إجمالي التكرار الكلي للفترة</th><th>النسب المئوية من إجمالي التدفق</th></tr>`);
-        safeSetHTML('statusTableBody', rowsArray.map(row => `<tr><td class="text-start fw-bold">${row.status}</td><td><span class="badge bg-secondary px-3">${row.total}</span></td><td class="table-warning fw-bold">${row.pct}%</td></tr>`).join(''));
+        document.getElementById('statusTableHeader').innerHTML = `<tr><th>الحالة البيعية للعميل</th><th>إجمالي التكرار الكلي للفترة</th><th>النسب المئوية من إجمالي التدفق</th></tr>`;
+        document.getElementById('statusTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start fw-bold">${row.status}</td><td><span class="badge bg-secondary px-3">${row.total}</span></td><td class="table-warning fw-bold">${row.pct}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxStatusMatrix = document.getElementById('statusMatrixChart');
-        if (ctxStatusMatrix) {
-            if (statusMatrixChartInstance) statusMatrixChartInstance.destroy();
-            statusMatrixChartInstance = new Chart(ctxStatusMatrix.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: rowsArray.map(r => r.status), datasets: [{ label: 'حجم التكرار للحالة', data: rowsArray.map(r => r.total), backgroundColor: '#f59e0b', borderRadius: 4 }] },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (statusMatrixChartInstance) statusMatrixChartInstance.destroy();
+        statusMatrixChartInstance = new Chart(document.getElementById('statusMatrixChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: rowsArray.map(r => r.status), datasets: [{ label: 'حجم التكرار للحالة', data: rowsArray.map(r => r.total), backgroundColor: '#f59e0b', borderRadius: 4 }] },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderCourseMatrix(leads, sales, sortedDates) {
@@ -1192,22 +1316,20 @@
         let rowsArray = Object.keys(matrix).filter(course => course !== 'أخرى / غير محدد' && course !== 'null' && course !== '').map(course => { let totalLeads = matrix[course].totalLeads; let totalSales = matrix[course].totalSales; return { course, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
-        safeSetHTML('courseTableHeader', `<tr><th>اسم الدورة وطريقة الحضور</th><th>إجمالي طلبات الليدز</th><th>إجمالي المبيعات المحققة</th><th>نسبة كفاءة تحويل الدورة</th></tr>`);
-        safeSetHTML('courseTableBody', rowsArray.map(row => `<tr><td class="text-start text-success fw-bold">${row.course}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-success fw-bold">${row.conv}%</td></tr>`).join(''));
+        document.getElementById('courseTableHeader').innerHTML = `<tr><th>اسم الدورة وطريقة الحضور</th><th>إجمالي طلبات الليدز</th><th>إجمالي المبيعات المحققة</th><th>نسبة كفاءة تحويل الدورة</th></tr>`;
+        document.getElementById('courseTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start text-success fw-bold">${row.course}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-success fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxCourseMatrix = document.getElementById('courseMatrixChart');
-        if (ctxCourseMatrix) {
-            if (courseMatrixChartInstance) courseMatrixChartInstance.destroy();
-            courseMatrixChartInstance = new Chart(ctxCourseMatrix.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: rowsArray.map(r => r.course), datasets: [{ label: 'طلبات الليدز', data: rowsArray.map(r => r.totalLeads), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'المبيعات الفعلية', data: rowsArray.map(r => r.totalSales), backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (courseMatrixChartInstance) courseMatrixChartInstance.destroy();
+        courseMatrixChartInstance = new Chart(document.getElementById('courseMatrixChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: rowsArray.map(r => r.course), datasets: [{ label: 'طلبات الليدز', data: rowsArray.map(r => r.totalLeads), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'المبيعات الفعلية', data: rowsArray.map(r => r.totalSales), backgroundColor: '#10b981', borderRadius: 4 }] },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function renderEmployeeMatrix(leads, sales, sortedDates) {
@@ -1218,12 +1340,16 @@
         sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj) { if(empObj.oldCode === code) empObj.ccSales++; else if(empObj.newCode === code) empObj.ttSales++; } });
 
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
+
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.oldUser && item.oldUser.toUpperCase().startsWith('CC'));
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.newUser && (item.newUser.toUpperCase().startsWith('TT') || item.newUser.toUpperCase().startsWith('GG')));
 
         rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
 
-        safeSetHTML('employeeTableHeader', `
+        let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+        let proRatedTtTarget = (15 / totalDays) * currentDay;
+
+        document.getElementById('employeeTableHeader').innerHTML = `
             <tr>
                 <th rowspan="2">اسم الموظف</th><th rowspan="2">كود الموظف</th><th rowspan="2">المشرف</th>
                 <th colspan="3" class="bg-primary">قناة طلبات مران (CC)</th><th colspan="2" style="background-color: #7c3aed !important;">قناة إعادة الاستهداف (TT / GG)</th>
@@ -1232,7 +1358,7 @@
             <tr>
                 <th>الليدز</th><th>الاتمامات</th><th>نسبة التحويل</th><th>الاتمامات</th><th>نسبة تحقيق التارجت</th>
             </tr>
-        `);
+        `;
 
         document.getElementById('employeeTableBody').innerHTML = rowsArray.map(row => {
             let ccRate = row.ccLeads > 0 ? ((row.ccSales / row.ccLeads) * 100).toFixed(1) : "0.0";
@@ -1240,7 +1366,7 @@
             let statusText = "", statusStyle = "";
 
             if (row.category === 'استهداف' || row.ttSales > 0) {
-                if (row.ttSales >= ((15 / new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()) * new Date().getDate())) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
+                if (row.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
                 if (parseFloat(ccRate) >= 17.0) { statusText = "على التراك 🟢"; statusStyle = "color: #10b981;"; } 
@@ -1260,18 +1386,16 @@
         }).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxEmpMatrix = document.getElementById('employeeMatrixChart');
-        if (ctxEmpMatrix) {
-            if (employeeMatrixChartInstance) employeeMatrixChartInstance.destroy();
-            employeeMatrixChartInstance = new Chart(ctxEmpMatrix.getContext('2d'), {
-                type: 'bar', plugins: [customTopLabelsPlugin],
-                data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (employeeMatrixChartInstance) employeeMatrixChartInstance.destroy();
+        employeeMatrixChartInstance = new Chart(document.getElementById('employeeMatrixChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
+        });
     }
 
     function showEmployeeDetails(empName) {
@@ -1282,72 +1406,68 @@
         let oldCode = empObj ? normalizeEmpCode(empObj.oldUser) : normalizeEmpCode(empName);
         let newCode = empObj ? normalizeEmpCode(empObj.newUser) : normalizeEmpCode(empName);
 
-        const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate && (c === oldCode || c === newCode); });
-        const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate && (c === oldCode || c === newCode); });
+        const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
+        const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
 
         let totalLeads = empLeads.length; let totalSales = empSales.length;
         let convRate = totalLeads > 0 ? ((totalSales / totalLeads) * 100).toFixed(1) : 0;
 
-        safeSetHTML('employeeDetailTitle', `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`);
+        document.getElementById('employeeDetailTitle').innerHTML = `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`;
         let isTtGg = empObj && (empObj.category === 'استهداف' || (empObj.newUser && (normalizeEmpCode(empObj.newUser).startsWith('TT') || normalizeEmpCode(empObj.newUser).startsWith('GG'))));
 
         if (isTtGg) {
-            safeSetText('empCard1Label', "مسار العمل ونوع الكفاءة");
-            safeSetText('empDetailLeads', "إعادة استهداف داتا");
-            safeSetText('empDetailSales', totalSales);
+            document.getElementById('empCard1Label').innerText = "مسار العمل ونوع الكفاءة";
+            document.getElementById('empDetailLeads').innerText = "إعادة استهداف داتا";
+            document.getElementById('empDetailSales').innerText = totalSales;
             
             let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
             let proRatedTarget = (15 / totalDays) * currentDay;
             let targetPct = ((totalSales / 15) * 100).toFixed(1);
             
-            safeSetText('empCard3Label', `حالة تحقيق التارجت (المستهدف 15 إتمام)`);
-            const elConv = document.getElementById('empDetailConversion');
-            if (elConv) elConv.innerText = totalSales >= proRatedTarget ? `على التراك البيعي 🟢 (${targetPct}%)` : `متأخر عن التراك 🔴 (${targetPct}%)`;
+            document.getElementById('empCard3Label').innerText = `حالة تحقيق التارجت (المستهدف 15 إتمام)`;
+            document.getElementById('empDetailConversion').innerText = totalSales >= proRatedTarget ? `على التراك البيعي 🟢 (${targetPct}%)` : `متأخر عن التراك 🔴 (${targetPct}%)`;
         } else {
-            safeSetText('empCard1Label', "إجمالي الليدز المستلمة");
-            safeSetText('empDetailLeads', totalLeads);
-            safeSetText('empDetailSales', totalSales);
-            safeSetText('empCard3Label', "معدل التحويل الفردي الكلي");
-            const elConv = document.getElementById('empDetailConversion');
-            if (elConv) { elConv.innerText = convRate + "%"; elConv.style.color = "#0dcaf0"; }
+            document.getElementById('empCard1Label').innerText = "إجمالي الليدز المستلمة";
+            document.getElementById('empDetailLeads').innerText = totalLeads;
+            document.getElementById('empDetailSales').innerText = totalSales;
+            document.getElementById('empCard3Label').innerText = "معدل التحويل الفردي الكلي";
+            document.getElementById('empDetailConversion').innerText = convRate + "%";
+            document.getElementById('empDetailConversion').style.color = "#0dcaf0";
         }
 
         let statuses = {}; empLeads.forEach(l => { let s = String(l['الحالة 1'] || 'غيرحدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
         let sortedStatuses = Object.keys(statuses).map(s => { return { status: s, count: statuses[s], pct: totalLeads > 0 ? parseFloat(((statuses[s] / totalLeads) * 100).toFixed(1)) : 0 }; }).sort((a, b) => b.count - a.count);
 
         if (sortedStatuses.length === 0) {
-            safeSetHTML('employeeStatusTableBody', `<tr><td colspan="3" class="text-muted py-4 small">لا توجد حالات ليدز مسجلة للفترة (مسار داتا المتابعات المباشرة)</td></tr>`);
+            document.getElementById('employeeStatusTableBody').innerHTML = `<tr><td colspan="3" class="text-muted py-4 small">لا توجد حالات ليدز مسجلة للفترة (مسار داتا المتابعات المباشرة)</td></tr>`;
         } else {
-            safeSetHTML('employeeStatusTableBody', sortedStatuses.map(r => `<tr><td class="text-start">${r.status}</td><td><span class="badge bg-secondary px-2">${r.count}</span></td><td class="table-warning fw-bold">${r.pct}%</td></tr>`).join(''));
+            document.getElementById('employeeStatusTableBody').innerHTML = sortedStatuses.map(r => `<tr><td class="text-start">${r.status}</td><td><span class="badge bg-secondary px-2">${r.count}</span></td><td class="table-warning fw-bold">${r.pct}%</td></tr>`).join('');
         }
 
         let sortedDates = getDatesInRange(startDate, endDate);
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
-        empLeads.forEach(l => { if(dailyLeadsMap[l['التاريخ_الموحد']] !== undefined) dailyLeadsMap[l['التاريخ_الموحد']]++; });
-        empSales.forEach(s => { if(dailySalesMap[s['التاريخ_الموحد']] !== undefined) dailySalesMap[s['التاريخ_الموحد']]++; });
+        empLeads.forEach(l => { if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; });
+        empSales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
 
-        const ctxTimeline = document.getElementById('employeeTimelineChart');
-        if (ctxTimeline) {
-            if (employeeTimelineChartInstance) employeeTimelineChartInstance.destroy();
-            employeeTimelineChartInstance = new Chart(ctxTimeline.getContext('2d'), {
-                type: 'line',
-                data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الالاتمامات المنجزة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'إعادة الاستهداف', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor } } }, plugins: { legend: { labels: { font: { family: 'Cairo' }, color: dynamicTextColor } } } }
-            });
-        }
+        if (employeeTimelineChartInstance) employeeTimelineChartInstance.destroy();
+        employeeTimelineChartInstance = new Chart(document.getElementById('employeeTimelineChart').getContext('2d'), {
+            type: 'line',
+            data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الالاتمامات المنجزة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'إعادة الاستهداف', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor } } }, plugins: { legend: { labels: { font: { family: 'Cairo' }, color: dynamicTextColor } } } }
+        });
 
-        safeClassAdd('employeeMainView', 'd-none');
-        safeClassRemove('employeeDetailView', 'd-none');
+        document.getElementById('employeeMainView').classList.add('d-none');
+        document.getElementById('employeeDetailView').classList.remove('d-none');
     }
 
     function hideEmployeeDetails() {
-        safeClassAdd('employeeDetailView', 'd-none');
-        safeClassRemove('employeeMainView', 'd-none');
+        document.getElementById('employeeDetailView').classList.add('d-none');
+        document.getElementById('employeeMainView').classList.remove('d-none');
     }
 
     function copyTableToClipboard(tableId) {
@@ -1366,7 +1486,7 @@
     function takeTableScreenshot(tableId, fileName) {
         let tableElement = document.getElementById(tableId); if (!tableElement) return;
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        html2canvas(tableElement, { scale: 2.5, backgroundColor: isDark ? '#090d16' : '#ffffff', useCORS: true }).then(canvas => {
+        html2canvas(tableElement, { scale: 2.5, backgroundColor: isDark ? '#0f172a' : '#ffffff', useCORS: true }).then(canvas => {
             let link = document.createElement('a'); link.download = `${fileName}.png`; link.href = canvas.toDataURL('image/png'); link.click();
         });
     }
