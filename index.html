@@ -9,12 +9,26 @@
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        :root {
+            --sticky-top-spacing: 0px;
+        }
+        
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bs-body-bg);
             color: var(--bs-body-color);
             transition: background-color 0.3s, color 0.3s;
         }
+        
+        /* تباين فائق ومظهر احترافي جداً للوضع الليلي */
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #090d16;      /* خلفية داكنة عميقة وعالية الفخامة */
+            --bs-body-color: #f1f5f9;   /* نصوص أساسية ساطعة وواضحة */
+            --bs-card-bg: #111827;      /* خلفية كروت متباينة وصريحة */
+            --bs-tertiary-bg: #1f2937;  /* حاويات الفلاتر والمؤشرات الفرعية */
+            --bs-heading-color: #ffffff;
+        }
+
         .sidebar {
             background-color: #0f172a;
             color: white;
@@ -22,11 +36,12 @@
             top: 0;
             height: 100vh;
             overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            z-index: 1030;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
         }
         [data-bs-theme="dark"] .sidebar {
-            background-color: #020617;
+            background-color: #030712;
+            border-left: 1px solid #1f2937;
         }
         .sidebar .nav-link {
             color: #94a3b8;
@@ -46,46 +61,45 @@
             background-color: #2563eb;
             color: white;
         }
+        
+        /* شريط التحكم بالفلاتر العالمي - مثبّت علوياً في كل الصفحات */
+        .global-control-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1010;
+            background-color: var(--bs-body-bg);
+            padding-top: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #2563eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        [data-bs-theme="dark"] .global-control-bar {
+            background-color: #090d16;
+            border-bottom: 2px solid #3b82f6;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
         .card {
             border: none;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
             background-color: var(--bs-card-bg);
         }
-        
-        .sticky-quick-stats {
-            position: sticky;
-            top: 0;
-            z-index: 990;
-            background-color: var(--bs-body-bg);
-            padding-top: 10px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #2563eb;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            transition: background-color 0.3s;
-        }
-        [data-bs-theme="dark"] .sticky-quick-stats {
-            background-color: #0f172a;
-            border-bottom: 3px solid #3b82f6;
+        [data-bs-theme="dark"] .card {
+            border: 1px solid #1f2937;
         }
 
         .table-scroll-container {
-            max-height: 750px; 
+            max-height: 700px; 
             overflow: auto;
             border: 1px solid rgba(0,0,0,0.1);
             border-radius: 8px;
         }
         [data-bs-theme="dark"] .table-scroll-container {
-            border: 1px solid #334155;
+            border: 1px solid #374151;
         }
 
-        .table {
-            border-collapse: collapse !important;
-            width: 100%;
-            margin: 0 !important;
-        }
-        
         .table-bordered thead th {
             position: sticky;
             top: 0;
@@ -99,9 +113,9 @@
             z-index: 6;
         }
         [data-bs-theme="dark"] .table-bordered thead th {
-            background-color: #1e293b !important;
-            color: #f8fafc !important;
-            border: 1px solid #334155 !important;
+            background-color: #1f2937 !important;
+            color: #ffffff !important;
+            border: 1px solid #4b5563 !important;
         }
 
         .table-sticky-first th:first-child,
@@ -113,8 +127,9 @@
             box-shadow: inset -3px 0 0 rgba(0,0,0,0.1);
         }
         [data-bs-theme="dark"] .table-sticky-first td:first-child {
-            color: #f8fafc !important;
-            box-shadow: inset -3px 0 0 #334155;
+            color: #ffffff !important;
+            background-color: #111827 !important;
+            box-shadow: inset -3px 0 0 #374151;
         }
 
         .table-bordered td {
@@ -125,20 +140,46 @@
             padding: 12px 8px;
         }
         [data-bs-theme="dark"] .table-bordered td {
-            border: 1px solid #334155 !important;
-            color: #cbd5e1;
+            border: 1px solid #374151 !important;
+            color: #e5e7eb !important;
         }
         
         .filter-section {
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            background-color: var(--bs-card-bg);
+            background-color: var(--bs-tertiary-bg);
+            border-radius: 8px;
+            padding: 12px 20px;
             border: 1px solid rgba(0,0,0,0.05);
         }
         [data-bs-theme="dark"] .filter-section {
-            border: 1px solid #1e293b;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+        }
+        
+        [data-bs-theme="dark"] .form-control {
+            background-color: #111827;
+            border-color: #4b5563;
+            color: #ffffff;
+        }
+        [data-bs-theme="dark"] .form-control:focus {
+            background-color: #111827;
+            color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+        }
+
+        .executive-summary-box {
+            background-color: var(--bs-tertiary-bg);
+            border-right: 6px solid #2563eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 30px; 
+        }
+        .insight-item {
+            margin-bottom: 12px;
+            font-size: 0.98rem;
+            line-height: 1.65;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(128,128,128,0.15);
         }
 
         .btn-supervisor-drilldown {
@@ -157,6 +198,10 @@
             background-color: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
             color: #60a5fa;
+        }
+        [data-bs-theme="dark"] .btn-supervisor-drilldown:hover {
+            background-color: #2563eb;
+            color: #fff !important;
         }
 
         .btn-employee-drilldown {
@@ -180,6 +225,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -205,51 +251,62 @@
             </div>
         </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
+        <!-- المحتوى الرئيسي -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-4">
             
-            <div class="filter-section d-none" id="dateFilterSection">
-                <div class="row align-items-end">
-                    <div class="col-md-4 mb-2 mb-md-0">
-                        <label class="form-label fw-bold">من تاريخ:</label>
-                        <input type="date" id="startDate" class="form-control">
+            <!-- شريط الفلاتر العالمي الثابت (Sticky Control Bar) - يحل محل العنوان والنصوص السابقة ويثبت في كل الصفحات -->
+            <div class="global-control-bar" id="globalControlBar">
+                <div class="filter-section" id="dateFilterSection">
+                    <div class="row align-items-end g-2">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="form-label fw-bold mb-0 text-nowrap small"><i class="fa-solid fa-calendar-circle-user text-primary me-1"></i> من تاريخ:</label>
+                                <input type="date" id="startDate" class="form-control form-control-sm fw-bold">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <label class="form-label fw-bold mb-0 text-nowrap small"><i class="fa-solid fa-calendar-circle-check text-success me-1"></i> إلى تاريخ:</label>
+                                <input type="date" id="endDate" class="form-control form-control-sm fw-bold">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-sm w-100 fw-bold shadow-sm" onclick="applyFilters()">
+                                <i class="fa-solid fa-sync me-1"></i> تحديث ومزامنة الفترات الزمنية لكافة الصفحات
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-4 mb-2 mb-md-0">
-                        <label class="form-label fw-bold">إلى تاريخ:</label>
-                        <input type="date" id="endDate" class="form-control">
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-primary w-100 fw-bold" onclick="applyFilters()"><i class="fa-solid fa-sync me-2"></i> تحديث ومزامنة الحسابات</button>
+                </div>
+            </div>
+
+            <!-- حاوية حالة الربط مع الشيت -->
+            <div class="card p-2 text-center my-3 text-white border-0 shadow-sm" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
+                <div id="syncLoadingElement">
+                    <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
+                    <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
+                </div>
+                <div id="syncSuccessElement" class="d-none w-100">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
+                        <div>
+                            <span class="fw-bold">اتصال البيانات المباشر نشط وتلقائي 🟢</span>
+                            <small class="text-white-50 ms-3">آخر تحديث للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
+                        </div>
+                        <button class="btn btn-light btn-sm fw-bold shadow-sm" onclick="fetchGoogleSheetData()">
+                            <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للشيت
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="tab-content" id="v-pills-tabContent">
                 
+                <!-- الصفحة الرئيسية -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
                     
-                    <div class="card p-2 text-center mb-3 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
-                        <div id="syncLoadingElement">
-                            <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
-                            <span class="fw-bold">جاري اتصال ومزامنة البيانات حياً من قوقل شيت...</span>
-                        </div>
-                        <div id="syncSuccessElement" class="d-none w-100">
-                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
-                                <div>
-                                    <span class="fw-bold">الاتصال المباشر بالبيانات نشط وتلقائي 🟢</span>
-                                    <small class="text-white-50 ms-3">آخر تحديث للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
-                                </div>
-                                <button class="btn btn-light btn-sm fw-bold shadow-sm" onclick="fetchGoogleSheetData()">
-                                    <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للبيانات
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="stickyStatsContainer" class="sticky-quick-stats d-none">
-                        <div class="mb-2 text-primary fw-bold small p-2 rounded text-center" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(37,99,235,0.15); font-size: 1rem;" id="homePeriodLabel"></div>
-                        
-                        <div id="quickStats" class="row">
-                            <div class="col-md-6 mb-2 mb-md-0">
+                    <!-- حاوية كروت الـ KPIs الإجمالية المحمية -->
+                    <div id="stickyStatsContainer" class="mb-4">
+                        <div id="quickStats" class="row g-3">
+                            <div class="col-md-6">
                                 <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
                                     <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
                                     <div class="row g-2">
@@ -303,9 +360,10 @@
                         </div>
                     </div>
 
+                    <!-- شارتات العرض بالصفحة الرئيسية -->
                     <div id="homeChartSection" class="row d-none">
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -343,6 +401,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -389,6 +448,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة أداء موظفي المبيعات -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -407,7 +467,7 @@
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
-                            <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="employeePeriodLabel"></div>
+                            <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="employeePeriodLabel"></div>
 
                             <div class="table-scroll-container">
                                 <table class="table table-bordered table-hover text-center table-sticky-first" id="employeeTable">
@@ -481,6 +541,7 @@
                     </div>
                 </div>
 
+                <!-- صفحة "بيانات الموظفين" -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -494,13 +555,14 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('sourceTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="sourcePeriodLabel"></div>
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="sourcePeriodLabel"></div>
                         <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="sourceTable">
                                 <thead id="sourceTableHeader"></thead>
@@ -519,13 +581,14 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('statusTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="statusPeriodLabel"></div>
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="statusPeriodLabel"></div>
                         <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="statusTable">
                                 <thead id="statusTableHeader"></thead>
@@ -544,13 +607,14 @@
                     </div>
                 </div>
 
+                <!-- صفحة تحليل نوع الدورة -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-success mb-2"><i class="fa-solid fa-graduation-cap me-2"></i> الأداء المفصل والمقارن للدورات التدريبية</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('courseTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded" style="background-color: var(--bs-tertiary-bg);" id="coursePeriodLabel"></div>
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="coursePeriodLabel"></div>
                         <div class="table-scroll-container">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="courseTable">
                                 <thead id="courseTableHeader"></thead>
@@ -700,7 +764,7 @@
             ctx.textBaseline = 'bottom';
             ctx.textAlign = 'center';
             const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-            ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a'; 
+            ctx.fillStyle = isDark ? '#ffffff' : '#0f172a'; 
 
             chart.data.datasets.forEach((dataset, i) => {
                 const meta = chart.getDatasetMeta(i);
@@ -812,7 +876,7 @@
             console.error(error);
             if(loadingEl) loadingEl.classList.add('d-none');
             container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
-            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</span>`;
+            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</span>`;
         }
     }
 
@@ -917,10 +981,12 @@
 
         const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> الإحصائيات المعروضة حالياً للفترة من تاريخ: <b>${startDate}</b> إلى تاريخ اليوم: <b>${endDate}</b>`;
         document.getElementById('homePeriodLabel').innerHTML = periodText;
-        document.getElementById('sourcePeriodLabel').innerHTML = periodText;
-        document.getElementById('statusPeriodLabel').innerHTML = periodText;
-        document.getElementById('coursePeriodLabel').innerHTML = periodText;
-        document.getElementById('employeePeriodLabel').innerHTML = periodText;
+        
+        // المحافظة على التحديث السليم للنصوص المستترة بالصفحات الأخرى خلف الكواليس
+        if(document.getElementById('sourcePeriodLabel')) document.getElementById('sourcePeriodLabel').innerHTML = periodText;
+        if(document.getElementById('statusPeriodLabel')) document.getElementById('statusPeriodLabel').innerHTML = periodText;
+        if(document.getElementById('coursePeriodLabel')) document.getElementById('coursePeriodLabel').innerHTML = periodText;
+        if(document.getElementById('employeePeriodLabel')) document.getElementById('employeePeriodLabel').innerHTML = periodText;
 
         renderDailyPerformanceChart(filteredLeads, filteredSales, sortedDates);
         renderEmployeeSalesChart(filteredLeads, filteredSales);
@@ -1013,8 +1079,8 @@
         ttggData.sort((a, b) => b.sales - a.sales);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (ccEmployeeTargetChartInstance) ccEmployeeTargetChartInstance.destroy();
         ccEmployeeTargetChartInstance = new Chart(document.getElementById('ccEmployeeTargetChart').getContext('2d'), {
@@ -1103,8 +1169,8 @@
         document.getElementById('supervisorTableContainer').innerHTML = tableHtml;
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (supervisorTargetChartInstance) supervisorTargetChartInstance.destroy();
         supervisorTargetChartInstance = new Chart(document.getElementById('supervisorTargetChart').getContext('2d'), {
@@ -1197,8 +1263,8 @@
         document.getElementById('teamTableContainer').innerHTML = tableHtml;
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (teamChartInstance) teamChartInstance.destroy();
         let rowsData = Object.values(stats);
@@ -1222,8 +1288,8 @@
         sales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (dailyChartInstance) dailyChartInstance.destroy();
         dailyChartInstance = new Chart(document.getElementById('dailyPerformanceChart').getContext('2d'), {
@@ -1249,8 +1315,8 @@
         empSortedArray.sort((a, b) => b.salesCount - a.salesCount);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (employeeChartInstance) employeeChartInstance.destroy();
         employeeChartInstance = new Chart(document.getElementById('employeeSalesChart').getContext('2d'), {
@@ -1273,8 +1339,8 @@
         document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (sourceMatrixChartInstance) sourceMatrixChartInstance.destroy();
         sourceMatrixChartInstance = new Chart(document.getElementById('sourceMatrixChart').getContext('2d'), {
@@ -1296,8 +1362,8 @@
         document.getElementById('statusTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start fw-bold">${row.status}</td><td><span class="badge bg-secondary px-3">${row.total}</span></td><td class="table-warning fw-bold">${row.pct}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (statusMatrixChartInstance) statusMatrixChartInstance.destroy();
         statusMatrixChartInstance = new Chart(document.getElementById('statusMatrixChart').getContext('2d'), {
@@ -1320,8 +1386,8 @@
         document.getElementById('courseTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start text-success fw-bold">${row.course}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-success fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (courseMatrixChartInstance) courseMatrixChartInstance.destroy();
         courseMatrixChartInstance = new Chart(document.getElementById('courseMatrixChart').getContext('2d'), {
@@ -1346,9 +1412,6 @@
 
         rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
 
-        let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-        let proRatedTtTarget = (15 / totalDays) * currentDay;
-
         document.getElementById('employeeTableHeader').innerHTML = `
             <tr>
                 <th rowspan="2">اسم الموظف</th><th rowspan="2">كود الموظف</th><th rowspan="2">المشرف</th>
@@ -1366,7 +1429,7 @@
             let statusText = "", statusStyle = "";
 
             if (row.category === 'استهداف' || row.ttSales > 0) {
-                if (row.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
+                if (row.ttSales >= ((15 / new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()) * new Date().getDate())) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
                 if (parseFloat(ccRate) >= 17.0) { statusText = "على التراك 🟢"; statusStyle = "color: #10b981;"; } 
@@ -1386,8 +1449,8 @@
         }).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (employeeMatrixChartInstance) employeeMatrixChartInstance.destroy();
         employeeMatrixChartInstance = new Chart(document.getElementById('employeeMatrixChart').getContext('2d'), {
@@ -1451,8 +1514,8 @@
         empSales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+        const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(128,128,128,0.1)';
 
         if (employeeTimelineChartInstance) employeeTimelineChartInstance.destroy();
         employeeTimelineChartInstance = new Chart(document.getElementById('employeeTimelineChart').getContext('2d'), {
@@ -1486,7 +1549,7 @@
     function takeTableScreenshot(tableId, fileName) {
         let tableElement = document.getElementById(tableId); if (!tableElement) return;
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        html2canvas(tableElement, { scale: 2.5, backgroundColor: isDark ? '#0f172a' : '#ffffff', useCORS: true }).then(canvas => {
+        html2canvas(tableElement, { scale: 2.5, backgroundColor: isDark ? '#090d16' : '#ffffff', useCORS: true }).then(canvas => {
             let link = document.createElement('a'); link.download = `${fileName}.png`; link.href = canvas.toDataURL('image/png'); link.click();
         });
     }
