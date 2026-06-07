@@ -53,7 +53,6 @@
             background-color: var(--bs-card-bg);
         }
 
-        /* تصميم احترافي ومحدد لكروت الشارتات لمنع البهتان والتشتيت */
         .chart-card {
             border: 1px solid #e2e8f0 !important;
             border-top: 4px solid #2563eb !important;
@@ -142,7 +141,6 @@
             border: 1px solid #334155 !important;
         }
 
-        /* معالجة وحل مشكلة اختفاء ملامح وخلفية عمود الموظف الأول الموضح بالصورة */
         .table-sticky-first td:first-child {
             position: sticky;
             right: 0;
@@ -159,7 +157,7 @@
         .table-sticky-first th:first-child {
             position: sticky;
             right: 0;
-            z-index: 8; /* أعلى من باقي الهيدرات لمنع التداخل البصري */
+            z-index: 8;
             background-color: #1e3a8a !important;
             color: #ffffff !important;
             box-shadow: inset -3px 0 0 rgba(255,255,255,0.15);
@@ -442,9 +440,9 @@
                                 </div>
                             </div>
 
-                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);;">
+                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
-                                <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
+                                <button class="btn btn-info btn-sm fw-bold px-3" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
@@ -515,7 +513,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                end text-muted mt-2
                             </div>
                         </div>
                     </div>
@@ -1371,15 +1369,15 @@
 
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
 
-        if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.oldUser && item.oldUser.toUpperCase().startsWith('CC'));
-        else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.newUser && (item.newUser.toUpperCase().startsWith('TT') || item.newUser.toUpperCase().startsWith('GG')));
+        /* التعديل المباشر والذكي هنا: الفلترة الحية بناءً على حقل الفئة القادم من قوقل شيت وليس الحروف الأولى من اليوزر */
+        if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
+        else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
         rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
 
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
-        /* بناء الهيدر مع تخصيص ألوان وتصحيح الخلل البصري المعروض بالصورة بشكل كامل ومقروء */
         document.getElementById('employeeTableHeader').innerHTML = `
             <tr>
                 <th rowspan="2">اسم الموظف</th>
