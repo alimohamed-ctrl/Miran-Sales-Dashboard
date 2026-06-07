@@ -20,12 +20,11 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* تباين فائق ومظهر احترافي جداً للوضع الليلي */
         [data-bs-theme="dark"] {
-            --bs-body-bg: #090d16;      /* خلفية داكنة عميقة وعالية الفخامة */
-            --bs-body-color: #f1f5f9;   /* نصوص أساسية ساطعة وواضحة */
-            --bs-card-bg: #111827;      /* خلفية كروت متباينة وصريحة */
-            --bs-tertiary-bg: #1f2937;  /* حاويات الفلاتر والمؤشرات الفرعية */
+            --bs-body-bg: #090d16;      
+            --bs-body-color: #f1f5f9;   
+            --bs-card-bg: #111827;      
+            --bs-tertiary-bg: #1f2937;  
             --bs-heading-color: #ffffff;
         }
 
@@ -62,7 +61,6 @@
             color: white;
         }
         
-        /* شريط التحكم بالفلاتر العالمي - مثبّت علوياً في كل الصفحات */
         .global-control-bar {
             position: sticky;
             top: 0;
@@ -160,12 +158,6 @@
             border-color: #4b5563;
             color: #ffffff;
         }
-        [data-bs-theme="dark"] .form-control:focus {
-            background-color: #111827;
-            color: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
-        }
 
         .executive-summary-box {
             background-color: var(--bs-tertiary-bg);
@@ -254,7 +246,7 @@
         <!-- المحتوى الرئيسي -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-4">
             
-            <!-- شريط الفلاتر العالمي الثابت (Sticky Control Bar) - يحل محل العنوان والنصوص السابقة ويثبت في كل الصفحات -->
+            <!-- شريط الفلاتر العالمي الثابت (Sticky Control Bar) -->
             <div class="global-control-bar" id="globalControlBar">
                 <div class="filter-section" id="dateFilterSection">
                     <div class="row align-items-end g-2">
@@ -279,7 +271,7 @@
                 </div>
             </div>
 
-            <!-- حاوية حالة الربط مع الشيت -->
+            <!-- حاوية حالة الربط مع الشيت - مزودة بـ Diagnostic Catching تفاعلي لتحديد سبب الانقطاع -->
             <div class="card p-2 text-center my-3 text-white border-0 shadow-sm" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                 <div id="syncLoadingElement">
                     <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
@@ -363,7 +355,7 @@
                     <!-- شارتات العرض بالصفحة الرئيسية -->
                     <div id="homeChartSection" class="row d-none">
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -638,6 +630,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -813,10 +806,13 @@
 
         if(loadingEl) loadingEl.classList.remove('d-none');
         if(successEl) successEl.classList.add('d-none');
+        
+        // إعادة تهيئة المظهر عند إعادة الاتصال
+        container.style.background = "linear-gradient(135deg, #1e3a8a, #2563eb)";
 
         try {
             const response = await fetch(GOOGLE_WEB_APP_URL);
-            if (!response.ok) throw new Error("فشل استدعاء خادم الشيت.");
+            if (!response.ok) throw new Error("استجابة الخادم غير صالحة (HTTP " + response.status + ")");
             const resData = await response.json();
 
             let leadsSheet = resData['طلبات مران'] || resData['leads'] || [];
@@ -846,7 +842,7 @@
             rawLeads.forEach(lead => {
                 let clientNum = String(lead['رقم العميل'] || '').trim();
                 let courseName = normalizeCourseName(lead['نوع الدورة']);
-                let sourceCode = String(lead['كود التسويق'] || 'غير محدد').trim();
+                let sourceCode = String(lead['كود التسويق'] || 'غير حدد').trim();
                 let employeeName = String(lead['الموظف'] || 'غير حدد').trim();
                 
                 if(clientNum) {
@@ -865,6 +861,7 @@
 
             if(loadingEl) loadingEl.classList.add('d-none');
             if(successEl) successEl.classList.remove('d-none');
+            container.style.background = "linear-gradient(135deg, #10b981, #059669)";
             
             const now = new Date();
             document.getElementById('lastUpdateTime').innerText = now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
@@ -876,7 +873,15 @@
             console.error(error);
             if(loadingEl) loadingEl.classList.add('d-none');
             container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
-            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</span>`;
+            container.innerHTML = `
+                <div class="p-2">
+                    <i class="fa-solid fa-triangle-exclamation fa-2x mb-2"></i>
+                    <h5 class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</h5>
+                    <p class="small mb-1 opacity-90">السبب البرمجي المرصود: <code class="bg-white text-danger px-2 py-0.5 rounded font-monospace">${error.message}</code></p>
+                    <p class="small mb-2 opacity-75">يرجى مراجعة نافذة (New Deployment) بداخل Apps Script والتأكد من فتح الصلاحية لـ (Anyone).</p>
+                    <button class="btn btn-light btn-sm fw-bold px-3 shadow-sm" onclick="fetchGoogleSheetData()">إعادة محاولة الاتصال الفوري</button>
+                </div>
+            `;
         }
     }
 
@@ -982,7 +987,6 @@
         const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> الإحصائيات المعروضة حالياً للفترة من تاريخ: <b>${startDate}</b> إلى تاريخ اليوم: <b>${endDate}</b>`;
         document.getElementById('homePeriodLabel').innerHTML = periodText;
         
-        // المحافظة على التحديث السليم للنصوص المستترة بالصفحات الأخرى خلف الكواليس
         if(document.getElementById('sourcePeriodLabel')) document.getElementById('sourcePeriodLabel').innerHTML = periodText;
         if(document.getElementById('statusPeriodLabel')) document.getElementById('statusPeriodLabel').innerHTML = periodText;
         if(document.getElementById('coursePeriodLabel')) document.getElementById('coursePeriodLabel').innerHTML = periodText;
