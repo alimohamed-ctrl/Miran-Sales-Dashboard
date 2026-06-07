@@ -60,6 +60,19 @@
             color: var(--bs-heading-color);
         }
         
+        /* تثبيت شريط المؤشرات الإجمالية (KPIs) في الصفحة الرئيسية */
+        .sticky-quick-stats {
+            position: sticky;
+            top: 0;
+            z-index: 990;
+            background-color: var(--bs-body-bg);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.15);
+            margin-bottom: 25px;
+            transition: background-color 0.3s;
+        }
+
         .table-scroll-container {
             max-height: 750px; 
             overflow: auto;
@@ -129,9 +142,6 @@
             color: #cbd5e1;
         }
         
-        .matrix-cell {
-            min-width: 135px;
-        }
         .filter-section {
             border-radius: 12px;
             padding: 20px;
@@ -150,10 +160,6 @@
             border-radius: 12px;
             padding: 24px;
             margin-top: 30px; 
-        }
-        .executive-summary-box h5 {
-            font-weight: 700;
-            margin-bottom: 16px;
         }
         .insight-item {
             margin-bottom: 12px;
@@ -252,84 +258,76 @@
             <div class="tab-content" id="v-pills-tabContent">
                 
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="header-title h2">اتصال البيانات المباشر والربط الرقمي</h1>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-success fw-bold px-3 shadow-sm" onclick="downloadExcelTemplate()">
-                                <i class="fa-solid fa-file-arrow-down me-1"></i> تحميل التمبلت المرجعي
-                            </button>
-                        </div>
-                    </div>
                     
-                    <div class="card p-4 text-center mb-4 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); transition: all 0.4s ease;">
+                    <div class="card p-3 text-center mb-4 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); transition: all 0.4s ease;">
                         <div id="syncLoadingElement">
-                            <div class="spinner-border text-light mb-3" role="status" style="width: 2.5rem; height: 2.5rem;"></div>
-                            <h4 class="fw-bold">جاري جلب البيانات السحابية الحية من Google Sheets...</h4>
-                            <p class="mb-0 opacity-75 small">يقوم النظام الآن بالاتصال وفصل التكوينات الحضورية وتتبع أداء السورس والموظفين تلقائياً</p>
+                            <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
+                            <span class="fw-bold">جاري جلب البيانات السحابية الحية من Google Sheets...</span>
                         </div>
                         <div id="syncSuccessElement" class="d-none w-100">
-                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 text-start w-100 px-2">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="bg-light bg-opacity-25 p-3 rounded-circle"><i class="fa-solid fa-cloud-arrow-down fa-2x"></i></div>
-                                    <div>
-                                        <h4 class="mb-1 fw-bold">البيانات متصلة ومزامنة تلقائياً بالكامل 🟢</h4>
-                                        <p class="mb-0 text-white-50 small">آخر تحديث ناجح للوحة: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></p>
-                                    </div>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 text-start w-100 px-2">
+                                <div>
+                                    <span class="mb-0 fw-bold">البيانات متصلة ومزامنة تلقائياً بنجاح 🟢</span>
+                                    <small class="text-white-50 ms-3">آخر تحديث: <span id="lastUpdateTime" class="font-monospace fw-bold">--:--</span></small>
                                 </div>
-                                <button class="btn btn-light fw-bold px-4" onclick="fetchGoogleSheetData()">
-                                    <i class="fa-solid fa-arrows-rotate text-primary me-2"></i> سحب وتحديث البيانات الآن
+                                <button class="btn btn-light btn-sm fw-bold" onclick="fetchGoogleSheetData()">
+                                    <i class="fa-solid fa-arrows-rotate text-primary me-1"></i> تحديث فوري للبيانات
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div id="quickStats" class="row d-none mb-4">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
-                                <div class="row g-2">
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
-                                            <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                            <h4 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h4>
+                    <div id="stickyStatsContainer" class="sticky-quick-stats d-none">
+                        <div class="mb-3 text-secondary fw-bold small p-2 rounded text-center shadow-sm" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);" id="homePeriodLabel"></div>
+                        
+                        <div id="quickStats" class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
+                                                <h4 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #10b981;">
-                                            <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                            <h4 class="fw-bold text-success mb-0" id="totalSalesCount">0</h4>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #10b981;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
+                                                <h4 class="fw-bold text-success mb-0" id="totalSalesCount">0</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                            <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                            <h4 class="fw-bold mb-0 mt-1" id="totalConversionRate">0%</h4>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
+                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
+                                                <h4 class="fw-bold mb-0 mt-1" id="totalConversionRate">0%</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                <h6 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
-                                <div class="row g-2">
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
-                                            <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                            <h4 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h4>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                                    <h6 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
+                                                <h4 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #ec4899;">
-                                            <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                            <h4 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h4>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #ec4899;">
+                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
+                                                <h4 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                            <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                            <h4 class="fw-bold mb-0 mt-1" id="cleanConversionRate">0%</h4>
+                                        <div class="col-4">
+                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
+                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
+                                                <h4 class="fw-bold mb-0 mt-1" id="cleanConversionRate">0%</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -617,7 +615,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // الرابط المباشر للـ Web App المأخوذ من جوجل شيت الخاصة بكم
     const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxy3dJ1WlSNirctPt2sqbyxmGaD9WSN5rR-fMkdd0vXR4so8dR_VnP_VeLIq-BEQ5jDnQ/exec";
 
     let rawLeads = [];
@@ -630,33 +627,7 @@
     let employeeFilterType = 'all'; 
     let homeEmployeeFilterType = 'all'; 
 
-    // قاعدة البيانات الاحتياطية الافتراضية، وسيتم استبدالها تلقائياً ببيانات ورقة جوجل شيت الحية
-    let employeeDatabase = [
-        { name: 'آية احمد', oldUser: 'CC 35', newUser: 'TT 06', category: 'استهداف', supervisor: 'علي' },
-        { name: 'عبد الرحمن', oldUser: 'CC 22', newUser: 'TT 01', category: 'استهداف', supervisor: 'علي' },
-        { name: 'مريم احمد', oldUser: 'CC 04', newUser: 'TT 11', category: 'استهداف', supervisor: 'علي' },
-        { name: 'محمد سيد', oldUser: 'CC 16', newUser: 'TT 09', category: 'استهداف', supervisor: 'علي' },
-        { name: 'عمرو عبدالعظيم', oldUser: 'CC 17', newUser: 'TT 10', category: 'استهداف', supervisor: 'علي' },
-        { name: 'حنين محيي', oldUser: 'CC 18', newUser: 'TT 12', category: 'استهداف', supervisor: 'علي' },
-        { name: 'افنان', oldUser: 'CC 12', newUser: 'TT 05', category: 'استهداف', supervisor: 'عبدالفتاح' },
-        { name: 'ابراهيم عادل', oldUser: 'CC 07', newUser: 'TT 08', category: 'استهداف', supervisor: 'عبدالفتاح' },
-        { name: 'ابراهيم خليل', oldUser: 'CC 26', newUser: 'TT 04', category: 'استهداف', supervisor: 'زينب' },
-        { name: 'حبيبه محمد', oldUser: 'GG80', newUser: 'GG80', category: 'استهداف', supervisor: 'زينب' },
-        { name: 'احمد خالد', oldUser: 'GG81', newUser: 'GG81', category: 'استهداف', supervisor: 'زينب' },
-        { name: 'مؤيد', oldUser: 'CC 23', newUser: 'TT 02', category: 'استهداف', supervisor: 'خالد' },
-        { name: 'محمد حسام', oldUser: 'CC 09', newUser: 'TT 07', category: 'استهداف', supervisor: 'خالد' },
-        { name: 'عبد الله', oldUser: 'CC 24', newUser: 'TT 03', category: 'استهداف', supervisor: 'خالد' },
-        { name: 'سارة', oldUser: 'CC 28', newUser: 'CC 28', category: 'رسمي', supervisor: 'عبدالفتاح' },
-        { name: 'ريناد حمدان', oldUser: 'CC 10', newUser: 'CC 10', category: 'رسمي', supervisor: 'عبدالفتاح' },
-        { name: 'عمر', oldUser: 'CC 34', newUser: 'CC 34', category: 'رسمي', supervisor: 'عبدالفتاح' },
-        { name: 'عمر مرسي', oldUser: 'CC 06', newUser: 'CC 06', category: 'رسمي', supervisor: 'عبدالفتاح' },
-        { name: 'سندس', oldUser: 'CC 08', newUser: 'CC 08', category: 'رسمي', supervisor: 'عبدالفتاح' },
-        { name: 'نغم', oldUser: 'CC 32', newUser: 'CC 32', category: 'رسمي', supervisor: 'زينب' },
-        { name: 'تاج', oldUser: 'CC 31', newUser: 'CC 31', category: 'رسمي', supervisor: 'خالد' },
-        { name: 'ريناد', oldUser: 'CC 03', newUser: 'CC 03', category: 'رسمي', supervisor: 'خالد' },
-        { name: 'معاذ', oldUser: 'CC 29', newUser: 'CC 29', category: 'رسمي', supervisor: 'خالد' },
-        { name: 'مصطفي فضل', oldUser: 'CC 30', newUser: 'CC 30', category: 'رسمي', supervisor: 'خالد' }
-    ];
+    let employeeDatabase = [];
     
     let dailyChartInstance = null;
     let employeeChartInstance = null;
@@ -749,25 +720,33 @@
         if(rawLeads.length > 0) applyFilters();
     }
 
-    // دالة جلب البيانات آلياً من رابط شيت جوجل
+    // دالة تهيئة الفلاتر لأول الشهر وحتى اليوم الحالي تلقائياً
+    function setDefaultDateRange() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        
+        document.getElementById('startDate').value = `${year}-${month}-01`;
+        document.getElementById('endDate').value = `${year}-${month}-${day}`;
+    }
+
     async function fetchGoogleSheetData() {
         const container = document.getElementById('syncStatusContainer');
         const loadingEl = document.getElementById('syncLoadingElement');
         const successEl = document.getElementById('syncSuccessElement');
         const dateFilterSection = document.getElementById('dateFilterSection');
-        const quickStats = document.getElementById('quickStats');
+        const stickyStatsContainer = document.getElementById('stickyStatsContainer');
         const homeChartSection = document.getElementById('homeChartSection');
 
         if(loadingEl) loadingEl.classList.remove('d-none');
         if(successEl) successEl.classList.add('d-none');
-        container.style.background = "linear-gradient(135deg, #1e3a8a, #3b82f6)";
 
         try {
             const response = await fetch(GOOGLE_WEB_APP_URL);
-            if (!response.ok) throw new Error("فشل في جلب الاستجابة البرمجية السحابية.");
+            if (!response.ok) throw new Error("فشل في جلب الاستجابة السحابية.");
             const resData = await response.json();
 
-            // فحص وتعيين أوراق البيانات الثلاث بناءً على الاسم المتاح (عربي أو إنجليزي)
             let leadsSheet = resData['طلبات مران'] || resData['leads'] || [];
             let salesSheet = resData['إتمام بيع'] || resData['sales'] || [];
             let employeesSheet = resData['بيانات الموظفين'] || resData['employees'] || [];
@@ -808,23 +787,12 @@
                 }
             });
 
-            let fileDates = [];
-            rawLeads.forEach(item => { if(item['التاريخ']) fileDates.push(item['التاريخ']); });
-            rawSales.forEach(item => { if(item['التاريخ']) fileDates.push(item['التاريخ']); });
-            
-            if(fileDates.length > 0) {
-                fileDates.sort();
-                document.getElementById('startDate').value = fileDates[0];
-                document.getElementById('endDate').value = fileDates[fileDates.length - 1];
-            }
-
             if(dateFilterSection) dateFilterSection.classList.remove('d-none');
-            if(quickStats) quickStats.classList.remove('d-none');
+            if(stickyStatsContainer) stickyStatsContainer.classList.remove('d-none');
             if(homeChartSection) homeChartSection.classList.remove('d-none');
 
             if(loadingEl) loadingEl.classList.add('d-none');
             if(successEl) successEl.classList.remove('d-none');
-            container.style.background = "linear-gradient(135deg, #10b981, #059669)";
             
             const now = new Date();
             document.getElementById('lastUpdateTime').innerText = now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
@@ -839,42 +807,71 @@
             container.innerHTML = `
                 <div class="p-2">
                     <i class="fa-solid fa-triangle-exclamation fa-2x mb-2"></i>
-                    <h5 class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</h5>
-                    <p class="small mb-2 opacity-90">السبب المحتمل: عطل بالاتصال أو إعدادات CORS على خادم الـ Web App.</p>
-                    <button class="btn btn-light btn-sm fw-bold px-3" onclick="fetchGoogleSheetData()">إعادة المحاولة الفورية</button>
+                    <h5 class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</h5>
+                    <p class="small mb-2 opacity-90">يرجى التأكد من نشر السكريبت بشكل صحيح على وضعيّة (Anyone).</p>
+                    <button class="btn btn-light btn-sm fw-bold px-3" onclick="fetchGoogleSheetData()">إعادة المحاولة</button>
                 </div>
             `;
         }
     }
 
-    // دالة فك وفحص مخرجات التاريخ لضمان معالجة دقيقة وسليمة للمزامنة والفرز
+    // مطوّرة بالكامل لتفكيك وتوحيد كافة أشكال صياغة التاريخ القادمة من جوجل شيت بدقة 100%
     function standardParseDate(val) {
         if (!val) return '';
-        let str = String(val).trim();
         
-        if (/^\d{4}-\d{2}-\d{2}/.test(str)) return str.substring(0, 10);
-        
-        let parts = str.split(/[-/.]/);
-        if (parts.length >= 3) {
-            // YYYY/MM/DD
-            if (parts[0].length === 4) return `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
-            // DD/MM/YYYY أو MM/DD/YYYY بناءً على الإدخال الخارجي
-            if (parts[2].substring(0,4).length === 4) {
-                let year = parts[2].substring(0,4);
-                let p1 = parts[0].padStart(2, '0');
-                let p2 = parts[1].padStart(2, '0');
-                // الافتراضي للأنظمة الإقليمية العربية المباشرة هو DD-MM-YYYY
-                return `${year}-${p2}-${p1}`;
-            }
+        if (val instanceof Date) {
+            let y = val.getFullYear();
+            let m = String(val.getMonth() + 1).padStart(2, '0');
+            let d = String(val.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
         
+        let str = String(val).trim();
+        
+        // التقاط التواريخ التي تبدأ بالسنة YYYY-MM-DD أو YYYY/MM/DD
+        let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+        if (isoMatch) {
+            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+        }
+        
+        // التقاط التواريخ التي تبدأ باليوم أو الشهر وتنهي بالسنة DD/MM/YYYY أو MM/DD/YYYY
+        let generalMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+        if (generalMatch) {
+            let p1 = parseInt(generalMatch[1]);
+            let p2 = parseInt(generalMatch[2]);
+            let year = generalMatch[3];
+            let day = p1;
+            let month = p2;
+            
+            // قلب ذكي إذا تم اكتشاف نظام تدوين أمريكي للشهر أكبر من 12
+            if (p2 > 12) {
+                day = p2;
+                month = p1;
+            }
+            return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+        
+        // معالجة الأرقام التسلسلية لملفات الإكسيل وجوجل شيت القديمة
         if (!isNaN(str) && Number(str) > 30000) {
             let serial = Number(str);
             let utc_days = Math.floor(serial - 25569);
             let date = new Date(utc_days * 86400000);
-            return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+            let y = date.getUTCFullYear();
+            let m = String(date.getUTCMonth() + 1).padStart(2, '0');
+            let d = String(date.getUTCDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
-        return str;
+        
+        // المحاولة الأخيرة كخيار أمان متأخر بالاعتماد على مفسر جافاسكريبت المباشر
+        let dParsed = new Date(str);
+        if (!isNaN(dParsed.getTime())) {
+            let y = dParsed.getFullYear();
+            let m = String(dParsed.getMonth() + 1).padStart(2, '0');
+            let d = String(dParsed.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        
+        return '';
     }
 
     function cleanSheetData(data) {
@@ -979,7 +976,8 @@
 
         let sortedDates = getDatesInRange(startDate, endDate);
 
-        const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> النطاق المستعرض حالياً: من <b>${startDate}</b> إلى <b>${endDate}</b>`;
+        const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> الإحصائيات المعروضة حالياً للفترة من تاريخ: <b>${startDate}</b> إلى تاريخ اليوم: <b>${endDate}</b>`;
+        document.getElementById('homePeriodLabel').innerHTML = periodText;
         document.getElementById('sourcePeriodLabel').innerHTML = periodText;
         document.getElementById('statusPeriodLabel').innerHTML = periodText;
         document.getElementById('coursePeriodLabel').innerHTML = periodText;
@@ -995,7 +993,6 @@
         renderEmployeeMatrix(filteredLeads, filteredSales, sortedDates);
     }
 
-    // بناء وعرض وحساب جداول صفحة قاعدة بيانات الموظفين الجديدة وتجميعها تبعا للمشرف المسؤول
     function renderEmployeeDatabasePane() {
         const container = document.getElementById('employeeDbTablesContainer');
         if(!container) return;
@@ -1051,12 +1048,7 @@
                 `;
             });
 
-            outputHtml += `
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
+            outputHtml += `</tbody></table></div></div>`;
         }
         container.innerHTML = outputHtml;
     }
@@ -1124,12 +1116,7 @@
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th>اسم المشرف المسؤول</th>
-                        <th>عدد الموظفين الإجمالي</th>
-                        <th>عدد ليدز موظفي مران (CC)</th>
-                        <th>عدد إتمامات موظفي مران (CC)</th>
-                        <th>نسبة كفاءة تحويل فريق مران (CC)</th>
-                        <th style="background-color: #7c3aed !important;">إتمامات فئة اعادة إستهداف</th>
+                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important;">إتمامات فئة اعادة إستهداف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1236,10 +1223,7 @@
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th rowspan="2">اسم الموظف البيعي</th>
-                        <th colspan="3" class="bg-primary">قناة طلبات مران (CC)</th>
-                        <th colspan="2" style="background-color: #7c3aed !important;">قناة إعادة الاستهداف (TT / GG)</th>
-                        <th rowspan="2">الحالة التشغيلية للتارجت</th>
+                        <th rowspan="2">اسم الموظف البيعي</th><th colspan="3" class="bg-primary">قناة طلبات مران (CC)</th><th colspan="2" style="background-color: #7c3aed !important;">قناة إعادة الاستهداف (TT / GG)</th><th rowspan="2">الحالة التشغيلية للتارجت</th>
                     </tr>
                     <tr>
                         <th>الليدز</th><th>الاتمامات</th><th>نسبة التحويل</th><th>الاتمامات</th><th>نسبة تحقيق التارجت</th>
@@ -1343,7 +1327,7 @@
         filteredLeads.forEach(l => { let src = String(l['كود التسويق'] || 'غير محدد').trim(); if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalLeads++; });
         filteredSales.forEach(s => { let clientNum = String(s['رقم العميل'] || '').trim(); let courseName = normalizeCourseName(s['نوع الدورة']); let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير محدد'; if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalSales++; });
 
-        let rowsArray = Object.keys(matrix).filter(src => src !== 'غير محدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
+        let rowsArray = Object.keys(matrix).filter(src => src !== 'غير مححدد' && src !== 'غير محدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
         document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
@@ -1512,7 +1496,7 @@
             document.getElementById('empDetailConversion').style.color = "#0dcaf0";
         }
 
-        let statuses = {}; empLeads.forEach(l => { let s = String(l['الحالة 1'] || 'غير محدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
+        let statuses = {}; empLeads.forEach(l => { let s = String(l['الحالة 1'] || 'غيرحدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
         let sortedStatuses = Object.keys(statuses).map(s => { return { status: s, count: statuses[s], pct: totalLeads > 0 ? parseFloat(((statuses[s] / totalLeads) * 100).toFixed(1)) : 0 }; }).sort((a, b) => b.count - a.count);
 
         if (sortedStatuses.length === 0) {
@@ -1534,7 +1518,7 @@
         if (employeeTimelineChartInstance) employeeTimelineChartInstance.destroy();
         employeeTimelineChartInstance = new Chart(document.getElementById('employeeTimelineChart').getContext('2d'), {
             type: 'line',
-            data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الإتمامات والصفقات المحققة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'الإتمامات المحققة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
+            data: { labels: sortedDates, datasets: isTtGg ? [{ label: 'الالاتمامات المنجزة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.05)', borderWidth: 2.5, tension: 0.2, fill: true }] : [{ label: 'الليدز المستلمة', data: sortedDates.map(d => dailyLeadsMap[d]), borderColor: '#3b82f6', pointRadius: 2, tension: 0.2, fill: false }, { label: 'الإتمامات المحققة', data: sortedDates.map(d => dailySalesMap[d]), borderColor: '#10b981', pointRadius: 2, tension: 0.2, fill: false }] },
             options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor } } }, plugins: { legend: { labels: { font: { family: 'Cairo' }, color: dynamicTextColor } } } }
         });
 
@@ -1585,8 +1569,8 @@
         }
     }
 
-    // تشغيل جلب البيانات آلياً ومزامنتها فور فتح الصفحة والمستند
     window.addEventListener('DOMContentLoaded', () => {
+        setDefaultDateRange(); // تهيئة الفلاتر لأول الشهر فور فتح المنصة
         updateSupervisorMapsFromDatabase();
         fetchGoogleSheetData();
     });
