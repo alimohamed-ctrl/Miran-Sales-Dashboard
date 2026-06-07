@@ -132,7 +132,6 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -156,7 +155,6 @@
             </div>
         </nav>
 
-        <!-- المحتوى الرئيسي للموقع -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             
             <div class="filter-section" id="dateFilterSection">
@@ -1152,7 +1150,7 @@
         const { dynamicTextColor, dynamicGridColor } = getChartThemeColors();
 
         if (employeeChartInstance) employeeChartInstance.destroy();
-        employeeChartInstance = new Chart(document.getElementById('employeeSalesChart').getContext('2d'), { type: 'bar', plugins: [customTopLabelsPlugin], data: { labels: empSortedArray.map(item => item.name), datasets: [{ label: 'الليدز', data: empSortedArray.map(item => item.leadsCount), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'المبيعات', data: empSortedArray.map(item => item.salesCount), backgroundColor: '#8b5cf6', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } } });
+        employeeChartInstance = new Chart(document.getElementById('employeeSalesChart').getContext('2d'), { type: 'bar', plugins: [customTopLabelsPlugin], data: { labels: empSortedArray.map(item => item.name), datasets: [{ label: 'الليدز', data: empSortedArray.map(item => item.leadsCount), backgroundColor: '#3b82f6', borderRadius: 4 }, { label: 'المبيعات', data: empSortedArray.map(item => item.salesCount), backgroundColor: '#8b5cf6', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } } } });
     }
 
     function renderSourceMatrix(filteredLeads, filteredSales, sortedDates) {
@@ -1199,7 +1197,7 @@
         leads.forEach(l => { let course = normalizeCourseName(l['نوع الدورة']); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalLeads++; });
         sales.forEach(s => { let course = normalizeCourseName(s['نوع الدورة']); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalSales++; });
 
-        let rowsArray = Object.keys(matrix).filter(course => course !== 'أخرى / غير محدد' && course !== 'null' && course !== '').map(course => { let totalLeads = matrix[course].totalLeads; return { course, totalLeads, totalSales: matrix[course].totalSales, conv: totalLeads > 0 ? parseFloat(((matrix[course].totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
+        let rowsArray = Object.keys(matrix).filter(course => course !== 'أخرى / غير مححدد' && course !== 'أخرى / غير محدد' && course !== 'null' && course !== '').map(course => { let totalLeads = matrix[course].totalLeads; return { course, totalLeads, totalSales: matrix[course].totalSales, conv: totalLeads > 0 ? parseFloat(((matrix[course].totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
         document.getElementById('courseTableHeader').innerHTML = `<tr><th>اسم الدورة وتكوين الحضور</th><th>طلبات الليدز</th><th>المبيعات المحققة</th><th>كفاءة المنتج</th></tr>`;
