@@ -9,10 +9,6 @@
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --sticky-top-spacing: 0px;
-        }
-        
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bs-body-bg);
@@ -20,11 +16,12 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
+        /* تباين فائق ومظهر احترافي ومريح للعين في الوضع الليلي */
         [data-bs-theme="dark"] {
-            --bs-body-bg: #090d16;      
-            --bs-body-color: #f1f5f9;   
-            --bs-card-bg: #111827;      
-            --bs-tertiary-bg: #1f2937;  
+            --bs-body-bg: #090d16;      /* خلفية داكنة عميقة وعالية الفخامة */
+            --bs-body-color: #f8fafc;   /* نصوص أساسية ساطعة ناصعة البياض لسهولة القراءة */
+            --bs-card-bg: #111827;      /* خلفية كروت رمادية داكنة صريحة متباينة */
+            --bs-tertiary-bg: #1f2937;  /* حاويات الفلاتر والمؤشرات الفرعية لتظهر بوضوح */
             --bs-heading-color: #ffffff;
         }
 
@@ -61,21 +58,22 @@
             color: white;
         }
         
-        .global-control-bar {
+        /* شريط التحكم بالفلاتر العالمي والـ KPIs المدمج والمثبّت علوياً في كل الصفحات */
+        .global-sticky-container {
             position: sticky;
             top: 0;
             z-index: 1010;
             background-color: var(--bs-body-bg);
             padding-top: 12px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #2563eb;
+            border-bottom: 3px solid #2563eb;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             transition: background-color 0.3s, border-color 0.3s;
         }
-        [data-bs-theme="dark"] .global-control-bar {
+        [data-bs-theme="dark"] .global-sticky-container {
             background-color: #090d16;
-            border-bottom: 2px solid #3b82f6;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 3px solid #3b82f6;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
 
         .card {
@@ -89,7 +87,7 @@
         }
 
         .table-scroll-container {
-            max-height: 700px; 
+            max-height: 650px; 
             overflow: auto;
             border: 1px solid rgba(0,0,0,0.1);
             border-radius: 8px;
@@ -139,13 +137,13 @@
         }
         [data-bs-theme="dark"] .table-bordered td {
             border: 1px solid #374151 !important;
-            color: #e5e7eb !important;
+            color: #f3f4f6 !important;
         }
         
         .filter-section {
             background-color: var(--bs-tertiary-bg);
             border-radius: 8px;
-            padding: 12px 20px;
+            padding: 10px 20px;
             border: 1px solid rgba(0,0,0,0.05);
         }
         [data-bs-theme="dark"] .filter-section {
@@ -217,7 +215,6 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- القائمة الجانبية -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar p-0">
             <div class="pt-4">
                 <div class="text-center mb-2 px-3">
@@ -243,35 +240,55 @@
             </div>
         </nav>
 
-        <!-- المحتوى الرئيسي -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pb-4">
             
-            <!-- شريط الفلاتر العالمي الثابت (Sticky Control Bar) -->
-            <div class="global-control-bar" id="globalControlBar">
-                <div class="filter-section" id="dateFilterSection">
+            <div class="global-sticky-container" id="globalStickyBar">
+                <div class="filter-section mb-2" id="dateFilterSection">
                     <div class="row align-items-end g-2">
                         <div class="col-md-4">
                             <div class="d-flex align-items-center gap-2">
-                                <label class="form-label fw-bold mb-0 text-nowrap small"><i class="fa-solid fa-calendar-circle-user text-primary me-1"></i> من تاريخ:</label>
+                                <label class="form-label fw-bold mb-0 text-nowrap small text-primary"><i class="fa-solid fa-calendar-days"></i> من تاريخ:</label>
                                 <input type="date" id="startDate" class="form-control form-control-sm fw-bold">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex align-items-center gap-2">
-                                <label class="form-label fw-bold mb-0 text-nowrap small"><i class="fa-solid fa-calendar-circle-check text-success me-1"></i> إلى تاريخ:</label>
+                                <label class="form-label fw-bold mb-0 text-nowrap small text-success"><i class="fa-solid fa-calendar-check"></i> إلى تاريخ:</label>
                                 <input type="date" id="endDate" class="form-control form-control-sm fw-bold">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-primary btn-sm w-100 fw-bold shadow-sm" onclick="applyFilters()">
-                                <i class="fa-solid fa-sync me-1"></i> تحديث ومزامنة الفترات الزمنية لكافة الصفحات
+                                <i class="fa-solid fa-sync me-1"></i> تحديث ومزامنة فترات التقرير الحالية
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quickStats" class="row g-2">
+                    <div class="col-md-6">
+                        <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                            <span class="fw-bold text-primary small d-block mb-1"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</span>
+                            <div class="row g-1 text-center">
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #3b82f6;"><span class="text-muted d-block small">ليدز</span><b class="text-primary" id="totalLeadsCount">0</b></div></div>
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #10b981;"><span class="text-muted d-block small">إتمام</span><b class="text-success" id="totalSalesCount">0</b></div></div>
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #64748b;"><span class="text-muted d-block small">تحويل</span><b id="totalConversionRate">0%</b></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-2 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
+                            <span class="fw-bold small d-block mb-1" style="color: #a78bfa;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية بدون المتجر <small class="text-muted font-monospace">(بدون CC01/CC02)</small></span>
+                            <div class="row g-1 text-center">
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #6366f1;"><span class="text-muted d-block small">ليدز</span><b style="color: #6366f1;" id="cleanLeadsCount">0</b></div></div>
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #ec4899;"><span class="text-muted d-block small">إتمام</span><b style="color: #ec4899;" id="cleanSalesCount">0</b></div></div>
+                                <div class="col-4"><div class="card p-1 small" style="border-right: 3px solid #64748b;"><span class="text-muted d-block small">تحويل</span><b id="cleanConversionRate">0%</b></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- حاوية حالة الربط مع الشيت - مزودة بـ Diagnostic Catching تفاعلي لتحديد سبب الانقطاع -->
             <div class="card p-2 text-center my-3 text-white border-0 shadow-sm" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                 <div id="syncLoadingElement">
                     <div class="spinner-border text-light spinner-border-sm me-2" role="status"></div>
@@ -290,73 +307,13 @@
                 </div>
             </div>
 
-            <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-content mt-2" id="v-pills-tabContent">
                 
-                <!-- الصفحة الرئيسية -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
-                    
-                    <!-- حاوية كروت الـ KPIs الإجمالية المحمية -->
-                    <div id="stickyStatsContainer" class="mb-4">
-                        <div id="quickStats" class="row g-3">
-                            <div class="col-md-6">
-                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-chart-line me-1"></i> النسبة الإجمالية للفريق ككل</h6>
-                                    <div class="row g-2">
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #3b82f6;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                                <h4 class="fw-bold text-primary mb-0" id="totalLeadsCount">0</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #10b981;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                                <h4 class="fw-bold text-success mb-0" id="totalSalesCount">0</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                                <h4 class="fw-bold mb-0 mt-1" id="totalConversionRate">0%</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="p-3 rounded shadow-sm border h-100" style="background-color: var(--bs-tertiary-bg); border-color: rgba(128,128,128,0.15) !important;">
-                                    <h6 class="fw-bold mb-2" style="color: #7c3aed;"><i class="fa-solid fa-store-slash me-1"></i> النسبة الإجمالية للفريق بدون المتجر <small class="text-muted fw-normal font-monospace">(بدون CC01 & CC02)</small></h6>
-                                    <div class="row g-2">
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #6366f1;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إجمالي الليدز</span>
-                                                <h4 class="fw-bold mb-0" style="color: #6366f1;" id="cleanLeadsCount">0</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #ec4899;">
-                                                <span class="text-muted small fw-bold d-block mb-1">إتمامات</span>
-                                                <h4 class="fw-bold mb-0" style="color: #ec4899;" id="cleanSalesCount">0</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card p-2 text-center h-100" style="border-right: 4px solid #64748b;">
-                                                <span class="text-muted small fw-bold d-block mb-1">معدل التحويل</span>
-                                                <h4 class="fw-bold mb-0 mt-1" id="cleanConversionRate">0%</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- شارتات العرض بالصفحة الرئيسية -->
-                    <div id="homeChartSection" class="row d-none">
+                    <div id="homeChartSection" class="row">
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
-                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية فئة الموظفين (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي إعادة استهداف</button>
@@ -379,7 +336,7 @@
 
                         <div class="col-md-6 mb-4">
                             <div class="card p-4 h-100">
-                                <h5 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة اعادة إستهداف (TT / GG) (المستهدف 15 إتمام)</h5>
+                                <h5 class="fw-bold mb-3" style="color: #a78bfa;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة اعادة إستهداف (TT / GG) (المستهدف 15 إتمام)</h5>
                                 <div style="position: relative; height: 350px;"><canvas id="ttggEmployeeTargetChart"></canvas></div>
                             </div>
                         </div>
@@ -393,7 +350,6 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -401,13 +357,13 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-line me-2"></i> نسبة تحقيق التارجت لكل مشرف (المستهدف البيعي لـ موظفين طلبات مران هو: 17%)</h5>
+                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-line me-2"></i> نسبة تحقيق التارجت لكل مشرف (المستهدف البيعي هو: 17%)</h5>
                                     <div style="position: relative; height: 360px;"><canvas id="supervisorTargetChart"></canvas></div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-danger"><i class="fa-solid fa-user-slash me-2"></i> عدد الموظفين دون التارجت في كل فريق (أقل من 17% - موظفين طلبات مران)</h5>
+                                    <h5 class="fw-bold mb-3 text-danger"><i class="fa-solid fa-user-slash me-2"></i> عدد الموظفين دون التارجت في كل فريق (أقل من 17%)</h5>
                                     <div style="position: relative; height: 360px;"><canvas id="underperformingCCChart"></canvas></div>
                                 </div>
                             </div>
@@ -431,7 +387,7 @@
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="card p-4 border" style="border-color: rgba(128,128,128,0.15) !important;">
-                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-bar me-2"></i> مقارنة حجم المبيعات والإغلاقات المحققة بين أفراد الفريق الحالي (CC مقابل TT/GG)</h5>
+                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-bar me-2"></i> مقارنة حجم المبيعات والإغلاقات المحققة بين أفراد الفريق</h5>
                                     <div style="position: relative; height: 380px;"><canvas id="teamPerformanceChart"></canvas></div>
                                 </div>
                             </div>
@@ -440,7 +396,6 @@
                     </div>
                 </div>
 
-                <!-- صفحة أداء موظفي المبيعات -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -453,13 +408,12 @@
                                 </div>
                             </div>
 
-                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                            <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); font-weight: bold;">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
-                            <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="employeePeriodLabel"></div>
 
                             <div class="table-scroll-container">
                                 <table class="table table-bordered table-hover text-center table-sticky-first" id="employeeTable">
@@ -533,12 +487,11 @@
                     </div>
                 </div>
 
-                <!-- صفحة "بيانات الموظفين" -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-users-rectangle me-2"></i> قاعدة بيانات الهيكل الإداري للموظفين والمشرفين</h4>
-                            <span class="badge bg-primary p-2">مستخرجة حياً من ورقة Google Sheets</span>
+                            <span class="badge bg-primary p-2 fw-bold">مستخرجة حياً من ورقة قوقل شيت</span>
                         </div>
                         <p class="text-muted small">توزيع التكوينات الرسمية للخطوط البيعية وقنوات التواصل المحددة مسبقاً لكل مشرف بداخل الشيت السحابي.</p>
                         <div id="employeeDbTablesContainer" class="mt-2">
@@ -547,15 +500,13 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('sourceTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="sourcePeriodLabel"></div>
-                        <div class="table-scroll-container">
+                        <div class="table-scroll-container mt-2">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="sourceTable">
                                 <thead id="sourceTableHeader"></thead>
                                 <tbody id="sourceTableBody"></tbody>
@@ -573,15 +524,13 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('statusTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="statusPeriodLabel"></div>
-                        <div class="table-scroll-container">
+                        <div class="table-scroll-container mt-2">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="statusTable">
                                 <thead id="statusTableHeader"></thead>
                                 <tbody id="statusTableBody"></tbody>
@@ -599,15 +548,13 @@
                     </div>
                 </div>
 
-                <!-- صفحة تحليل نوع الدورة -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                             <h4 class="fw-bold text-success mb-2"><i class="fa-solid fa-graduation-cap me-2"></i> الأداء المفصل والمقارن للدورات التدريبية</h4>
                             <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('courseTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
                         </div>
-                        <div class="mb-3 text-secondary fw-bold small p-2 rounded d-none" style="background-color: var(--bs-tertiary-bg);" id="coursePeriodLabel"></div>
-                        <div class="table-scroll-container">
+                        <div class="table-scroll-container mt-2">
                             <table class="table table-bordered table-hover text-center table-sticky-first" id="courseTable">
                                 <thead id="courseTableHeader"></thead>
                                 <tbody id="courseTableBody"></tbody>
@@ -630,7 +577,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -649,6 +595,11 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
+    // كود مخرجات قراءة وتعميد حقول شيتات المبيعات والليدز لمنع الـ Overwriting
+    let leadsKeys = { date: 'التاريخ_0', employee: 'الموظف_6', status: 'الحالة 1_7', source: 'كود التسويق_11', course: 'نوع الدورة_5', client: 'رقم العميل_2' };
+    let salesKeys = { date: 'التاريخ_15', employee: 'الموظف_9', course: 'نوع الدورة_11', client: 'رقم العميل_5' };
+    let empKeys = { name: 'اسم الموظف_0', oldUser: 'اليوزر القديم_1', newUser: 'اليوزر الجديد_2', category: 'الفئة_3', supervisor: 'المشرف_4' };
+
     let dailyChartInstance = null;
     let employeeChartInstance = null;
     let supervisorTargetChartInstance = null;
@@ -671,47 +622,23 @@
     function standardParseDate(val) {
         if (!val) return '';
         let str = String(val).trim();
-        
         if (str.includes('T')) {
             let d = new Date(str);
             if (!isNaN(d.getTime())) {
-                let y = d.getFullYear();
-                let m = String(d.getMonth() + 1).padStart(2, '0');
-                let day = String(d.getDate()).padStart(2, '0');
-                return `${y}-${m}-${day}`;
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             }
         }
-        
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-        if (isoMatch) {
-            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
-        }
+        if (isoMatch) return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
         
         let regularMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
         if (regularMatch) {
             let p1 = regularMatch[1].padStart(2, '0');
             let p2 = regularMatch[2].padStart(2, '0');
             let year = regularMatch[3];
-            let day = p1;
-            let month = p2;
-            if (parseInt(p2) > 12) {
-                day = p2;
-                month = p1;
-            }
-            return `${year}-${month}-${day}`;
+            return parseInt(p2) > 12 ? `${year}-${p1}-${p2}` : `${year}-${p2}-${p1}`;
         }
-        
-        if (!isNaN(str) && Number(str) > 30000) {
-            let serial = Number(str);
-            let utc_days = Math.floor(serial - 25569);
-            let date = new Date(utc_days * 86400000);
-            let y = date.getUTCFullYear();
-            let m = String(date.getUTCMonth() + 1).padStart(2, '0');
-            let day = String(date.getUTCDate()).padStart(2, '0');
-            return `${y}-${m}-${day}`;
-        }
-        
-        return '';
+        return str;
     }
 
     function getSupervisorForEmp(empName) {
@@ -742,9 +669,7 @@
         
         employeeDatabase.forEach(row => {
             let sup = String(row.supervisor || '').trim();
-            if(superTeamSizes[sup] !== undefined) {
-                superTeamSizes[sup]++;
-            }
+            if(superTeamSizes[sup] !== undefined) superTeamSizes[sup]++;
         });
     }
 
@@ -756,17 +681,14 @@
             ctx.font = 'bold 11px Cairo';
             ctx.textBaseline = 'bottom';
             ctx.textAlign = 'center';
-            const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-            ctx.fillStyle = isDark ? '#ffffff' : '#0f172a'; 
+            ctx.fillStyle = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#ffffff' : '#0f172a'; 
 
             chart.data.datasets.forEach((dataset, i) => {
                 const meta = chart.getDatasetMeta(i);
                 if (!meta.hidden && meta.type === 'bar') {
                     meta.data.forEach((bar, index) => {
                         const value = dataset.data[index];
-                        if (value !== undefined && value !== null && value !== 0) {
-                            ctx.fillText(value, bar.x, bar.y - 4);
-                        }
+                        if (value !== undefined && value !== null && value !== 0) ctx.fillText(value, bar.x, bar.y - 4);
                     });
                 }
             });
@@ -779,35 +701,24 @@
         const currentTheme = html.getAttribute('data-bs-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-bs-theme', newTheme);
-        
         document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun me-2' : 'fa-solid fa-moon me-2';
         document.getElementById('themeText').innerText = newTheme === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي';
-        
         if(rawLeads.length > 0) applyFilters();
     }
 
     function setDefaultDateRange() {
         const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        
-        document.getElementById('startDate').value = `${year}-${month}-01`;
-        document.getElementById('endDate').value = `${year}-${month}-${day}`;
+        document.getElementById('startDate').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
+        document.getElementById('endDate').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
 
     async function fetchGoogleSheetData() {
         const container = document.getElementById('syncStatusContainer');
         const loadingEl = document.getElementById('syncLoadingElement');
         const successEl = document.getElementById('syncSuccessElement');
-        const dateFilterSection = document.getElementById('dateFilterSection');
-        const stickyStatsContainer = document.getElementById('stickyStatsContainer');
-        const homeChartSection = document.getElementById('homeChartSection');
-
+        
         if(loadingEl) loadingEl.classList.remove('d-none');
         if(successEl) successEl.classList.add('d-none');
-        
-        // إعادة تهيئة المظهر عند إعادة الاتصال
         container.style.background = "linear-gradient(135deg, #1e3a8a, #2563eb)";
 
         try {
@@ -815,23 +726,56 @@
             if (!response.ok) throw new Error("استجابة الخادم غير صالحة (HTTP " + response.status + ")");
             const resData = await response.json();
 
-            let leadsSheet = resData['طلبات مران'] || resData['leads'] || [];
-            let salesSheet = resData['إتمام بيع'] || resData['sales'] || [];
-            let employeesSheet = resData['بيانات الموظفين'] || resData['employees'] || [];
+            let leadsSheet = resData['طلبات مران'] || [];
+            let salesSheet = resData['إتمام بيع'] || [];
+            let employeesSheet = resData['بيانات الموظفين'] || [];
 
-            rawLeads = cleanSheetData(leadsSheet);
-            rawSales = cleanSheetData(salesSheet);
+            // كشف ديناميكي ذكي ومقاوم للأخطاء لمفاتيح الحقول منعاً لأي تغيير في أعمدة الشيت مستقبلاً
+            if (leadsSheet.length > 0) {
+                let first = leadsSheet[0];
+                for(let k in first) {
+                    if(k.startsWith("التاريخ_0")) leadsKeys.date = k;
+                    if(k.startsWith("الموظف_")) leadsKeys.employee = k;
+                    if(k.startsWith("الحالة 1_")) leadsKeys.status = k;
+                    if(k.startsWith("كود التسويق_")) leadsKeys.source = k;
+                    if(k.startsWith("نوع الدورة_")) leadsKeys.course = k;
+                    if(k.startsWith("رقم العميل_")) leadsKeys.client = k;
+                }
+            }
+            if (salesSheet.length > 0) {
+                let first = salesSheet[0];
+                for(let k in first) {
+                    if(k.startsWith("التاريخ_15")) salesKeys.date = k;
+                    if(k.startsWith("الموظف_")) salesKeys.employee = k;
+                    if(k.startsWith("نوع الدورة_")) salesKeys.course = k;
+                    if(k.startsWith("رقم العميل_")) salesKeys.client = k;
+                }
+            }
+            if (employeesSheet.length > 0) {
+                let first = employeesSheet[0];
+                for(let k in first) {
+                    if(k.startsWith("اسم الموظف_") || k.startsWith("اسم_الموظف_")) empKeys.name = k;
+                    if(k.startsWith("اليوزر القديم_") || k.startsWith("اليوزر_القديم_")) empKeys.oldUser = k;
+                    if(k.startsWith("اليوزر الجديد_") || k.startsWith("اليوزر_الجديد_")) empKeys.newUser = k;
+                    if(k.startsWith("الفئة_")) empKeys.category = k;
+                    if(k.startsWith("المشرف_")) empKeys.supervisor = k;
+                }
+            }
 
-            if (employeesSheet && employeesSheet.length > 0) {
+            // تصفية التواريخ وتوحيدها
+            rawLeads = leadsSheet.map(row => { row['التاريخ_الموحد'] = standardParseDate(row[leadsKeys.date]); return row; });
+            rawSales = salesSheet.map(row => { row['التاريخ_الموحد'] = standardParseDate(row[salesKeys.date]); return row; });
+
+            if (employeesSheet.length > 0) {
                 employeeDatabase = employeesSheet.map(row => {
                     return {
-                        name: String(row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
-                        oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || '').trim(),
-                        newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '').trim(),
-                        category: String(row['الفئة'] || '').trim(),
-                        supervisor: String(row['المشرف'] || '').trim()
+                        name: String(row[empKeys.name] || '').trim(),
+                        oldUser: String(row[empKeys.oldUser] || '').trim(),
+                        newUser: String(row[empKeys.newUser] || '').trim(),
+                        category: String(row[empKeys.category] || '').trim(),
+                        supervisor: String(row[empKeys.supervisor] || '').trim()
                     };
-                }).filter(emp => emp.name || emp.oldUser || emp.newUser);
+                }).filter(emp => emp.name);
             }
 
             updateSupervisorMapsFromDatabase();
@@ -840,32 +784,27 @@
             clientToEmployeeMap = {}; 
             
             rawLeads.forEach(lead => {
-                let clientNum = String(lead['رقم العميل'] || '').trim();
-                let courseName = normalizeCourseName(lead['نوع الدورة']);
-                let sourceCode = String(lead['كود التسويق'] || 'غير حدد').trim();
-                let employeeName = String(lead['الموظف'] || 'غير حدد').trim();
+                let clientNum = String(lead[leadsKeys.client] || '').trim();
+                let courseName = normalizeCourseName(lead[leadsKeys.course]);
+                let sourceCode = String(lead[leadsKeys.source] || 'غير محدد').trim();
+                let employeeName = String(lead[leadsKeys.employee] || 'غير حدد').trim();
                 
                 if(clientNum) {
-                    let key = clientNum + "_" + courseName;
-                    clientCourseToSourceMap[key] = sourceCode;
+                    clientCourseToSourceMap[clientNum + "_" + courseName] = sourceCode;
                     if(!clientCourseToSourceMap[clientNum]) clientCourseToSourceMap[clientNum] = sourceCode;
-                    if(employeeName && employeeName !== 'غير حدد' && employeeName !== '') {
-                        clientToEmployeeMap[clientNum] = employeeName;
-                    }
+                    if(employeeName && employeeName !== 'غير حدد') clientToEmployeeMap[clientNum] = employeeName;
                 }
             });
 
-            if(dateFilterSection) dateFilterSection.classList.remove('d-none');
-            if(stickyStatsContainer) stickyStatsContainer.classList.remove('d-none');
-            if(homeChartSection) homeChartSection.classList.remove('d-none');
+            document.getElementById('dateFilterSection').classList.remove('d-none');
+            document.getElementById('stickyStatsContainer').classList.remove('d-none');
+            document.getElementById('homeChartSection').classList.remove('d-none');
 
             if(loadingEl) loadingEl.classList.add('d-none');
             if(successEl) successEl.classList.remove('d-none');
             container.style.background = "linear-gradient(135deg, #10b981, #059669)";
             
-            const now = new Date();
-            document.getElementById('lastUpdateTime').innerText = now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
-
+            document.getElementById('lastUpdateTime').innerText = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
             applyFilters();
             renderEmployeeDatabasePane();
 
@@ -877,28 +816,12 @@
                 <div class="p-2">
                     <i class="fa-solid fa-triangle-exclamation fa-2x mb-2"></i>
                     <h5 class="fw-bold">فشل المزامنة التلقائية مع قوقل شيت 🛑</h5>
-                    <p class="small mb-1 opacity-90">السبب البرمجي المرصود: <code class="bg-white text-danger px-2 py-0.5 rounded font-monospace">${error.message}</code></p>
-                    <p class="small mb-2 opacity-75">يرجى مراجعة نافذة (New Deployment) بداخل Apps Script والتأكد من فتح الصلاحية لـ (Anyone).</p>
-                    <button class="btn btn-light btn-sm fw-bold px-3 shadow-sm" onclick="fetchGoogleSheetData()">إعادة محاولة الاتصال الفوري</button>
+                    <p class="small mb-1 opacity-90">رمز الخطأ: <code class="bg-white text-danger px-2 py-0.5 rounded font-monospace">${error.message}</code></p>
+                    <p class="small mb-2 opacity-75">تأكد من نشر نسخة جديدة (New Version) في قوقل شيت وتعميد صلاحية الوصول لـ (Anyone).</p>
+                    <button class="btn btn-light btn-sm fw-bold px-3 shadow-sm" onclick="fetchGoogleSheetData()">إعادة المحاولة</button>
                 </div>
             `;
         }
-    }
-
-    function cleanSheetData(data) {
-        if(!Array.isArray(data)) return [];
-        return data.map(row => {
-            let cleaned = {};
-            for (let key in row) {
-                let cleanedKey = String(key).trim().replace(/[\u200B-\u200D\uFEFF]/g, "");
-                let val = row[key];
-                if (cleanedKey === 'التاريخ') {
-                    val = standardParseDate(val);
-                }
-                cleaned[cleanedKey] = val;
-            }
-            return cleaned;
-        });
     }
 
     function filterEmployees(type) {
@@ -922,7 +845,6 @@
         let s = String(name).toLowerCase().trim();
         let studyType = ' - عن بعد'; 
         if (s.includes('حضوري') || s.includes('onsite')) studyType = ' - حضوري';
-
         if (s.includes('بكج إدارة المشاريع') || s.includes('11-بكج')) return 'بكج إدارة المشاريع والأعمال' + studyType;
         if (s.includes('بكج البيانات')) return 'بكج البيانات (Power BI + Excel)' + studyType;
         if (s.includes('التأسيسي')) return 'بكج الإدارة التأسيسي' + studyType;
@@ -930,7 +852,6 @@
         if (s.includes('excel') || s.includes('إكسل') || s.includes('اكسل')) return 'دورة مهارات مايكروسوفت إكسيل (Excel)' + studyType;
         if (s.includes('kpi') || s.includes('مؤشرات')) return 'دورة مؤشرات قياس الأداء الرئيسية (KPIs)' + studyType;
         if (s.includes('power-bi') || s.includes('power bi') || s.includes('تحليل البيانات')) return 'دورة تحليل البيانات (Power-BI)' + studyType;
-        
         return name.trim();
     }
 
@@ -960,8 +881,8 @@
         hideSupervisorTeamDetails();
         hideEmployeeDetails();
 
-        const filteredLeads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
-        const filteredSales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const filteredLeads = rawLeads.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
+        const filteredSales = rawSales.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
 
         document.getElementById('totalLeadsCount').innerText = filteredLeads.length;
         document.getElementById('totalSalesCount').innerText = filteredSales.length;
@@ -971,8 +892,8 @@
         totalConvEl.innerHTML = totalConvRate + "%";
         totalConvEl.style.color = parseFloat(totalConvRate) >= 16.5 ? "#10b981" : "#ef4444";
 
-        const noStoreLeads = filteredLeads.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
-        const noStoreSales = filteredSales.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
+        const noStoreLeads = filteredLeads.filter(item => { let emp = normalizeEmpCode(item[leadsKeys.employee]); return emp !== 'CC01' && emp !== 'CC02'; });
+        const noStoreSales = filteredSales.filter(item => { let emp = normalizeEmpCode(item[salesKeys.employee]); return emp !== 'CC01' && emp !== 'CC02'; });
 
         document.getElementById('cleanLeadsCount').innerText = noStoreLeads.length;
         document.getElementById('cleanSalesCount').innerText = noStoreSales.length;
@@ -983,14 +904,7 @@
         cleanConvEl.style.color = parseFloat(cleanConvRate) >= 16.5 ? "#10b981" : "#ef4444";
 
         let sortedDates = getDatesInRange(startDate, endDate);
-
-        const periodText = `<i class="fa-solid fa-calendar-days me-1"></i> الإحصائيات المعروضة حالياً للفترة من تاريخ: <b>${startDate}</b> إلى تاريخ اليوم: <b>${endDate}</b>`;
-        document.getElementById('homePeriodLabel').innerHTML = periodText;
-        
-        if(document.getElementById('sourcePeriodLabel')) document.getElementById('sourcePeriodLabel').innerHTML = periodText;
-        if(document.getElementById('statusPeriodLabel')) document.getElementById('statusPeriodLabel').innerHTML = periodText;
-        if(document.getElementById('coursePeriodLabel')) document.getElementById('coursePeriodLabel').innerHTML = periodText;
-        if(document.getElementById('employeePeriodLabel')) document.getElementById('employeePeriodLabel').innerHTML = periodText;
+        document.getElementById('homePeriodLabel').innerHTML = `<i class="fa-solid fa-calendar-days me-1"></i> إحصائيات الأداء للفترة من: <b>${startDate}</b> إلى: <b>${endDate}</b>`;
 
         renderDailyPerformanceChart(filteredLeads, filteredSales, sortedDates);
         renderEmployeeSalesChart(filteredLeads, filteredSales);
@@ -1006,14 +920,9 @@
         const container = document.getElementById('employeeDbTablesContainer');
         if(!container) return;
 
-        if(!employeeDatabase || employeeDatabase.length === 0) {
-            container.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
-            return;
-        }
-
         let groupedBySuper = {};
         employeeDatabase.forEach(emp => {
-            let supervisor = emp.supervisor || 'غير حدد';
+            let supervisor = emp.supervisor || 'غير محدد بمشرف';
             if(!groupedBySuper[supervisor]) groupedBySuper[supervisor] = [];
             groupedBySuper[supervisor].push(emp);
         });
@@ -1026,37 +935,31 @@
                 <div class="card p-3 mb-4 border shadow-sm" style="border-color: rgba(128,128,128,0.15) !important;">
                     <h5 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2">
                         <i class="fa-solid fa-user-tie text-secondary"></i>
-                        طاقم موظفي المشرف المسؤول: <span class="text-success">${superName}</span>
-                        <span class="badge bg-secondary fs-6 ms-auto">${groupedBySuper[superName].length} موظفين</span>
+                        طاقم موظفي المشرف: <span class="text-success">${superName}</span>
+                        <span class="badge bg-secondary fs-6 ms-auto">${groupedBySuper[superName].length} موظف</span>
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle m-0">
                             <thead class="${isDark ? 'table-dark' : 'table-light'}">
                                 <tr>
                                     <th style="background-color: #2563eb !important; color: white !important;">اسم الموظف البيعي</th>
-                                    <th>الكود القديم بالمنظومة (مران)</th>
-                                    <th>الكود الجديد بالمنظومة (استهداف)</th>
-                                    <th>الفئة الوظيفية المسجلة</th>
+                                    <th>الكود القديم (مران)</th>
+                                    <th>الكود الجديد (استهداف)</th>
+                                    <th>الفئة المسجلة</th>
                                 </tr>
                             </thead>
                             <tbody>
             `;
-
             groupedBySuper[superName].forEach(emp => {
                 outputHtml += `
                     <tr>
                         <td class="fw-bold text-start ps-3">${emp.name}</td>
                         <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
                         <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
-                        <td>
-                            <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
-                                ${emp.category || 'غير حدد'}
-                            </span>
-                        </td>
+                        <td><span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">${emp.category || 'غير محدد'}</span></td>
                     </tr>
                 `;
             });
-
             outputHtml += `</tbody></table></div></div>`;
         }
         container.innerHTML = outputHtml;
@@ -1064,8 +967,8 @@
 
     function renderHomeTargetCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l[leadsKeys.employee] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s[salesKeys.employee] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let unionEmps = Array.from(new Set([...Object.keys(empLeads), ...Object.keys(empSales)]));
         let ccData = [];
@@ -1117,8 +1020,8 @@
 
     function renderSupervisorCharts(leads, sales) {
         let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l[leadsKeys.employee] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s[salesKeys.employee] || '').trim(); if(!emp || emp === 'غير محدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
 
         let tableHtml = `
         <div class="table-responsive">
@@ -1210,8 +1113,8 @@
     function showSupervisorTeamDetails(supName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
-        const leads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
-        const sales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const leads = rawLeads.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
+        const sales = rawSales.filter(item => item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate);
 
         document.getElementById('supervisorMainView').classList.add('d-none');
         document.getElementById('supervisorDetailView').classList.remove('d-none');
@@ -1221,8 +1124,8 @@
         let stats = {};
         teamEmps.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
 
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
+        leads.forEach(l => { let code = normalizeEmpCode(l[leadsKeys.employee]); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
+        sales.forEach(s => { let code = normalizeEmpCode(s[salesKeys.employee]); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
 
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
@@ -1288,8 +1191,8 @@
     function renderDailyPerformanceChart(leads, sales, sortedDates) {
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
-        leads.forEach(l => { if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; });
-        sales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
+        leads.forEach(l => { if(dailyLeadsMap[l['التاريخ_الموحد']] !== undefined) dailyLeadsMap[l['التاريخ_الموحد']]++; });
+        sales.forEach(s => { if(dailySalesMap[s['التاريخ_الموحد']] !== undefined) dailySalesMap[s['التاريخ_الموحد']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
@@ -1306,8 +1209,8 @@
 
     function renderEmployeeSalesChart(leads, sales) {
         let employeeLeadsMap = {}; let employeeSalesMap = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeLeadsMap[emp] = (employeeLeadsMap[emp] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeSalesMap[emp] = (employeeSalesMap[emp] || 0) + 1; });
+        leads.forEach(l => { let emp = String(l[leadsKeys.employee] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeLeadsMap[emp] = (employeeLeadsMap[emp] || 0) + 1; });
+        sales.forEach(s => { let emp = String(s[salesKeys.employee] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeSalesMap[emp] = (employeeSalesMap[emp] || 0) + 1; });
 
         let unionEmps = new Set([...Object.keys(employeeLeadsMap), ...Object.keys(employeeSalesMap)]);
         let empSortedArray = Array.from(unionEmps).map(name => { return { name: name, leadsCount: employeeLeadsMap[name] || 0, salesCount: employeeSalesMap[name] || 0 }; });
@@ -1333,13 +1236,13 @@
 
     function renderSourceMatrix(filteredLeads, filteredSales, sortedDates) {
         let matrix = {};
-        filteredLeads.forEach(l => { let src = String(l['كود التسويق'] || 'غير حدد').trim(); if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalLeads++; });
-        filteredSales.forEach(s => { let clientNum = String(s['رقم العميل'] || '').trim(); let courseName = normalizeCourseName(s['نوع الدورة']); let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير حدد'; if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalSales++; });
+        filteredLeads.forEach(l => { let src = String(l[leadsKeys.source] || 'غير حدد').trim(); if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalLeads++; });
+        filteredSales.forEach(s => { let clientNum = String(s[salesKeys.client] || '').trim(); let courseName = normalizeCourseName(s[salesKeys.course]); let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير حدد'; if (!matrix[src]) matrix[src] = { totalLeads: 0, totalSales: 0 }; matrix[src].totalSales++; });
 
         let rowsArray = Object.keys(matrix).filter(src => src !== 'غير حدد' && src !== 'null' && src !== '').map(src => { let totalLeads = matrix[src].totalLeads; let totalSales = matrix[src].totalSales; return { src, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
 
-        document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
+        document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة للفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
         document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -1357,7 +1260,7 @@
 
     function renderStatusMatrix(leads, sortedDates) {
         let matrix = {}; let totalGlobalLeads = leads.length;
-        leads.forEach(l => { let status = String(l['الحالة 1'] || 'غيرحدد').trim(); if (!matrix[status]) matrix[status] = { total: 0 }; matrix[status].total++; });
+        leads.forEach(l => { let status = String(l[leadsKeys.status] || 'غيرحدد').trim(); if (!matrix[status]) matrix[status] = { total: 0 }; matrix[status].total++; });
 
         let rowsArray = Object.keys(matrix).filter(status => status !== 'غيرحدد' && status !== 'null' && status !== '').map(status => { let total = matrix[status].total; return { status, total, pct: totalGlobalLeads > 0 ? parseFloat(((total / totalGlobalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.pct - a.pct);
@@ -1380,8 +1283,8 @@
 
     function renderCourseMatrix(leads, sales, sortedDates) {
         let matrix = {};
-        leads.forEach(l => { let course = normalizeCourseName(l['نوع الدورة']); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalLeads++; });
-        sales.forEach(s => { let course = normalizeCourseName(s['نوع الدورة']); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalSales++; });
+        leads.forEach(l => { let course = normalizeCourseName(l[leadsKeys.course]); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalLeads++; });
+        sales.forEach(s => { let course = normalizeCourseName(s[salesKeys.course]); if (!matrix[course]) matrix[course] = { totalLeads: 0, totalSales: 0 }; matrix[course].totalSales++; });
 
         let rowsArray = Object.keys(matrix).filter(course => course !== 'أخرى / غير محدد' && course !== 'null' && course !== '').map(course => { let totalLeads = matrix[course].totalLeads; let totalSales = matrix[course].totalSales; return { course, totalLeads, totalSales, conv: totalLeads > 0 ? parseFloat(((totalSales / totalLeads) * 100).toFixed(1)) : 0 }; });
         rowsArray.sort((a, b) => b.conv - a.conv);
@@ -1406,11 +1309,10 @@
         let stats = {};
         employeeDatabase.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, supervisor: emp.supervisor || 'بدون مشرف', oldUser: emp.oldUser || '', newUser: emp.newUser || '', oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
 
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj && empObj.oldCode === code) empObj.ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj) { if(empObj.oldCode === code) empObj.ccSales++; else if(empObj.newCode === code) empObj.ttSales++; } });
+        leads.forEach(l => { let code = normalizeEmpCode(l[leadsKeys.employee]); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj && empObj.oldCode === code) empObj.ccLeads++; });
+        sales.forEach(s => { let code = normalizeEmpCode(s[salesKeys.employee]); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj) { if(empObj.oldCode === code) empObj.ccSales++; else if(empObj.newCode === code) empObj.ttSales++; } });
 
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
-
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.oldUser && item.oldUser.toUpperCase().startsWith('CC'));
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.newUser && (item.newUser.toUpperCase().startsWith('TT') || item.newUser.toUpperCase().startsWith('GG')));
 
@@ -1473,8 +1375,8 @@
         let oldCode = empObj ? normalizeEmpCode(empObj.oldUser) : normalizeEmpCode(empName);
         let newCode = empObj ? normalizeEmpCode(empObj.newUser) : normalizeEmpCode(empName);
 
-        const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
-        const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
+        const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item[leadsKeys.employee]); return item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate && (c === oldCode || c === newCode); });
+        const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item[salesKeys.employee]); return item['التاريخ_الموحد'] && item['التاريخ_الموحد'] >= startDate && item['التاريخ_الموحد'] <= endDate && (c === oldCode || c === newCode); });
 
         let totalLeads = empLeads.length; let totalSales = empSales.length;
         let convRate = totalLeads > 0 ? ((totalSales / totalLeads) * 100).toFixed(1) : 0;
@@ -1502,7 +1404,7 @@
             document.getElementById('empDetailConversion').style.color = "#0dcaf0";
         }
 
-        let statuses = {}; empLeads.forEach(l => { let s = String(l['الحالة 1'] || 'غيرحدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
+        let statuses = {}; empLeads.forEach(l => { let s = String(l[leadsKeys.status] || 'غيرحدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
         let sortedStatuses = Object.keys(statuses).map(s => { return { status: s, count: statuses[s], pct: totalLeads > 0 ? parseFloat(((statuses[s] / totalLeads) * 100).toFixed(1)) : 0 }; }).sort((a, b) => b.count - a.count);
 
         if (sortedStatuses.length === 0) {
@@ -1514,8 +1416,8 @@
         let sortedDates = getDatesInRange(startDate, endDate);
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
-        empLeads.forEach(l => { if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; });
-        empSales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
+        empLeads.forEach(l => { if(dailyLeadsMap[l['التاريخ_الموحد']] !== undefined) dailyLeadsMap[l['التاريخ_الموحد']]++; });
+        empSales.forEach(s => { if(dailySalesMap[s['التاريخ_الموحد']] !== undefined) dailySalesMap[s['التاريخ_الموحد']]++; });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#ffffff' : '#1e293b';
