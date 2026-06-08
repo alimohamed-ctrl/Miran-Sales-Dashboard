@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
-    <link class="rtl" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -500,7 +500,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5 mb-4">
-                                    <div class="chart-card p-4 border h-100">
+                                    <div class="card p-4 border h-100">
                                         <h5 class="fw-bold mb-3 text-warning"><i class="fa-solid fa-tags me-2"></i> التوزيع السلوكي لحالات الليدز للموظف الحالي</h5>
                                         <div class="table-responsive" style="max-height: 350px;">
                                             <table class="table table-bordered table-sm m-0 text-center align-middle">
@@ -519,7 +519,6 @@
                     </div>
                 </div>
 
-                <!-- تم تحديث صفحة بيانات الموظفين بالكامل لدعم فلتر المشرفين التفاعلي والجدول الموحد الشامل القابل للفرز -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -527,7 +526,6 @@
                             <span class="badge bg-primary p-2">مستخرجة حياً من ورقة Google Sheets</span>
                         </div>
                         
-                        <!-- حاوية أزرار فلترة المشرفين السحابية المضافة حديثاً -->
                         <div id="dbSupervisorFilterContainer" class="p-3 mb-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);"></div>
                         
                         <div id="employeeDbTablesContainer" class="mt-2">
@@ -631,11 +629,9 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
-    // متغيرات الفرز النشط لجدول صفحة أداء موظفي المبيعات
     let empSortField = 'sales'; 
     let empSortAsc = false;
 
-    // متغيرات الفلترة والفرز التفاعلية المضافة حديثاً لصفحة قاعدة بيانات الموظفين
     let dbSupervisorFilter = 'all';
     let dbSortField = 'name';
     let dbSortAsc = true;
@@ -673,6 +669,7 @@
             }
         }
         
+        // تصحيح الخطأ البرمي البرمجي الذي كان يتسبب في كراش معالجة التواريخ والبيانات
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
             return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
@@ -973,18 +970,16 @@
         renderEmployeeMatrix(filteredLeads, filteredSales, sortedDates);
     }
 
-    /* تحديث كلي لصفحة قاعدة بيانات الهيكل الإداري لبناء جدول واحد موحد وفلترة أفقية للمشرفين قابلة للفرز */[cite: 1]
     function renderEmployeeDatabasePane() {
+        const container = document.getElementById('employeeDbTablesContainer');
         const filterContainer = document.getElementById('dbSupervisorFilterContainer');
-        const tableContainer = document.getElementById('employeeDbTablesContainer');
-        if(!tableContainer) return;
+        if(!container) return;
 
         if(!employeeDatabase || employeeDatabase.length === 0) {
-            tableContainer.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
+            container.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
             return;
         }
 
-        // 1. معالجة وتوليد أزرار التصفية الفورية بأسماء المشرفين المسؤولين
         if (filterContainer) {
             let uniqueSupSet = new Set();
             employeeDatabase.forEach(emp => {
@@ -1001,27 +996,22 @@
             filterContainer.innerHTML = filterHtml;
         }
 
-        // 2. تصفية كتل المصفوفة بناء على الاختيار الفعال
         let displayData = [...employeeDatabase];
         if (dbSupervisorFilter !== 'all') {
             displayData = displayData.filter(emp => emp.supervisor === dbSupervisorFilter);
         }
 
-        // 3. فرز البيانات أبجدياً طبقاً للمؤشر المختار وحالة السورت الحالية
         displayData.sort((a, b) => {
             let valA = String(a[dbSortField] || '').trim();
             let valB = String(b[dbSortField] || '').trim();
             return dbSortAsc ? valA.localeCompare(valB, 'ar') : valB.localeCompare(valA, 'ar');
         });
 
-        // دالة توليد أيقونات اتجاه الفرز المتزامنة هندسياً مع رأس الهيدر
         function getDbSortIcon(field) {
             if (dbSortField !== field) return ' <i class="fa-solid fa-sort text-white-50 small ms-1"></i>';
             return dbSortAsc ? ' <i class="fa-solid fa-sort-up text-white ms-1"></i>' : ' <i class="fa-solid fa-sort-down text-white ms-1"></i>';
         }
 
-        // 4. بناء هيكل الجدول الشامل الموحد
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         let tableHtml = `
             <div class="table-responsive">
                 <table class="table table-bordered table-hover text-center align-middle m-0">
@@ -1054,10 +1044,9 @@
         });
 
         tableHtml += `</tbody></table></div>`;
-        tableContainer.innerHTML = tableHtml;
+        container.innerHTML = tableHtml;
     }
 
-    // دوال التحكم السريع والتحديث اللحظي لجدول هيكل الموظفين
     function filterDbBySupervisor(sup) {
         dbSupervisorFilter = sup;
         renderEmployeeDatabasePane();
@@ -1136,7 +1125,7 @@
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إتمامات</th>
+                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إستهداف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1437,6 +1426,8 @@
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
+        rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
+
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
@@ -1536,7 +1527,6 @@
         applyFilters();
     }
 
-    /* إصلاح دالة تفرعات الموظف لقراءة الفئة الوظيفية من العمود D بشكل مصمت وصارم لمنع تضارب الأرقام */[cite: 1]
     function showEmployeeDetails(empName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
@@ -1552,8 +1542,6 @@
         let convRate = totalLeads > 0 ? ((totalSales / totalLeads) * 100).toFixed(1) : 0;
 
         document.getElementById('employeeDetailTitle').innerHTML = `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`;
-        
-        // التحديث الجوهري لحل المشكلة المعروضة بـ image_c16aac.png: الفحص المباشر لقيمة عمود الفئة[cite: 1]
         let isTtGg = empObj && empObj.category === 'استهداف';
 
         if (isTtGg) {
