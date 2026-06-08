@@ -123,9 +123,14 @@
             margin: 0 !important;
         }
         
-        .table-bordered thead th {
+        /* نقل خاصية التثبيت لـ thead بالكامل لحل مشكلة التداخل الموضحة في صورة الاستفسار */
+        .table thead {
             position: sticky;
             top: 0;
+            z-index: 7;
+        }
+        
+        .table-bordered thead th {
             background-color: #1e3a8a !important; 
             color: #ffffff !important;
             font-weight: 700;
@@ -133,7 +138,6 @@
             vertical-align: middle;
             text-align: center;
             padding: 14px 10px;
-            z-index: 6;
         }
         [data-bs-theme="dark"] .table-bordered thead th {
             background-color: #1e293b !important;
@@ -157,7 +161,7 @@
         .table-sticky-first th:first-child {
             position: sticky;
             right: 0;
-            z-index: 8;
+            z-index: 9; /* رفع الـ z-index ليبقى أعلى من الهيدر المثبت الشامل */
             background-color: #1e3a8a !important;
             color: #ffffff !important;
             box-shadow: inset -3px 0 0 rgba(255,255,255,0.15);
@@ -447,6 +451,8 @@
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
                             </div>
 
+                            <div id="empSupervisorFilterContainer" class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);"></div>
+
                             <div class="table-scroll-container">
                                 <table class="table table-bordered table-hover text-center table-sticky-first" id="employeeTable">
                                     <thead id="employeeTableHeader"></thead>
@@ -635,6 +641,9 @@
     let dbSupervisorFilter = 'all';
     let dbSortField = 'name';
     let dbSortAsc = true;
+
+    // حالة الفلتر الجديد الخاص بالمشرفين في صفحة أداء موظفي المبيعات
+    let empSupervisorFilter = 'all';
     
     let dailyChartInstance = null;
     let employeeChartInstance = null;
@@ -669,7 +678,6 @@
             }
         }
         
-        // تصحيح الخطأ البرمي البرمجي الذي كان يتسبب في كراش معالجة التواريخ والبيانات
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
             return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
@@ -1415,6 +1423,9 @@
     }
 
     function renderEmployeeMatrix(leads, sales, sortedDates) {
+        // بناء وحقن الفلتر التفاعلي الجديد للمشرفين بداخل لوحة الأداء
+        renderEmpSupervisorFilters();
+
         let stats = {};
         employeeDatabase.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, supervisor: emp.supervisor || 'بدون مشرف', oldUser: emp.oldUser || '', newUser: emp.newUser || '', oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
 
@@ -1426,7 +1437,10 @@
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
-        rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
+        // تطبيق الفلتر الجديد الخاص بالمشرف المختار
+        if (empSupervisorFilter !== 'all') {
+            rowsArray = rowsArray.filter(item => item.supervisor === empSupervisorFilter);
+        }
 
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
@@ -1515,6 +1529,27 @@
             data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
+    }
+
+    // دالة بناء وبث أزرار تصفية المشرفين بداخل صفحة أداء الموظفين
+    function renderEmpSupervisorFilters() {
+        const container = document.getElementById('empSupervisorFilterContainer');
+        if (!container) return;
+        
+        let filterHtml = `<span class="fw-bold text-secondary me-2"><i class="fa-solid fa-user-tie me-1"></i> تصفية حسب المشرف:</span>`;
+        filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === 'all' ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('all')">كل المشرفين</button>`;
+        
+        supervisorsList.forEach(sup => {
+            if (sup && sup !== 'بدون مشرف' && sup !== 'null') {
+                filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === sup ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('${sup}')">${sup}</button>`;
+            }
+        });
+        container.innerHTML = filterHtml;
+    }
+
+    function filterEmployeesBySuper(sup) {
+        empSupervisorFilter = sup;
+        applyFilters();
     }
 
     function setEmpSort(field) {
@@ -1624,6 +1659,13 @@
         setDefaultDateRange(); 
         updateSupervisorMapsFromDatabase();
         fetchGoogleSheetData();
+
+        // تفعيل الإجبار التلقائي لعملية السكرول لأعلى الصفحة عند التنقل بين تبويبات لوحة التحكم
+        document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tabEl => {
+            tabEl.addEventListener('shown.bs.tab', () => {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            });
+        });
     });
 </script>
 
