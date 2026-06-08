@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link class="rtl" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -343,7 +343,6 @@
                     </div>
 
                     <div id="homeChartSection" class="row d-none">
-                        
                         <div class="col-12 mb-4">
                             <div class="chart-card p-4">
                                 <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar text-primary me-2"></i> مقارنة حجم التفاعل اليومي الإجمالي (الليدز مقابل الاتمامات)</h5>
@@ -501,7 +500,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5 mb-4">
-                                    <div class="card p-4 border h-100">
+                                    <div class="chart-card p-4 border h-100">
                                         <h5 class="fw-bold mb-3 text-warning"><i class="fa-solid fa-tags me-2"></i> التوزيع السلوكي لحالات الليدز للموظف الحالي</h5>
                                         <div class="table-responsive" style="max-height: 350px;">
                                             <table class="table table-bordered table-sm m-0 text-center align-middle">
@@ -520,13 +519,17 @@
                     </div>
                 </div>
 
+                <!-- تم تحديث صفحة بيانات الموظفين بالكامل لدعم فلتر المشرفين التفاعلي والجدول الموحد الشامل القابل للفرز -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-users-rectangle me-2"></i> قاعدة بيانات الهيكل الإداري للموظفين والمشرفين</h4>
                             <span class="badge bg-primary p-2">مستخرجة حياً من ورقة Google Sheets</span>
                         </div>
-                        <p class="text-muted small">توزيع التكوينات الرسمية للخطوط البيعية وقنوات التواصل المحددة مسبقاً لكل مشرف بداخل الشيت السحابي.</p>
+                        
+                        <!-- حاوية أزرار فلترة المشرفين السحابية المضافة حديثاً -->
+                        <div id="dbSupervisorFilterContainer" class="p-3 mb-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);"></div>
+                        
                         <div id="employeeDbTablesContainer" class="mt-2">
                             <div class="text-center p-4 text-muted"><div class="spinner-border spinner-border-sm me-2"></div>جاري معالجة الجداول السحابية للموظفين...</div>
                         </div>
@@ -628,8 +631,14 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
+    // متغيرات الفرز النشط لجدول صفحة أداء موظفي المبيعات
     let empSortField = 'sales'; 
     let empSortAsc = false;
+
+    // متغيرات الفلترة والفرز التفاعلية المضافة حديثاً لصفحة قاعدة بيانات الموظفين
+    let dbSupervisorFilter = 'all';
+    let dbSortField = 'name';
+    let dbSortAsc = true;
     
     let dailyChartInstance = null;
     let employeeChartInstance = null;
@@ -964,64 +973,104 @@
         renderEmployeeMatrix(filteredLeads, filteredSales, sortedDates);
     }
 
+    /* تحديث كلي لصفحة قاعدة بيانات الهيكل الإداري لبناء جدول واحد موحد وفلترة أفقية للمشرفين قابلة للفرز */[cite: 1]
     function renderEmployeeDatabasePane() {
-        const container = document.getElementById('employeeDbTablesContainer');
-        if(!container) return;
+        const filterContainer = document.getElementById('dbSupervisorFilterContainer');
+        const tableContainer = document.getElementById('employeeDbTablesContainer');
+        if(!tableContainer) return;
 
         if(!employeeDatabase || employeeDatabase.length === 0) {
-            container.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
+            tableContainer.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
             return;
         }
 
-        let groupedBySuper = {};
-        employeeDatabase.forEach(emp => {
-            let supervisor = emp.supervisor || 'غير حدد';
-            if(!groupedBySuper[supervisor]) groupedBySuper[supervisor] = [];
-            groupedBySuper[supervisor].push(emp);
+        // 1. معالجة وتوليد أزرار التصفية الفورية بأسماء المشرفين المسؤولين
+        if (filterContainer) {
+            let uniqueSupSet = new Set();
+            employeeDatabase.forEach(emp => {
+                if (emp.supervisor) uniqueSupSet.add(emp.supervisor);
+            });
+            let uniqueSups = Array.from(uniqueSupSet).filter(s => s && s !== 'بدون مشرف' && s !== 'null');
+            
+            let filterHtml = `<span class="fw-bold text-secondary me-2"><i class="fa-solid fa-user-tie me-1"></i> تصفية حسب المشرف:</span>`;
+            filterHtml += `<button class="btn btn-info btn-sm fw-bold px-3 ${dbSupervisorFilter === 'all' ? 'active' : ''}" onclick="filterDbBySupervisor('all')">كل المشرفين</button>`;
+            
+            uniqueSups.forEach(sup => {
+                filterHtml += `<button class="btn btn-outline-info btn-sm fw-bold px-3 ${dbSupervisorFilter === sup ? 'active' : ''}" onclick="filterDbBySupervisor('${sup}')">${sup}</button>`;
+            });
+            filterContainer.innerHTML = filterHtml;
+        }
+
+        // 2. تصفية كتل المصفوفة بناء على الاختيار الفعال
+        let displayData = [...employeeDatabase];
+        if (dbSupervisorFilter !== 'all') {
+            displayData = displayData.filter(emp => emp.supervisor === dbSupervisorFilter);
+        }
+
+        // 3. فرز البيانات أبجدياً طبقاً للمؤشر المختار وحالة السورت الحالية
+        displayData.sort((a, b) => {
+            let valA = String(a[dbSortField] || '').trim();
+            let valB = String(b[dbSortField] || '').trim();
+            return dbSortAsc ? valA.localeCompare(valB, 'ar') : valB.localeCompare(valA, 'ar');
         });
 
-        let outputHtml = '';
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-
-        for (let superName in groupedBySuper) {
-            outputHtml += `
-                <div class="card p-3 mb-4 border shadow-sm" style="border-color: rgba(128,128,128,0.15) !important;">
-                    <h5 class="fw-bold mb-3 text-primary d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-user-tie text-secondary"></i>
-                        طاقم موظفي المشرف المسؤول: <span class="text-success">${superName}</span>
-                        <span class="badge bg-secondary fs-6 ms-auto">${groupedBySuper[superName].length} موظفين</span>
-                    </h5>
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center align-middle m-0">
-                            <thead class="${isDark ? 'table-dark' : 'table-light'}">
-                                <tr>
-                                    <th style="background-color: #2563eb !important; color: white !important;">اسم الموظف البيعي</th>
-                                    <th>الكود القديم بالمنظومة (مران)</th>
-                                    <th>الكود الجديد بالمنظومة (استهداف)</th>
-                                    <th>الفئة الوظيفية المسجلة</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-            `;
-
-            groupedBySuper[superName].forEach(emp => {
-                outputHtml += `
-                    <tr>
-                        <td class="fw-bold text-start ps-3">${emp.name}</td>
-                        <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
-                        <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
-                        <td>
-                            <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
-                                ${emp.category || 'غير حدد'}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            outputHtml += `</tbody></table></div></div>`;
+        // دالة توليد أيقونات اتجاه الفرز المتزامنة هندسياً مع رأس الهيدر
+        function getDbSortIcon(field) {
+            if (dbSortField !== field) return ' <i class="fa-solid fa-sort text-white-50 small ms-1"></i>';
+            return dbSortAsc ? ' <i class="fa-solid fa-sort-up text-white ms-1"></i>' : ' <i class="fa-solid fa-sort-down text-white ms-1"></i>';
         }
-        container.innerHTML = outputHtml;
+
+        // 4. بناء هيكل الجدول الشامل الموحد
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        let tableHtml = `
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle m-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="background-color: #1e3a8a !important; color: white !important;">اسم الموظف البيعي</th>
+                            <th>الكود القديم بالمنظومة (مران)</th>
+                            <th>الكود الجديد بالمنظومة (استهداف)</th>
+                            <th onclick="toggleDbSort('supervisor')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">المشرف المسؤول ${getDbSortIcon('supervisor')}</th>
+                            <th onclick="toggleDbSort('category')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">الفئة الوظيفية ${getDbSortIcon('category')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        displayData.forEach(emp => {
+            tableHtml += `
+                <tr>
+                    <td class="fw-bold text-start ps-3 text-primary">${emp.name}</td>
+                    <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
+                    <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
+                    <td class="fw-bold text-secondary">${emp.supervisor || 'بدون مشرف'}</td>
+                    <td>
+                        <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
+                            ${emp.category || 'غير محدد'}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableHtml += `</tbody></table></div>`;
+        tableContainer.innerHTML = tableHtml;
+    }
+
+    // دوال التحكم السريع والتحديث اللحظي لجدول هيكل الموظفين
+    function filterDbBySupervisor(sup) {
+        dbSupervisorFilter = sup;
+        renderEmployeeDatabasePane();
+    }
+
+    function toggleDbSort(field) {
+        if (dbSortField === field) {
+            dbSortAsc = !dbSortAsc;
+        } else {
+            dbSortField = field;
+            dbSortAsc = true;
+        }
+        renderEmployeeDatabasePane();
     }
 
     function renderHomeTargetCharts(leads, sales) {
@@ -1087,7 +1136,7 @@
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إستهداف</th>
+                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إتمامات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1247,7 +1296,6 @@
         document.getElementById('supervisorMainView').classList.remove('d-none');
     }
 
-    /* التعديل الجوهري المطلوب: حساب حجم التدفق والتفاعل اليومي الفعلي مع استبعاد الأكواد CC01 و CC02 بالكامل لحماية دقة المنحنى */
     function renderDailyPerformanceChart(leads, sales, sortedDates) {
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
@@ -1488,6 +1536,7 @@
         applyFilters();
     }
 
+    /* إصلاح دالة تفرعات الموظف لقراءة الفئة الوظيفية من العمود D بشكل مصمت وصارم لمنع تضارب الأرقام */[cite: 1]
     function showEmployeeDetails(empName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
@@ -1503,7 +1552,9 @@
         let convRate = totalLeads > 0 ? ((totalSales / totalLeads) * 100).toFixed(1) : 0;
 
         document.getElementById('employeeDetailTitle').innerHTML = `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`;
-        let isTtGg = empObj && (empObj.category === 'استهداف' || (empObj.newUser && (normalizeEmpCode(empObj.newUser).startsWith('TT') || normalizeEmpCode(empObj.newUser).startsWith('GG'))));
+        
+        // التحديث الجوهري لحل المشكلة المعروضة بـ image_c16aac.png: الفحص المباشر لقيمة عمود الفئة[cite: 1]
+        let isTtGg = empObj && empObj.category === 'استهداف';
 
         if (isTtGg) {
             document.getElementById('empCard1Label').innerText = "مسار العمل ونوع الكفاءة";
