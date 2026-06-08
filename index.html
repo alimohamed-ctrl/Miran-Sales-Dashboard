@@ -628,7 +628,6 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
-    // متغيرات تتبع حالة وحقل الفرز النشط لجدول الموظفين
     let empSortField = 'sales'; 
     let empSortAsc = false;
     
@@ -1248,11 +1247,24 @@
         document.getElementById('supervisorMainView').classList.remove('d-none');
     }
 
+    /* التعديل الجوهري المطلوب: حساب حجم التدفق والتفاعل اليومي الفعلي مع استبعاد الأكواد CC01 و CC02 بالكامل لحماية دقة المنحنى */
     function renderDailyPerformanceChart(leads, sales, sortedDates) {
         let dailyLeadsMap = {}; let dailySalesMap = {};
         sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
-        leads.forEach(l => { if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; });
-        sales.forEach(s => { if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; });
+        
+        leads.forEach(l => { 
+            let emp = normalizeEmpCode(l['الموظف']);
+            if (emp !== 'CC01' && emp !== 'CC02') {
+                if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; 
+            }
+        });
+        
+        sales.forEach(s => { 
+            let emp = normalizeEmpCode(s['الموظف']);
+            if (emp !== 'CC01' && emp !== 'CC02') {
+                if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; 
+            }
+        });
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
@@ -1380,23 +1392,21 @@
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
-        // حساب وحقن القيم المتقدمة لكل صف لتسهيل عمليات الفرز المتعددة بنجاح
         rowsArray.forEach(row => {
             let ccRateNum = row.ccLeads > 0 ? parseFloat((row.ccSales / row.ccLeads * 100).toFixed(1)) : 0;
             row.calculatedCcRate = ccRateNum;
             
-            let statusWeight = 0; // دون التارجت الكلاسيكي
+            let statusWeight = 0; 
             if (row.category === 'استهداف' || row.ttSales > 0) {
-                if (row.ttSales >= proRatedTtTarget) statusWeight = 2; // على التراك
-                else statusWeight = 1; // متأخر عن التراك
+                if (row.ttSales >= proRatedTtTarget) statusWeight = 2; 
+                else statusWeight = 1; 
             } else {
-                if (ccRateNum >= 17.0) statusWeight = 2; // على التراك
-                else statusWeight = 0; // دون التارجت
+                if (ccRateNum >= 17.0) statusWeight = 2; 
+                else statusWeight = 0; 
             }
             row.statusWeight = statusWeight;
         });
 
-        // تطبيق منطق الفرز بناءً على العمود الفعال والاتجاه المختار
         if (empSortField === 'sales') {
             rowsArray.sort((a, b) => empSortAsc ? (a.ccSales + a.ttSales) - (b.ccSales + b.ttSales) : (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
         } else if (empSortField === 'leads') {
@@ -1407,13 +1417,11 @@
             rowsArray.sort((a, b) => empSortAsc ? a.statusWeight - b.statusWeight : b.statusWeight - a.statusWeight);
         }
 
-        // دالة مساعدة لطباعة واجهة أيقونة الفرز النشطة بجانب رأس العمود الموضح بالصورة
         function getSortIcon(field) {
             if (empSortField !== field) return ' <i class="fa-solid fa-sort text-white-50 small ms-1"></i>';
             return empSortAsc ? ' <i class="fa-solid fa-sort-up text-white ms-1"></i>' : ' <i class="fa-solid fa-sort-down text-white ms-1"></i>';
         }
 
-        // بناء هيدر الجدول التفاعلي وإضافة أحداث الضغط على العناوين المطلوبة
         document.getElementById('employeeTableHeader').innerHTML = `
             <tr>
                 <th rowspan="2">اسم الموظف</th>
@@ -1470,7 +1478,6 @@
         });
     }
 
-    // دالة الفرز وإعادة بناء وتصفية البيانات حياً ومزامنتها تلقائياً
     function setEmpSort(field) {
         if (empSortField === field) {
             empSortAsc = !empSortAsc;
