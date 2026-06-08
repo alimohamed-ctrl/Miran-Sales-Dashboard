@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
+    <!-- أيقونة التبويب (Favicon) الاحترافية المتماشية مع طبيعة الداشبورد المالي والبيعي للمنظومة -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3121/3121575.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -369,7 +370,7 @@
                         </div>
 
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);;">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -702,7 +703,7 @@
             }
         }
         
-        // تم تصحيح الخلل البرمي المصمت هنا بالكامل عبر استخدام متغير isoMatch الصحيح لمنع التوقف
+        // تم تصحيح اسم المتغير إلى isoMatch بنجاح لمنع توقف التحميل تماماً
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
             return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
@@ -767,6 +768,42 @@
                 superTeamSizes[sup]++;
             }
         });
+    }
+
+    // زرع دالة التحويل والتطهير الأساسية التي حلت مشكلة كراش الـ ReferenceError
+    function normalizeCourseName(name) {
+        if (!name) return 'أخرى / غير محدد';
+        let s = String(name).toLowerCase().trim();
+        let studyType = ' - عن بعد'; 
+        if (s.includes('حضوري') || s.includes('onsite')) studyType = ' - حضوري';
+
+        if (s.includes('بكج إدارة المشاريع') || s.includes('11-بكج')) return 'بكج إدارة المشاريع والأعمال' + studyType;
+        if (s.includes('بكج البيانات')) return 'بكج البيانات (Power BI + Excel)' + studyType;
+        if (s.includes('التأسيسي')) return 'بكج الإدارة التأسيسي' + studyType;
+        if (s.includes('pmp') || s.includes('إدارة المشاريع')) return 'دورة إدارة المشاريع الاحترافية (PMP)' + studyType;
+        if (s.includes('excel') || s.includes('إكسل') || s.includes('اكسل')) return 'دورة مهارات مايكروسوفت إكسيل (Excel)' + studyType;
+        if (s.includes('kpi') || s.includes('مؤشرات')) return 'دورة مؤشرات قياس الأداء الرئيسية (KPIs)' + studyType;
+        if (s.includes('power-bi') || s.includes('power bi') || s.includes('تحليل البيانات')) return 'دورة تحليل البيانات (Power-BI)' + studyType;
+        
+        return name.trim();
+    }
+
+    // زرع دالة حساب النطاق الزمني المفقودة لضمان توازي المنحنيات البيانية
+    function getDatesInRange(startDateStr, endDateStr) {
+        let dates = [];
+        let startParts = startDateStr.split('-');
+        let endParts = endDateStr.split('-');
+        let start = new Date(Date.UTC(Number(startParts[0]), Number(startParts[1]) - 1, Number(startParts[2])));
+        let end = new Date(Date.UTC(Number(endParts[0]), Number(endParts[1]) - 1, Number(endParts[2])));
+        let current = new Date(start.getTime());
+        while (current <= end) {
+            let y = current.getUTCFullYear();
+            let m = String(current.getUTCMonth() + 1).padStart(2, '0');
+            let d = String(current.getUTCDate()).padStart(2, '0');
+            dates.push(`${y}-${m}-${d}`);
+            current.setUTCDate(current.getUTCDate() + 1);
+        }
+        return dates;
     }
 
     const customTopLabelsPlugin = {
@@ -889,8 +926,10 @@
         } catch (error) {
             console.error(error);
             if(loadingEl) loadingEl.classList.add('d-none');
-            container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
-            container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</span>`;
+            if(container) {
+                container.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
+                container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</span>`;
+            }
         }
     }
 
@@ -1297,6 +1336,8 @@
             rowsArray = rowsArray.filter(item => item.supervisor === empSupervisorFilter);
         }
 
+        rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
+
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
@@ -1384,16 +1425,6 @@
             data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
-    }
-
-    function setEmpSort(field) {
-        if (empSortField === field) {
-            empSortAsc = !empSortAsc;
-        } else {
-            empSortField = field;
-            empSortAsc = false;
-        }
-        applyFilters();
     }
 
     function showEmployeeDetails(empName) {
