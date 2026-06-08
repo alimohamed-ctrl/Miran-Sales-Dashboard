@@ -342,10 +342,8 @@
                         </div>
                     </div>
 
-                    <!-- تم هنا إعادة هندسة الترتيب الداخلي للصفحة الرئيسية بالكامل بناءً على طلبك -->
                     <div id="homeChartSection" class="row d-none">
                         
-                        <!-- 1. شارت حجم التفاعل اليومي صعد للأعلى تماماً بدلاً من شارت الموظفين القديم -->
                         <div class="col-12 mb-4">
                             <div class="chart-card p-4">
                                 <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar text-primary me-2"></i> مقارنة حجم التفاعل اليومي الإجمالي (الليدز مقابل الاتمامات)</h5>
@@ -353,7 +351,6 @@
                             </div>
                         </div>
 
-                        <!-- 2. كروت التارجت السنوية للمجموعات ظلت في المنتصف لتوازن بصرية اللوحة -->
                         <div class="col-md-6 mb-4">
                             <div class="chart-card p-4 h-100" style="border-top-color: #3b82f6 !important;">
                                 <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-bullseye me-2"></i> نسبة تحقيق موظفي طلبات مران (CC) للتارجت (المستهدف 17%)</h5>
@@ -368,7 +365,6 @@
                             </div>
                         </div>
 
-                        <!-- 3. شريط تصفية الفئة الشاملة (Slicers) نزل للأسفل ليكون ملتصقاً بالشارت الخاص به بربط احترافي -->
                         <div class="col-12 mb-3">
                             <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
@@ -378,7 +374,6 @@
                             </div>
                         </div>
                         
-                        <!-- 4. شارت مقارنة أداء الموظفين الموضح بالصورة تم نقله لأسفل حافة الصفحة الرئيسية تماماً كما طلبت -->
                         <div class="col-md-12 mb-4">
                             <div class="chart-card p-4 h-100">
                                 <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-check text-success me-2"></i> مقارنة أداء الموظفين للفترة (الليدز مقابل المبيعات)</h5>
@@ -633,6 +628,10 @@
     let homeEmployeeFilterType = 'all'; 
     let employeeDatabase = [];
     
+    // متغيرات تتبع حالة وحقل الفرز النشط لجدول الموظفين
+    let empSortField = 'sales'; 
+    let empSortAsc = false;
+    
     let dailyChartInstance = null;
     let employeeChartInstance = null;
     let supervisorTargetChartInstance = null;
@@ -668,7 +667,7 @@
         
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
-            return `${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}`;
+            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
         }
         
         let regularMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
@@ -1378,11 +1377,43 @@
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
-        rowsArray.sort((a, b) => (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
-
         let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
+        // حساب وحقن القيم المتقدمة لكل صف لتسهيل عمليات الفرز المتعددة بنجاح
+        rowsArray.forEach(row => {
+            let ccRateNum = row.ccLeads > 0 ? parseFloat((row.ccSales / row.ccLeads * 100).toFixed(1)) : 0;
+            row.calculatedCcRate = ccRateNum;
+            
+            let statusWeight = 0; // دون التارجت الكلاسيكي
+            if (row.category === 'استهداف' || row.ttSales > 0) {
+                if (row.ttSales >= proRatedTtTarget) statusWeight = 2; // على التراك
+                else statusWeight = 1; // متأخر عن التراك
+            } else {
+                if (ccRateNum >= 17.0) statusWeight = 2; // على التراك
+                else statusWeight = 0; // دون التارجت
+            }
+            row.statusWeight = statusWeight;
+        });
+
+        // تطبيق منطق الفرز بناءً على العمود الفعال والاتجاه المختار
+        if (empSortField === 'sales') {
+            rowsArray.sort((a, b) => empSortAsc ? (a.ccSales + a.ttSales) - (b.ccSales + b.ttSales) : (b.ccSales + b.ttSales) - (a.ccSales + a.ttSales));
+        } else if (empSortField === 'leads') {
+            rowsArray.sort((a, b) => empSortAsc ? a.ccLeads - b.ccLeads : b.ccLeads - a.ccLeads);
+        } else if (empSortField === 'conv') {
+            rowsArray.sort((a, b) => empSortAsc ? a.calculatedCcRate - b.calculatedCcRate : b.calculatedCcRate - a.calculatedCcRate);
+        } else if (empSortField === 'status') {
+            rowsArray.sort((a, b) => empSortAsc ? a.statusWeight - b.statusWeight : b.statusWeight - a.statusWeight);
+        }
+
+        // دالة مساعدة لطباعة واجهة أيقونة الفرز النشطة بجانب رأس العمود الموضح بالصورة
+        function getSortIcon(field) {
+            if (empSortField !== field) return ' <i class="fa-solid fa-sort text-white-50 small ms-1"></i>';
+            return empSortAsc ? ' <i class="fa-solid fa-sort-up text-white ms-1"></i>' : ' <i class="fa-solid fa-sort-down text-white ms-1"></i>';
+        }
+
+        // بناء هيدر الجدول التفاعلي وإضافة أحداث الضغط على العناوين المطلوبة
         document.getElementById('employeeTableHeader').innerHTML = `
             <tr>
                 <th rowspan="2">اسم الموظف</th>
@@ -1390,12 +1421,12 @@
                 <th rowspan="2">المشرف</th>
                 <th colspan="3" style="background-color: #2563eb !important; color: #ffffff !important;">قناة طلبات مران (CC)</th>
                 <th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة إعادة الاستهداف (TT / GG)</th>
-                <th rowspan="2">الحالة التشغيلية للتارجت</th>
+                <th rowspan="2" onclick="setEmpSort('status')" style="cursor: pointer; user-select: none; background-color: #1e3a8a !important;">الحالة التشغيلية للتارجت ${getSortIcon('status')}</th>
             </tr>
             <tr>
-                <th>الليدز</th>
+                <th onclick="setEmpSort('leads')" style="cursor: pointer; user-select: none; background-color: #2563eb !important;">الليدز ${getSortIcon('leads')}</th>
                 <th>الاتمامات</th>
-                <th>نسبة التحويل</th>
+                <th onclick="setEmpSort('conv')" style="cursor: pointer; user-select: none; background-color: #2563eb !important;">نسبة التحويل ${getSortIcon('conv')}</th>
                 <th>الاتمامات</th>
                 <th>نسبة تحقيق التارجت</th>
             </tr>
@@ -1437,6 +1468,17 @@
             data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
+    }
+
+    // دالة الفرز وإعادة بناء وتصفية البيانات حياً ومزامنتها تلقائياً
+    function setEmpSort(field) {
+        if (empSortField === field) {
+            empSortAsc = !empSortAsc;
+        } else {
+            empSortField = field;
+            empSortAsc = false;
+        }
+        applyFilters();
     }
 
     function showEmployeeDetails(empName) {
