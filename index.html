@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
-    <!-- أيقونة التبويب (Favicon) الاحترافية المتماشية مع طبيعة الداشبورد المالي والبيعي للمنظومة -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3121/3121575.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -125,6 +124,7 @@
             margin: 0 !important;
         }
         
+        /* تثبيت الهيدر المزدوج كاملاً ككتلة واحدة صلبة لمنع التداخل أثناء السكرول */
         .table thead {
             position: sticky;
             top: 0;
@@ -370,7 +370,7 @@
                         </div>
 
                         <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);;">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
@@ -507,7 +507,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5 mb-4">
-                                    <div class="chart-card p-4 border h-100">
+                                    <div class="card p-4 border h-100">
                                         <h5 class="fw-bold mb-3 text-warning"><i class="fa-solid fa-tags me-2"></i> التوزيع السلوكي لحالات الليدز للموظف الحالي</h5>
                                         <div class="table-responsive" style="max-height: 350px;">
                                             <table class="table table-bordered table-sm m-0 text-center align-middle">
@@ -703,7 +703,6 @@
             }
         }
         
-        // تم تصحيح اسم المتغير إلى isoMatch بنجاح لمنع توقف التحميل تماماً
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
             return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
@@ -770,7 +769,6 @@
         });
     }
 
-    // زرع دالة التحويل والتطهير الأساسية التي حلت مشكلة كراش الـ ReferenceError
     function normalizeCourseName(name) {
         if (!name) return 'أخرى / غير محدد';
         let s = String(name).toLowerCase().trim();
@@ -788,7 +786,6 @@
         return name.trim();
     }
 
-    // زرع دالة حساب النطاق الزمني المفقودة لضمان توازي المنحنيات البيانية
     function getDatesInRange(startDateStr, endDateStr) {
         let dates = [];
         let startParts = startDateStr.split('-');
@@ -931,38 +928,6 @@
                 container.innerHTML = `<span class="fw-bold">فشل المزامنة التلقائية مع جوجل شيت 🛑</span>`;
             }
         }
-    }
-
-    function cleanSheetData(data) {
-        if(!Array.isArray(data)) return [];
-        return data.map(row => {
-            let cleaned = {};
-            for (let key in row) {
-                let cleanedKey = String(key).trim().replace(/[\u200B-\u200D\uFEFF]/g, "");
-                let val = row[key];
-                if (cleanedKey === 'التاريخ') {
-                    val = standardParseDate(val);
-                }
-                cleaned[cleanedKey] = val;
-            }
-            return cleaned;
-        });
-    }
-
-    function filterEmployees(type) {
-        employeeFilterType = type;
-        document.getElementById('btnEmpAll').className = type === 'all' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        document.getElementById('btnEmpCC').className = type === 'cc' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        document.getElementById('btnEmpTTGG').className = type === 'tt_gg' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        if(rawLeads.length > 0) applyFilters();
-    }
-
-    function filterHomeEmployees(type) {
-        homeEmployeeFilterType = type;
-        document.getElementById('btnHomeAll').className = type === 'all' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        document.getElementById('btnHomeCC').className = type === 'cc' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        document.getElementById('btnHomeTTGG').className = type === 'tt_gg' ? "btn btn-info btn-sm fw-bold px-3 active" : "btn btn-outline-info btn-sm fw-bold px-3";
-        if(rawLeads.length > 0) applyFilters();
     }
 
     function applyFilters() {
@@ -1230,7 +1195,7 @@
         statusMatrixChartInstance = new Chart(document.getElementById('statusMatrixChart').getContext('2d'), {
             type: 'bar',
             plugins: [customTopLabelsPlugin],
-            data: { labels: rowsArray.map(r => r.status), datasets: [{ label: 'حجم التكرار للحالة', data: rowsArray.map(r => r.total), backgroundColor: '#f59e0b', borderColor: '#d97706', borderWidth: 1, borderRadius: 4 }] },
+            data: { labels: rowsArray.map(r => r.status), datasets: [{ label: 'حجم التكرار للحالة', data: rowsArray.map(r => r.total), backgroundColor: '#f59e0b', borderRadius: 4 }] },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
     }
@@ -1425,6 +1390,21 @@
             data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
+    }
+
+    function renderEmpSupervisorFilters() {
+        const container = document.getElementById('empSupervisorFilterContainer');
+        if (!container) return;
+        
+        let filterHtml = `<span class="fw-bold text-secondary me-2"><i class="fa-solid fa-user-tie me-1"></i> تصفية حسب المشرف:</span>`;
+        filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === 'all' ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('all')">كل المشرفين</button>`;
+        
+        supervisorsList.forEach(sup => {
+            if (sup && sup !== 'بدون مشرف' && sup !== 'null') {
+                filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === sup ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('${sup}')">${sup}</button>`;
+            }
+        });
+        container.innerHTML = filterHtml;
     }
 
     function showEmployeeDetails(empName) {
