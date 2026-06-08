@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
+    <!-- إضافة أيقونة التبويب (Favicon) الاحترافية المتماشية مع طبيعة الداشبورد المالي والبيعي -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3121/3121575.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link class="rtl" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -123,7 +125,6 @@
             margin: 0 !important;
         }
         
-        /* نقل خاصية التثبيت لـ thead بالكامل لحل مشكلة التداخل الموضحة في صورة الاستفسار */
         .table thead {
             position: sticky;
             top: 0;
@@ -161,7 +162,7 @@
         .table-sticky-first th:first-child {
             position: sticky;
             right: 0;
-            z-index: 9; /* رفع الـ z-index ليبقى أعلى من الهيدر المثبت الشامل */
+            z-index: 9;
             background-color: #1e3a8a !important;
             color: #ffffff !important;
             box-shadow: inset -3px 0 0 rgba(255,255,255,0.15);
@@ -542,49 +543,59 @@
 
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
-                            <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
-                            <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('sourceTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
-                        </div>
-                        <div class="table-scroll-container">
-                            <table class="table table-bordered table-hover text-center table-sticky-first" id="sourceTable">
-                                <thead id="sourceTableHeader"></thead>
-                                <tbody id="sourceTableBody"></tbody>
-                            </table>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="chart-card p-4 border">
-                                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-chart-column me-2"></i> تحليل حجم الفرص والمبيعات للمصادر الإعلانية (الأكواد)</h5>
-                                    <div style="position: relative; height: 350px;"><canvas id="sourceMatrixChart"></canvas></div>
-                                </div>
+                        <div id="sourceMainView">
+                            <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
+                                <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
+                                <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('sourceTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
+                            </div>
+                            <div class="table-scroll-container">
+                                <table class="table table-bordered table-hover text-center table-sticky-first" id="sourceTable">
+                                    <thead id="sourceTableHeader"></thead>
+                                    <tbody id="sourceTableBody"></tbody>
+                                </table>
                             </div>
                         </div>
-                        <div id="sourceSummaryBox"></div>
+                        <!-- لوحة التحليل الفرعي للسورس الإعلاني المضافة حديثاً -->
+                        <div id="sourceDetailView" class="d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <h4 class="fw-bold text-primary mb-0" id="sourceDetailTitle">تحليل تفصيلي للسورس</h4>
+                                <button class="btn btn-outline-secondary btn-sm fw-bold px-3 shadow-sm" onclick="hideSourceDetails()">
+                                    <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 me-1"></i> العودة للمصفوفة العامة
+                                </button>
+                            </div>
+                            <div id="sourceDetailTableContainer" class="mb-4"></div>
+                            <div class="chart-card p-4">
+                                <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar text-primary me-2"></i> توزيع الليدز والمبيعات حسب الموظفين لهذا المصدر</h5>
+                                <div style="position: relative; height: 350px;"><canvas id="sourceDetailChart"></canvas></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
-                            <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
-                            <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('statusTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
-                        </div>
-                        <div class="table-scroll-container">
-                            <table class="table table-bordered table-hover text-center table-sticky-first" id="statusTable">
-                                <thead id="statusTableHeader"></thead>
-                                <tbody id="statusTableBody"></tbody>
-                            </table>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="chart-card p-4 border" style="border-top-color: #f59e0b !important;">
-                                    <h5 class="fw-bold mb-3 text-warning"><i class="fa-solid fa-chart-pie me-2"></i> التوزيع السلوكي والنسبي لفرص المبيعات الواردة</h5>
-                                    <div style="position: relative; height: 380px;"><canvas id="statusMatrixChart"></canvas></div>
-                                </div>
+                        <div id="statusMainView">
+                            <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
+                                <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
+                                <button class="btn btn-primary btn-sm me-2 fw-bold" onclick="copyTableToClipboard('statusTable')"><i class="fa-solid fa-copy me-1"></i> نسخ الجدول</button>
+                            </div>
+                            <div class="table-scroll-container">
+                                <table class="table table-bordered table-hover text-center table-sticky-first" id="statusTable">
+                                    <thead id="statusTableHeader"></thead>
+                                    <tbody id="statusTableBody"></tbody>
+                                </table>
                             </div>
                         </div>
-                        <div id="statusSummaryBox"></div>
+                        <!-- لوحة التحليل الفرعي للحالات البيعية المضافة حديثاً -->
+                        <div id="statusDetailView" class="d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <h4 class="fw-bold text-warning mb-0" id="statusDetailTitle">تحليل تفصيلي للحالة البيعية</h4>
+                                <button class="btn btn-outline-secondary btn-sm fw-bold px-3 shadow-sm" onclick="hideStatusDetails()">
+                                    <i class="fa-solid fa-arrow-right-to-bracket fa-rotate-180 me-1"></i> العودة للمصفوفة العامة
+                                </button>
+                            </div>
+                            <div id="statusDetailTableContainer" class="mb-4"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -642,7 +653,6 @@
     let dbSortField = 'name';
     let dbSortAsc = true;
 
-    // حالة الفلتر الجديد الخاص بالمشرفين في صفحة أداء موظفي المبيعات
     let empSupervisorFilter = 'all';
     
     let dailyChartInstance = null;
@@ -658,6 +668,7 @@
     let courseMatrixChartInstance = null;
     let teamChartInstance = null;
     let employeeTimelineChartInstance = null; 
+    let sourceDetailChartInstance = null; // تتبع الشارت المضاف حديثاً للسورس الإعلاني
 
     function normalizeEmpCode(code) {
         if (!code) return '';
@@ -943,6 +954,8 @@
 
         hideSupervisorTeamDetails();
         hideEmployeeDetails();
+        hideSourceDetails();
+        hideStatusDetails();
 
         const filteredLeads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
         const filteredSales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
@@ -1360,7 +1373,9 @@
         rowsArray.sort((a, b) => b.conv - a.conv);
 
         document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
-        document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold text-primary">${row.src}</td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
+        
+        // تحويل السورس الإعلاني لرابط نروحه تفصيلياً (Drilldown) عند النقر عليه
+        document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `<tr><td class="fw-bold"><button class="btn btn-employee-drilldown text-start p-0 fw-bold" onclick="showSourceDetails('${row.src}')">${row.src}</button></td><td><span class="badge bg-primary px-3">${row.totalLeads}</span></td><td><span class="badge bg-success px-3">${row.totalSales}</span></td><td class="table-primary fw-bold">${row.conv}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
@@ -1375,6 +1390,93 @@
         });
     }
 
+    /* مصفوفة معالجة التحليل التفصيلي للسورس الإعلاني وحقنه بالجدول مع رسم بياني مخصص للموظفين المستلمين */
+    function showSourceDetails(srcName) {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const leads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const sales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+
+        document.getElementById('sourceMainView').classList.add('d-none');
+        document.getElementById('sourceDetailView').classList.remove('d-none');
+        document.getElementById('sourceDetailTitle').innerHTML = `<i class="fa-solid fa-bullhorn text-primary me-2"></i> تفاصيل السورس الإعلاني: <span class="text-success">${srcName}</span>`;
+
+        let empStats = {};
+        employeeDatabase.forEach(e => {
+            empStats[e.name] = { name: e.name, oldCode: normalizeEmpCode(e.oldUser), newCode: normalizeEmpCode(e.newUser), leads: 0, sales: 0 };
+        });
+
+        leads.forEach(l => {
+            let src = String(l['كود التسويق'] || 'غير حدد').trim();
+            if (src === srcName) {
+                let code = normalizeEmpCode(l['الموظف']);
+                let match = Object.values(empStats).find(e => e.oldCode === code || e.newCode === code);
+                if (match) match.leads++;
+            }
+        });
+
+        sales.forEach(s => {
+            let clientNum = String(s['رقم العميل'] || '').trim();
+            let courseName = normalizeCourseName(s['نوع الدورة']);
+            let src = clientCourseToSourceMap[clientNum + "_" + courseName] || clientCourseToSourceMap[clientNum] || 'غير حدد';
+            if (src === srcName) {
+                let code = normalizeEmpCode(s['الموظف']);
+                let match = Object.values(empStats).find(e => e.oldCode === code || e.newCode === code);
+                if (match) match.sales++;
+            }
+        });
+
+        let rows = Object.values(empStats).filter(e => e.leads > 0 || e.sales > 0);
+        rows.sort((a, b) => b.leads - a.leads);
+
+        let tableHtml = `
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
+                <thead class="table-dark">
+                    <tr>
+                        <th>اسم الموظف البيعي</th><th>الليدز المستلمة</th><th>الاتمامات المحققة</th><th>معدل التحويل للسورس</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        rows.forEach(r => {
+            let conv = r.leads > 0 ? ((r.sales / r.leads) * 100).toFixed(1) : 0;
+            tableHtml += `
+                <tr>
+                    <td class="fw-bold text-start ps-3">${r.name}</td>
+                    <td><span class="badge bg-primary px-3">${r.leads}</span></td>
+                    <td><span class="badge bg-success px-3">${r.sales}</span></td>
+                    <td class="fw-bold text-info">${conv}%</td>
+                </tr>
+            `;
+        });
+        tableHtml += `</tbody></table></div>`;
+        document.getElementById('sourceDetailTableContainer').innerHTML = tableHtml;
+
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
+        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
+
+        if (sourceDetailChartInstance) sourceDetailChartInstance.destroy();
+        sourceDetailChartInstance = new Chart(document.getElementById('sourceDetailChart').getContext('2d'), {
+            type: 'bar',
+            plugins: [customTopLabelsPlugin],
+            data: {
+                labels: rows.map(r => r.name),
+                datasets: [
+                    { label: 'الليدز المستلمة', data: rows.map(r => r.leads), backgroundColor: '#3b82f6', borderRadius: 4 },
+                    { label: 'الاتمامات المحققة', data: rows.map(r => r.sales), backgroundColor: '#10b981', borderRadius: 4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor } } }, plugins: { legend: { labels: { font: { family: 'Cairo' }, color: dynamicTextColor } } } }
+        });
+    }
+
+    function hideSourceDetails() {
+        document.getElementById('sourceDetailView').classList.add('d-none');
+        document.getElementById('sourceMainView').classList.remove('d-none');
+    }
+
     function renderStatusMatrix(leads, sortedDates) {
         let matrix = {}; let totalGlobalLeads = leads.length;
         leads.forEach(l => { let status = String(l['الحالة 1'] || 'غيرحدد').trim(); if (!matrix[status]) matrix[status] = { total: 0 }; matrix[status].total++; });
@@ -1383,7 +1485,9 @@
         rowsArray.sort((a, b) => b.pct - a.pct);
 
         document.getElementById('statusTableHeader').innerHTML = `<tr><th>الحالة البيعية للعميل</th><th>إجمالي التكرار الكلي للفترة</th><th>النسب المئوية من إجمالي التدفق</th></tr>`;
-        document.getElementById('statusTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start fw-bold">${row.status}</td><td><span class="badge bg-secondary px-3">${row.total}</span></td><td class="table-warning fw-bold">${row.pct}%</td></tr>`).join('');
+        
+        // تحويل الحالات لروابط تفتح تفرعات الموظفين ونسب تملكها لديهم
+        document.getElementById('statusTableBody').innerHTML = rowsArray.map(row => `<tr><td class="text-start fw-bold"><button class="btn btn-employee-drilldown text-start p-0 fw-bold" onclick="showStatusDetails('${row.status}')">${row.status}</button></td><td><span class="badge bg-secondary px-3">${row.total}</span></td><td class="table-warning fw-bold">${row.pct}%</td></tr>`).join('');
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
@@ -1396,6 +1500,66 @@
             data: { labels: rowsArray.map(r => r.status), datasets: [{ label: 'حجم التكرار للحالة', data: rowsArray.map(r => r.total), backgroundColor: '#f59e0b', borderColor: '#d97706', borderWidth: 1, borderRadius: 4 }] },
             options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, y: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
+    }
+
+    /* معالجة وحقن التحليل الفرعي لحالات الموظفين ونسبة تملك الحالة من إجمالي الحجم المستلم لديهم */
+    function showStatusDetails(statusName) {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const leads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+
+        document.getElementById('statusMainView').classList.add('d-none');
+        document.getElementById('statusDetailView').classList.remove('d-none');
+        document.getElementById('statusDetailTitle').innerHTML = `<i class="fa-solid fa-tags text-warning me-2"></i> تفاصيل الحالة البيعية: <span class="text-success">${statusName}</span>`;
+
+        let empStats = {};
+        employeeDatabase.forEach(e => {
+            empStats[e.name] = { name: e.name, oldCode: normalizeEmpCode(e.oldUser), newCode: normalizeEmpCode(e.newUser), statusLeads: 0, totalLeads: 0 };
+        });
+
+        leads.forEach(l => {
+            let code = normalizeEmpCode(l['الموظف']);
+            let match = Object.values(empStats).find(e => e.oldCode === code || e.newCode === code);
+            if (match) {
+                match.totalLeads++;
+                let status = String(l['الحالة 1'] || 'غيرحدد').trim();
+                if (status === statusName) {
+                    match.statusLeads++;
+                }
+            }
+        });
+
+        let rows = Object.values(empStats).filter(e => e.statusLeads > 0);
+        rows.sort((a, b) => b.statusLeads - a.statusLeads);
+
+        let tableHtml = `
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
+                <thead class="table-dark">
+                    <tr>
+                        <th>اسم الموظف المسؤول</th><th>تكرار الحالة لديه</th><th>إجمالي الليدز الواردة له بالفترة</th><th>نسبة وجود الحالة لديه</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        rows.forEach(r => {
+            let pct = r.totalLeads > 0 ? ((r.statusLeads / r.totalLeads) * 100).toFixed(1) : 0;
+            tableHtml += `
+                <tr>
+                    <td class="fw-bold text-start ps-3">${r.name}</td>
+                    <td><span class="badge bg-warning text-dark px-3">${r.statusLeads}</span></td>
+                    <td><span class="badge bg-secondary px-3">${r.totalLeads}</span></td>
+                    <td class="fw-bold text-danger">${pct}%</td>
+                </tr>
+            `;
+        });
+        tableHtml += `</tbody></table></div>`;
+        document.getElementById('statusDetailTableContainer').innerHTML = tableHtml;
+    }
+
+    function hideStatusDetails() {
+        document.getElementById('statusDetailView').classList.add('d-none');
+        document.getElementById('statusMainView').classList.remove('d-none');
     }
 
     function renderCourseMatrix(leads, sales, sortedDates) {
@@ -1423,7 +1587,6 @@
     }
 
     function renderEmployeeMatrix(leads, sales, sortedDates) {
-        // بناء وحقن الفلتر التفاعلي الجديد للمشرفين بداخل لوحة الأداء
         renderEmpSupervisorFilters();
 
         let stats = {};
@@ -1437,7 +1600,6 @@
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
 
-        // تطبيق الفلتر الجديد الخاص بالمشرف المختار
         if (empSupervisorFilter !== 'all') {
             rowsArray = rowsArray.filter(item => item.supervisor === empSupervisorFilter);
         }
@@ -1531,7 +1693,10 @@
         });
     }
 
-    // دالة بناء وبث أزرار تصفية المشرفين بداخل صفحة أداء الموظفين
+    function renderAppSupervisorFilters() {
+        // تجميع المشرفين في صفحة الموظفين
+    }
+
     function renderEmpSupervisorFilters() {
         const container = document.getElementById('empSupervisorFilterContainer');
         if (!container) return;
@@ -1660,10 +1825,13 @@
         updateSupervisorMapsFromDatabase();
         fetchGoogleSheetData();
 
-        // تفعيل الإجبار التلقائي لعملية السكرول لأعلى الصفحة عند التنقل بين تبويبات لوحة التحكم
         document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tabEl => {
             tabEl.addEventListener('shown.bs.tab', () => {
                 window.scrollTo({ top: 0, behavior: 'instant' });
+                hideSupervisorTeamDetails();
+                hideEmployeeDetails();
+                hideSourceDetails();
+                hideStatusDetails();
             });
         });
     });
