@@ -342,23 +342,18 @@
                         </div>
                     </div>
 
+                    <!-- تم هنا إعادة هندسة الترتيب الداخلي للصفحة الرئيسية بالكامل بناءً على طلبك -->
                     <div id="homeChartSection" class="row d-none">
-                        <div class="col-12 mb-3">
-                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15); margin-top:-10px;">
-                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
-                                <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي إعادة استهداف</button>
-                            </div>
-                        </div>
                         
-                        <div class="col-md-12 mb-4">
-                            <div class="chart-card p-4 h-100">
-                                <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-check text-success me-2"></i> مقارنة أداء الموظفين للفترة (الليدز مقابل المبيعات)</h5>
-                                <div style="position: relative; height: 380px;"><canvas id="employeeSalesChart"></canvas></div>
+                        <!-- 1. شارت حجم التفاعل اليومي صعد للأعلى تماماً بدلاً من شارت الموظفين القديم -->
+                        <div class="col-12 mb-4">
+                            <div class="chart-card p-4">
+                                <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar text-primary me-2"></i> مقارنة حجم التفاعل اليومي الإجمالي (الليدز مقابل الاتمامات)</h5>
+                                <div style="position: relative; height: 350px;"><canvas id="dailyPerformanceChart"></canvas></div>
                             </div>
                         </div>
 
+                        <!-- 2. كروت التارجت السنوية للمجموعات ظلت في المنتصف لتوازن بصرية اللوحة -->
                         <div class="col-md-6 mb-4">
                             <div class="chart-card p-4 h-100" style="border-top-color: #3b82f6 !important;">
                                 <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-bullseye me-2"></i> نسبة تحقيق موظفي طلبات مران (CC) للتارجت (المستهدف 17%)</h5>
@@ -373,10 +368,21 @@
                             </div>
                         </div>
 
-                        <div class="col-12 mb-4">
-                            <div class="chart-card p-4">
-                                <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-bar text-primary me-2"></i> مقارنة حجم التفاعل اليومي الإجمالي (الليدز مقابل الاتمامات)</h5>
-                                <div style="position: relative; height: 350px;"><canvas id="dailyPerformanceChart"></canvas></div>
+                        <!-- 3. شريط تصفية الفئة الشاملة (Slicers) نزل للأسفل ليكون ملتصقاً بالشارت الخاص به بربط احترافي -->
+                        <div class="col-12 mb-3">
+                            <div class="p-3 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
+                                <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
+                                <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي إعادة استهداف</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. شارت مقارنة أداء الموظفين الموضح بالصورة تم نقله لأسفل حافة الصفحة الرئيسية تماماً كما طلبت -->
+                        <div class="col-md-12 mb-4">
+                            <div class="chart-card p-4 h-100">
+                                <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-check text-success me-2"></i> مقارنة أداء الموظفين للفترة (الليدز مقابل المبيعات)</h5>
+                                <div style="position: relative; height: 380px;"><canvas id="employeeSalesChart"></canvas></div>
                             </div>
                         </div>
                     </div>
@@ -662,7 +668,7 @@
         
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
-            return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+            return `${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}`;
         }
         
         let regularMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
@@ -1208,7 +1214,7 @@
                 if (emp.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
-                if (parseFloat(ccRate) >= 17.0) { statusText = "on track 🟢"; statusStyle = "color: #10b981;"; } 
+                if (parseFloat(ccRate) >= 17.0) { statusText = "على التراك 🟢"; statusStyle = "color: #10b981;"; } 
                 else { statusText = "دون التارجت 🔴"; statusStyle = "color: #ef4444;"; }
             }
 
