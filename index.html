@@ -702,7 +702,7 @@
             }
         }
         
-        // المتغير مصلح بالكامل هنا لمنع كراش معالجة التواريخ
+        // تم تصحيح الخلل البرمي المصمت هنا بالكامل عبر استخدام متغير isoMatch الصحيح لمنع التوقف
         let isoMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
         if (isoMatch) {
             return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
@@ -926,285 +926,141 @@
         if(rawLeads.length > 0) applyFilters();
     }
 
-    function renderHomeTargetCharts(leads, sales) {
-        let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
-
-        let unionEmps = Array.from(new Set([...Object.keys(empLeads), ...Object.keys(empSales)]));
-        let ccData = [];
-        unionEmps.forEach(emp => {
-            if (emp.startsWith('CC')) {
-                let norm = emp.replace(/\s+/g, '').toUpperCase(); if (norm === 'CC01' || norm === 'CC02') return; 
-                let l = empLeads[emp] || 0; let s = empSales[emp] || 0;
-                ccData.push({ name: emp, rate: l > 0 ? parseFloat((s / l * 100).toFixed(1)) : 0 });
-            }
-        });
-        ccData.sort((a, b) => b.rate - a.rate);
-
-        let ttggData = [];
-        unionEmps.forEach(emp => { if (emp.startsWith('TT') || emp.startsWith('GG')) { ttggData.push({ name: emp, sales: empSales[emp] || 0 }); } });
-        ttggData.sort((a, b) => b.sales - a.sales);
-
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
-
-        if (ccEmployeeTargetChartInstance) ccEmployeeTargetChartInstance.destroy();
-        ccEmployeeTargetChartInstance = new Chart(document.getElementById('ccEmployeeTargetChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: {
-                labels: ccData.map(d => d.name),
-                datasets: [
-                    { label: 'نسبة تحويل الموظف (%)', data: ccData.map(d => d.rate), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4, barPercentage: 0.45 },
-                    { label: 'خط التارجت المطلوب (17%)', data: ccData.map(() => 17), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-
-        if (ttggEmployeeTargetChartInstance) ttggEmployeeTargetChartInstance.destroy();
-        ttggEmployeeTargetChartInstance = new Chart(document.getElementById('ttggEmployeeTargetChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: {
-                labels: ttggData.map(d => d.name),
-                datasets: [
-                    { label: 'عدد الإتمامات والمبيعات', data: ttggData.map(d => d.sales), backgroundColor: '#7c3aed', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4, barPercentage: 0.45 },
-                    { label: 'خط التارجت المطلوب (15 إتمام)', data: ttggData.map(() => 15), borderColor: '#ef4444', borderWidth: 2.5, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-    }
-
-    function renderSupervisorCharts(leads, sales) {
-        let empLeads = {}; let empSales = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
-
-        let tableHtml = `
-        <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
-                <thead class="table-dark">
-                    <tr>
-                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إستهداف</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        let chartRates = []; let chartLowCC = []; let chartTTGG = [];
-
-        supervisorsList.forEach(sup => {
-            let totalCcLeads = 0; let totalCcSales = 0; let totalTtggSales = 0; let lowCcCount = 0;
-            let unionEmps = new Set([...Object.keys(empLeads), ...Object.keys(empSales)]);
-
-            unionEmps.forEach(cleanEmp => {
-                if (empToSuperMap[cleanEmp] === sup) {
-                    if (cleanEmp.startsWith('CC')) {
-                        let l = empLeads[cleanEmp] || 0; let s = empSales[cleanEmp] || 0;
-                        totalCcLeads += l; totalCcSales += s;
-                        if ((l > 0 ? (s / l * 100) : 0) < 17.0) lowCcCount++;
-                    } else if (cleanEmp.startsWith('TT') || cleanEmp.startsWith('GG')) {
-                        totalTtggSales += (empSales[cleanEmp] || 0);
-                    }
-                }
-            });
-
-            let ccRate = totalCcLeads > 0 ? parseFloat((totalCcSales / totalCcLeads * 100).toFixed(1)) : 0;
-            let teamSize = superTeamSizes[sup] || 0;
-
-            tableHtml += `
-                <tr>
-                    <td class="p-2">
-                        <button class="btn btn-supervisor-drilldown btn-sm" onclick="showSupervisorTeamDetails('${sup}')">
-                            <i class="fa-solid fa-users-viewfinder"></i> <span>${sup}</span>
-                        </button>
-                    </td>
-                    <td><span class="badge bg-secondary px-3">${teamSize}</span></td>
-                    <td><span class="badge bg-primary px-3">${totalCcLeads}</span></td>
-                    <td><span class="badge bg-success px-3">${totalCcSales}</span></td>
-                    <td class="fw-bold text-primary">${ccRate}%</td>
-                    <td style="color: #7c3aed; font-weight: 700;">${totalTtggSales}</td>
-                </tr>
-            `;
-            chartRates.push(ccRate); chartLowCC.push(lowCcCount); chartTTGG.push(totalTtggSales);
-        });
-
-        tableHtml += `</tbody></table></div>`;
-        document.getElementById('supervisorTableContainer').innerHTML = tableHtml;
-
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
-
-        if (supervisorTargetChartInstance) supervisorTargetChartInstance.destroy();
-        supervisorTargetChartInstance = new Chart(document.getElementById('supervisorTargetChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: {
-                labels: supervisorsList,
-                datasets: [
-                    { label: 'نسبة تحويل موظفي مران (%)', data: chartRates, backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4, barPercentage: 0.35 },
-                    { label: 'خط التارجت المطلوب (17%)', data: supervisorsList.map(() => 17), borderColor: '#ef4444', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, type: 'line', fill: false }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-
-        if (underperformingCCChartInstance) underperformingCCChartInstance.destroy();
-        underperformingCCChartInstance = new Chart(document.getElementById('underperformingCCChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: { labels: supervisorsList, datasets: [{ label: 'عدد موظفي مران دون التارجت الفردي', data: chartLowCC, backgroundColor: '#f59e0b', borderColor: '#d97706', borderWidth: 1, borderRadius: 4, barPercentage: 0.35 }] },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { stepSize: 1, color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-
-        if (ttggSalesChartInstance) ttggSalesChartInstance.destroy();
-        ttggSalesChartInstance = new Chart(document.getElementById('ttggSalesChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: { labels: supervisorsList, datasets: [{ label: 'مبيعات وإتمامات فئة اعادة إستهداف', data: chartTTGG, backgroundColor: '#7c3aed', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4, barPercentage: 0.35 }] },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-    }
-
-    function showSupervisorTeamDetails(supName) {
+    function applyFilters() {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
-        const leads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
-        const sales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
 
-        document.getElementById('supervisorMainView').classList.add('d-none');
-        document.getElementById('supervisorDetailView').classList.remove('d-none');
-        document.getElementById('supervisorDetailTitle').innerHTML = `<i class="fa-solid fa-users text-primary me-2"></i> تحليل فريق المشرف: <span class="text-success">${supName}</span>`;
+        if (!startDate || !endDate) return;
 
-        let teamEmps = employeeDatabase.filter(e => e.supervisor === supName);
-        let stats = {};
-        teamEmps.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
+        hideSupervisorTeamDetails();
+        hideEmployeeDetails();
+        hideSourceDetails();
+        hideStatusDetails();
 
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
+        const filteredLeads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
+        const filteredSales = rawSales.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
 
-        let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-        let proRatedTtTarget = (15 / totalDays) * currentDay;
+        document.getElementById('totalLeadsCount').innerText = filteredLeads.length;
+        document.getElementById('totalSalesCount').innerText = filteredSales.length;
+        
+        let totalConvRate = filteredLeads.length > 0 ? ((filteredSales.length / filteredLeads.length) * 100).toFixed(1) : 0;
+        let totalConvEl = document.getElementById('totalConversionRate');
+        totalConvEl.innerHTML = totalConvRate + "%";
+        totalConvEl.style.color = parseFloat(totalConvRate) >= 16.5 ? "#10b981" : "#ef4444";
+
+        const noStoreLeads = filteredLeads.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
+        const noStoreSales = filteredSales.filter(item => { let emp = normalizeEmpCode(item['الموظف']); return emp !== 'CC01' && emp !== 'CC02'; });
+
+        document.getElementById('cleanLeadsCount').innerText = noStoreLeads.length;
+        document.getElementById('cleanSalesCount').innerText = noStoreSales.length;
+        
+        let cleanConvRate = noStoreLeads.length > 0 ? ((noStoreSales.length / noStoreLeads.length) * 100).toFixed(1) : 0;
+        let cleanConvEl = document.getElementById('cleanConversionRate');
+        cleanConvEl.innerHTML = cleanConvRate + "%";
+        cleanConvEl.style.color = parseFloat(cleanConvRate) >= 16.5 ? "#10b981" : "#ef4444";
+
+        let sortedDates = getDatesInRange(startDate, endDate);
+
+        renderDailyPerformanceChart(filteredLeads, filteredSales, sortedDates);
+        renderEmployeeSalesChart(filteredLeads, filteredSales);
+        renderSupervisorCharts(filteredLeads, filteredSales);
+        renderHomeTargetCharts(filteredLeads, filteredSales);
+        renderSourceMatrix(filteredLeads, filteredSales, sortedDates);
+        renderStatusMatrix(filteredLeads, sortedDates);
+        renderCourseMatrix(filteredLeads, filteredSales, sortedDates);
+        renderEmployeeMatrix(filteredLeads, filteredSales, sortedDates);
+    }
+
+    function renderEmployeeDatabasePane() {
+        const container = document.getElementById('employeeDbTablesContainer');
+        const filterContainer = document.getElementById('dbSupervisorFilterContainer');
+        if(!container) return;
+
+        if(!employeeDatabase || employeeDatabase.length === 0) {
+            container.innerHTML = `<div class="text-center p-4 text-muted">لا تتوفر مخرجات مصفوفة للموظفين حالياً.</div>`;
+            return;
+        }
+
+        if (filterContainer) {
+            let uniqueSupSet = new Set();
+            employeeDatabase.forEach(emp => {
+                if (emp.supervisor) uniqueSupSet.add(emp.supervisor);
+            });
+            let uniqueSups = Array.from(uniqueSupSet).filter(s => s && s !== 'بدون مشرف' && s !== 'null');
+            
+            let filterHtml = `<span class="fw-bold text-secondary me-2"><i class="fa-solid fa-user-tie me-1"></i> تصفية حسب المشرف:</span>`;
+            filterHtml += `<button class="btn btn-info btn-sm fw-bold px-3 ${dbSupervisorFilter === 'all' ? 'active' : ''}" onclick="filterDbBySupervisor('all')">كل المشرفين</button>`;
+            
+            uniqueSups.forEach(sup => {
+                filterHtml += `<button class="btn btn-outline-info btn-sm fw-bold px-3 ${dbSupervisorFilter === sup ? 'active' : ''}" onclick="filterDbBySupervisor('${sup}')">${sup}</button>`;
+            });
+            filterContainer.innerHTML = filterHtml;
+        }
+
+        let displayData = [...employeeDatabase];
+        if (dbSupervisorFilter !== 'all') {
+            displayData = displayData.filter(emp => emp.supervisor === dbSupervisorFilter);
+        }
+
+        displayData.sort((a, b) => {
+            let valA = String(a[dbSortField] || '').trim();
+            let valB = String(b[dbSortField] || '').trim();
+            return dbSortAsc ? valA.localeCompare(valB, 'ar') : valB.localeCompare(valA, 'ar');
+        });
+
+        function getDbSortIcon(field) {
+            if (dbSortField !== field) return ' <i class="fa-solid fa-sort text-white-50 small ms-1"></i>';
+            return dbSortAsc ? ' <i class="fa-solid fa-sort-up text-white ms-1"></i>' : ' <i class="fa-solid fa-sort-down text-white ms-1"></i>';
+        }
 
         let tableHtml = `
-        <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
-                <thead class="table-dark">
-                    <tr>
-                        <th rowspan="2">اسم الموظف البيعي</th><th colspan="3" class="bg-primary" style="color: #ffffff !important;">قناة طلبات مران (CC)</th><th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة إعادة الاستهداف (TT / GG)</th><th rowspan="2">الحالة التشغيلية للتارجت</th>
-                    </tr>
-                    <tr>
-                        <th>الليدز</th><th>الاتمامات</th><th>نسبة التحويل</th><th>الاتمامات</th><th>نسبة تحقيق التارجت</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle m-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="background-color: #1e3a8a !important; color: white !important;">اسم الموظف البيعي</th>
+                            <th>الكود القديم بالمنظومة (مران)</th>
+                            <th>الكود الجديد بالمنظومة (استهداف)</th>
+                            <th onclick="toggleDbSort('supervisor')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">المشرف المسؤول ${getDbSortIcon('supervisor')}</th>
+                            <th onclick="toggleDbSort('category')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">الفئة الوظيفية ${getDbSortIcon('category')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
         `;
 
-        Object.values(stats).forEach(emp => {
-            let ccRate = emp.ccLeads > 0 ? ((emp.ccSales / emp.ccLeads) * 100).toFixed(1) : 0;
-            let ttTargetAchieved = ((emp.ttSales / 15) * 100).toFixed(1);
-            let statusText = "", statusStyle = "";
-
-            if (emp.category === 'استهداف' || emp.ttSales > 0) {
-                if (emp.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
-                else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
-            } else {
-                if (parseFloat(ccRate) >= 17.0) { statusText = "على التراك 🟢"; statusStyle = "color: #10b981;"; } 
-                else { statusText = "دون التارجت 🔴"; statusStyle = "color: #ef4444;"; }
-            }
-
+        displayData.forEach(emp => {
             tableHtml += `
                 <tr>
-                    <td class="fw-bold text-primary">${emp.name}</td>
-                    <td>${emp.ccLeads}</td><td>${emp.ccSales}</td><td class="fw-bold">${ccRate}%</td>
-                    <td>${emp.ttSales}</td><td>${ttTargetAchieved}%</td><td class="fw-bold" style="${statusStyle}">${statusText}</td>
+                    <td class="fw-bold text-start ps-3 text-primary">${emp.name}</td>
+                    <td class="font-monospace fw-bold">${emp.oldUser || '---'}</td>
+                    <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
+                    <td class="fw-bold text-secondary">${emp.supervisor || 'بدون مشرف'}</td>
+                    <td>
+                        <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
+                            ${emp.category || 'غير حدد'}
+                        </span>
+                    </td>
                 </tr>
             `;
         });
 
         tableHtml += `</tbody></table></div>`;
-        document.getElementById('teamTableContainer').innerHTML = tableHtml;
-
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
-
-        if (teamChartInstance) teamChartInstance.destroy();
-        let rowsData = Object.values(stats);
-        teamChartInstance = new Chart(document.getElementById('teamPerformanceChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin],
-            data: { labels: rowsData.map(r => r.name), datasets: [{ label: 'إتمامات CC', data: rowsData.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات TT / GG', data: rowsData.map(r => r.ttSales), backgroundColor: '#7c3aed', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
+        container.innerHTML = tableHtml;
     }
 
-    function hideSupervisorTeamDetails() {
-        document.getElementById('supervisorDetailView').classList.add('d-none');
-        document.getElementById('supervisorMainView').classList.remove('d-none');
-    }
-
-    function renderDailyPerformanceChart(leads, sales, sortedDates) {
-        let dailyLeadsMap = {}; let dailySalesMap = {};
-        sortedDates.forEach(d => { dailyLeadsMap[d] = 0; dailySalesMap[d] = 0; });
+    function renderEmpSupervisorFilters() {
+        const container = document.getElementById('empSupervisorFilterContainer');
+        if (!container) return;
         
-        leads.forEach(l => { 
-            let emp = normalizeEmpCode(l['الموظف']);
-            if (emp !== 'CC01' && emp !== 'CC02') {
-                if(dailyLeadsMap[l['التاريخ']] !== undefined) dailyLeadsMap[l['التاريخ']]++; 
+        let filterHtml = `<span class="fw-bold text-secondary me-2"><i class="fa-solid fa-user-tie me-1"></i> تصفية حسب المشرف:</span>`;
+        filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === 'all' ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('all')">كل المشرفين</button>`;
+        
+        supervisorsList.forEach(sup => {
+            if (sup && sup !== 'بدون مشرف' && sup !== 'null') {
+                filterHtml += `<button class="btn btn-sm fw-bold px-3 ${empSupervisorFilter === sup ? 'btn-info active' : 'btn-outline-info'}" onclick="filterEmployeesBySuper('${sup}')">${sup}</button>`;
             }
         });
-        
-        sales.forEach(s => { 
-            let emp = normalizeEmpCode(s['الموظف']);
-            if (emp !== 'CC01' && emp !== 'CC02') {
-                if(dailySalesMap[s['التاريخ']] !== undefined) dailySalesMap[s['التاريخ']]++; 
-            }
-        });
-
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
-
-        if (dailyChartInstance) dailyChartInstance.destroy();
-        dailyChartInstance = new Chart(document.getElementById('dailyPerformanceChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin], 
-            data: { labels: sortedDates, datasets: [{ label: 'الليدز الواردة', data: sortedDates.map(d => dailyLeadsMap[d]), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'الالاتمامات', data: sortedDates.map(d => dailySalesMap[d]), backgroundColor: '#10b981', borderColor: '#047857', borderWidth: 1, borderRadius: 4 }] },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
-    }
-
-    function renderEmployeeSalesChart(leads, sales) {
-        let employeeLeadsMap = {}; let employeeSalesMap = {};
-        leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeLeadsMap[emp] = (employeeLeadsMap[emp] || 0) + 1; });
-        sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if (!emp || emp === 'غير حدد' || emp === 'null') return; employeeSalesMap[emp] = (employeeSalesMap[emp] || 0) + 1; });
-
-        let unionEmps = new Set([...Object.keys(employeeLeadsMap), ...Object.keys(employeeSalesMap)]);
-        let empSortedArray = Array.from(unionEmps).map(name => { return { name: name, leadsCount: employeeLeadsMap[name] || 0, salesCount: employeeSalesMap[name] || 0 }; });
-        empSortedArray = empSortedArray.filter(item => { let clean = normalizeEmpCode(item.name); return clean !== 'CC01' && clean !== 'CC02'; });
-
-        if (homeEmployeeFilterType === 'cc') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('CC'));
-        else if (homeEmployeeFilterType === 'tt_gg') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('TT') || item.name.toUpperCase().startsWith('GG'));
-
-        empSortedArray.sort((a, b) => b.salesCount - a.salesCount);
-
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
-        const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
-
-        if (employeeChartInstance) employeeChartInstance.destroy();
-        employeeChartInstance = new Chart(document.getElementById('employeeSalesChart').getContext('2d'), {
-            type: 'bar',
-            plugins: [customTopLabelsPlugin], 
-            data: { labels: empSortedArray.map(item => item.name), datasets: [{ label: 'الليدز الواردة', data: empSortedArray.map(item => item.leadsCount), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'الاتمامات', data: empSortedArray.map(item => item.salesCount), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
-            options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
-        });
+        container.innerHTML = filterHtml;
     }
 
     function renderSourceMatrix(filteredLeads, filteredSales, sortedDates) {
