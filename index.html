@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
+    <!-- إضافة أيقونة احترافية للتبويب (Favicon) تتماشى مع طبيعة الموقع -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9322/9322127.png">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
@@ -219,6 +220,10 @@
             background-color: #7c3aed !important;
             color: white !important;
         }
+        .bg-orange {
+            background-color: #f59e0b !important;
+            color: white !important;
+        }
     </style>
 </head>
 <body>
@@ -272,6 +277,7 @@
 
             <div class="tab-content" id="v-pills-tabContent">
                 
+                <!-- التبويب الرئيسي -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
                     <div class="card p-2 text-center mb-2 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                         <div id="syncLoadingElement">
@@ -364,7 +370,7 @@
 
                         <div class="col-md-6 mb-4">
                             <div class="chart-card p-4 h-100" style="border-top-color: #7c3aed !important;">
-                                <h5 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة اعادة إستهداف (TT / GG) (المستهدف 15 إتمام)</h5>
+                                <h5 class="fw-bold mb-3" style="color: #7c3aed;"><i class="fa-solid fa-trophy me-2"></i> عدد إتمامات موظفي فئة الاستهداف والتدريب (TT / GG) (المستهدف 15 إتمام)</h5>
                                 <div style="position: relative; height: 350px;"><canvas id="ttggEmployeeTargetChart"></canvas></div>
                             </div>
                         </div>
@@ -374,7 +380,7 @@
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة الشاملة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnHomeAll" onclick="filterHomeEmployees('all')">كل الموظفين</button>
                                 <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeCC" onclick="filterHomeEmployees('cc')">موظفي طلبات مران</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي إعادة استهداف</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnHomeTTGG" onclick="filterHomeEmployees('tt_gg')">موظفي الاستهداف والتدريب</button>
                             </div>
                         </div>
                         
@@ -387,6 +393,7 @@
                     </div>
                 </div>
 
+                <!-- تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -406,7 +413,7 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="chart-card p-4 border" style="border-top-color: #7c3aed !important;">
-                                    <h5 class="fw-bold mb-3 text-success"><i class="fa-solid fa-circle-check me-2"></i> إجمالي حجم إتمامات ومبيعات الفريق (فئة اعادة إستهداف)</h5>
+                                    <h5 class="fw-bold mb-3 text-success"><i class="fa-solid fa-circle-check me-2"></i> إجمالي حجم إتمامات ومبيعات الفريق (فئة الاستهداف والتدريب)</h5>
                                     <div style="position: relative; height: 360px;"><canvas id="ttggSalesChart"></canvas></div>
                                 </div>
                             </div>
@@ -433,6 +440,7 @@
                     </div>
                 </div>
 
+                <!-- أداء الموظفين -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -448,8 +456,8 @@
                             <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي إعادة استهداف</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران (CC)</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي الاستهداف والتدريب (TT/GG)</button>
                             </div>
 
                             <div id="empSupervisorFilterContainer" class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);"></div>
@@ -528,6 +536,7 @@
                     </div>
                 </div>
 
+                <!-- قاعدة بيانات الموظفين -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -543,8 +552,10 @@
                     </div>
                 </div>
 
+                <!-- تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
+                        <!-- العرض الرئيسي لتحليل السورس -->
                         <div id="sourceMainView">
                             <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                                 <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
@@ -567,6 +578,7 @@
                             <div id="sourceSummaryBox"></div>
                         </div>
 
+                        <!-- عرض تفاصيل السورس الفردي (Drilldown) -->
                         <div id="sourceDetailView" class="d-none">
                             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                 <h4 class="fw-bold text-primary mb-0" id="sourceDetailTitle">تفاصيل أداء السورس</h4>
@@ -587,8 +599,10 @@
                     </div>
                 </div>
 
+                <!-- تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
+                        <!-- العرض الرئيسي للحالات -->
                         <div id="statusMainView">
                             <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                                 <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
@@ -611,6 +625,7 @@
                             <div id="statusSummaryBox"></div>
                         </div>
 
+                        <!-- عرض تفاصيل الحالة الفردية (Drilldown) -->
                         <div id="statusDetailView" class="d-none">
                             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                 <h4 class="fw-bold text-warning mb-0" id="statusDetailTitle">تفاصيل توزيع الحالة البيعية</h4>
@@ -623,6 +638,7 @@
                     </div>
                 </div>
 
+                <!-- تحليل الدورات -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -692,7 +708,6 @@
     let teamChartInstance = null;
     let employeeTimelineChartInstance = null;
     
-    // متغيرات للمخططات التفصيلية المضافة حديثاً للسورس
     let sourceDetailChartInstance = null;
 
     function normalizeEmpCode(code) {
@@ -850,11 +865,24 @@
 
             if (employeesSheet && employeesSheet.length > 0) {
                 employeeDatabase = employeesSheet.map(row => {
+                    let cat = String(row['الفئة'] || '').trim();
+                    let oldUserCode = normalizeEmpCode(row['اليوزر القديم'] || row['اليوزر_القديم'] || '');
+                    let newUserCode = normalizeEmpCode(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '');
+                    
+                    // تصحيح الفئة وإجبار تصنيفها السليم بناء على قاعدة الأكواد المدخلة
+                    if (oldUserCode.startsWith('CC') || newUserCode.startsWith('CC')) {
+                        cat = 'طلبات مران';
+                    } else if (oldUserCode.startsWith('TT') || newUserCode.startsWith('TT')) {
+                        cat = 'استهداف';
+                    } else if (oldUserCode.startsWith('GG') || newUserCode.startsWith('GG')) {
+                        cat = 'تدريب';
+                    }
+
                     return {
                         name: String(row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
                         oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || '').trim(),
                         newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '').trim(),
-                        category: String(row['الفئة'] || '').trim(),
+                        category: cat,
                         supervisor: String(row['المشرف'] || '').trim()
                     };
                 }).filter(emp => emp.name || emp.oldUser || emp.newUser);
@@ -1052,7 +1080,7 @@
                         <tr>
                             <th style="background-color: #1e3a8a !important; color: white !important;">اسم الموظف البيعي</th>
                             <th>الكود القديم بالمنظومة (مران)</th>
-                            <th>الكود الجديد بالمنظومة (استهداف)</th>
+                            <th>الكود الجديد بالمنظومة (استهداف/تدريب)</th>
                             <th onclick="toggleDbSort('supervisor')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">المشرف المسؤول ${getDbSortIcon('supervisor')}</th>
                             <th onclick="toggleDbSort('category')" style="cursor: pointer; user-select: none; background-color: #2563eb !important; color: white !important;">الفئة الوظيفية ${getDbSortIcon('category')}</th>
                         </tr>
@@ -1060,6 +1088,10 @@
                     <tbody>
         `;
         displayData.forEach(emp => {
+            let badgeClass = 'bg-info';
+            if (emp.category === 'استهداف') badgeClass = 'bg-purple';
+            if (emp.category === 'تدريب') badgeClass = 'bg-orange';
+
             tableHtml += `
                 <tr>
                     <td class="fw-bold text-start ps-3 text-primary">${emp.name}</td>
@@ -1067,7 +1099,7 @@
                     <td class="font-monospace fw-bold">${emp.newUser || '---'}</td>
                     <td class="fw-bold text-secondary">${emp.supervisor || 'بدون مشرف'}</td>
                     <td>
-                        <span class="badge ${emp.category === 'استهداف' ? 'bg-purple' : 'bg-info'} px-3 rounded-pill">
+                        <span class="badge ${badgeClass} px-3 rounded-pill">
                             ${emp.category || 'غير محدد'}
                         </span>
                     </td>
@@ -1099,6 +1131,7 @@
         leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
         sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
         let unionEmps = Array.from(new Set([...Object.keys(empLeads), ...Object.keys(empSales)]));
+        
         let ccData = [];
         unionEmps.forEach(emp => {
             if (emp.startsWith('CC')) {
@@ -1150,12 +1183,13 @@
         let empSales = {};
         leads.forEach(l => { let emp = String(l['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empLeads[clean] = (empLeads[clean] || 0) + 1; });
         sales.forEach(s => { let emp = String(s['الموظف'] || '').trim(); if(!emp || emp === 'غير حدد' || emp === 'null') return; let clean = normalizeEmpCode(emp); empSales[clean] = (empSales[clean] || 0) + 1; });
+        
         let tableHtml = `
         <div class="table-responsive">
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة اعادة إستهداف</th>
+                        <th>اسم المشرف المسؤول</th><th>عدد الموظفين الإجمالي</th><th>عدد ليدز موظفي مران (CC)</th><th>عدد إتمامات موظفي مران (CC)</th><th>نسبة كفاءة تحويل فريق مران (CC)</th><th style="background-color: #7c3aed !important; color: #ffffff !important;">إتمامات فئة الاستهداف والتدريب (TT/GG)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1228,7 +1262,7 @@
         ttggSalesChartInstance = new Chart(document.getElementById('ttggSalesChart').getContext('2d'), {
             type: 'bar',
             plugins: [customTopLabelsPlugin],
-            data: { labels: supervisorsList, datasets: [{ label: 'مبيعات وإتمامات فئة اعادة إستهداف', data: chartTTGG, backgroundColor: '#7c3aed', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4, barPercentage: 0.35 }] },
+            data: { labels: supervisorsList, datasets: [{ label: 'مبيعات وإتمامات فئة الاستهداف والتدريب', data: chartTTGG, backgroundColor: '#7c3aed', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4, barPercentage: 0.35 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
     }
@@ -1246,9 +1280,24 @@
         let teamEmps = employeeDatabase.filter(e => e.supervisor === supName);
         let stats = {};
         teamEmps.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name] && normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code); if(empObj && stats[empObj.name]) { if(normalizeEmpCode(empObj.oldUser) === code) stats[empObj.name].ccSales++; else if(normalizeEmpCode(empObj.newUser) === code) stats[empObj.name].ttSales++; } });
-        let today = new Date(); let currentDay = today.getDate(); let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+        
+        // تعديل منطق الإسناد السليم للمجموع بناء على طبيعة كود اليوزر الفعلي المستخرج من الشيت المباشر
+        leads.forEach(l => {
+            let code = normalizeEmpCode(l['الموظف']);
+            let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code);
+            if(empObj && stats[empObj.name] && code.startsWith('CC')) stats[empObj.name].ccLeads++;
+        });
+
+        sales.forEach(s => {
+            let code = normalizeEmpCode(s['الموظف']);
+            let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code);
+            if(empObj && stats[empObj.name]) {
+                if(code.startsWith('CC')) stats[empObj.name].ccSales++;
+                else if(code.startsWith('TT') || code.startsWith('GG')) stats[empObj.name].ttSales++;
+            }
+        });
+        let today = new Date(); let currentDay = today.getDate();
+        let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
 
         let tableHtml = `
@@ -1256,7 +1305,7 @@
             <table class="table table-bordered text-center align-middle m-0" style="background-color: var(--bs-card-bg); color: var(--bs-body-color);">
                 <thead class="table-dark">
                     <tr>
-                        <th rowspan="2">اسم الموظف البيعي</th><th colspan="3" class="bg-primary" style="color: #ffffff !important;">قناة طلبات مران (CC)</th><th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة إعادة الاستهداف (TT / GG)</th><th rowspan="2">الحالة التشغيلية للتارجت</th>
+                        <th rowspan="2">اسم الموظف البيعي</th><th colspan="3" class="bg-primary" style="color: #ffffff !important;">قناة طلبات مران (CC)</th><th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة الاستهداف والتدريب (TT / GG)</th><th rowspan="2">الحالة التشغيلية للتارجت</th>
                     </tr>
                     <tr>
                         <th>الليدز</th><th>الاتمامات</th><th>نسبة التحويل</th><th>الاتمامات</th><th>نسبة تحقيق التارجت</th>
@@ -1269,7 +1318,7 @@
             let ttTargetAchieved = ((emp.ttSales / 15) * 100).toFixed(1);
             let statusText = "", statusStyle = "";
 
-            if (emp.category === 'استهداف' || emp.ttSales > 0) {
+            if (emp.category === 'استهداف' || emp.category === 'تدريب' || emp.ttSales > 0) {
                 if (emp.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
@@ -1345,6 +1394,7 @@
         let unionEmps = new Set([...Object.keys(employeeLeadsMap), ...Object.keys(employeeSalesMap)]);
         let empSortedArray = Array.from(unionEmps).map(name => { return { name: name, leadsCount: employeeLeadsMap[name] || 0, salesCount: employeeSalesMap[name] || 0 }; });
         empSortedArray = empSortedArray.filter(item => { let clean = normalizeEmpCode(item.name); return clean !== 'CC01' && clean !== 'CC02'; });
+        
         if (homeEmployeeFilterType === 'cc') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('CC'));
         else if (homeEmployeeFilterType === 'tt_gg') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('TT') || item.name.toUpperCase().startsWith('GG'));
         empSortedArray.sort((a, b) => b.salesCount - a.salesCount);
@@ -1371,7 +1421,6 @@
 
         document.getElementById('sourceTableHeader').innerHTML = `<tr><th>كود التسويق (السورس)</th><th>إجمالي الليدز الواردة بالفترة</th><th>إجمالي الاتمامات المحققة بالفترة</th><th>نسبة التحويل العامة</th></tr>`;
         
-        // تعديل اسم السورس ليصبح زراً تفاعلياً للتعمق (Drilldown)
         document.getElementById('sourceTableBody').innerHTML = rowsArray.map(row => `
             <tr>
                 <td class="p-2">
@@ -1398,7 +1447,6 @@
         });
     }
 
-    // دوال تفرع وتحليل السورس التفصيلي (Drilldown)
     function showSourceDetails(sourceName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
@@ -1417,8 +1465,6 @@
         document.getElementById('sourceDetailTitle').innerHTML = `<i class="fa-solid fa-bullhorn text-primary me-2"></i> تحليل السورس: <span class="text-success">${sourceName}</span>`;
 
         let empStats = {};
-        
-        // جرد كافة الموظفين من قاعدة البيانات لضمان دقة الأسماء والربط
         employeeDatabase.forEach(e => {
             if (e.name && e.oldUser) {
                 empStats[e.name] = { name: e.name, oldUser: normalizeEmpCode(e.oldUser), newUser: normalizeEmpCode(e.newUser), leads: 0, sales: 0 };
@@ -1437,7 +1483,6 @@
             if (found) empStats[found.name].sales++;
         });
 
-        // تصفية الموظفين الذين يملكون ليدز أو مبيعات على هذا السورس
         let rowsData = Object.values(empStats).filter(e => e.leads > 0 || e.sales > 0);
         rowsData.sort((a, b) => b.leads - a.leads);
 
@@ -1473,7 +1518,6 @@
         tableHtml += `</tbody></table></div>`;
         document.getElementById('sourceDetailTableContainer').innerHTML = tableHtml;
 
-        // رسم بياني تفصيلي للسورس
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const dynamicTextColor = isDark ? '#cbd5e1' : '#1e293b';
         const dynamicGridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(128,128,128,0.1)';
@@ -1507,7 +1551,6 @@
 
         document.getElementById('statusTableHeader').innerHTML = `<tr><th>الحالة البيعية للعميل</th><th>إجمالي التكرار الكلي للفترة</th><th>النسب المئوية من إجمالي التدفق</th></tr>`;
         
-        // تعديل اسم الحالة لتصبح زراً تفاعلياً للتعمق (Drilldown)
         document.getElementById('statusTableBody').innerHTML = rowsArray.map(row => `
             <tr>
                 <td class="p-2 text-start ps-3">
@@ -1532,13 +1575,12 @@
         });
     }
 
-    // دوال تفرع وتحليل الحالات التفصيلية (Drilldown)
     function showStatusDetails(statusName) {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
         
         const allPeriodLeads = rawLeads.filter(item => item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate);
-        const statusLeads = tyrannicalLeads = allPeriodLeads.filter(item => String(item['الحالة 1'] || '').trim() === statusName);
+        const statusLeads = allPeriodLeads.filter(item => String(item['الحالة 1'] || '').trim() === statusName);
 
         document.getElementById('statusMainView').classList.add('d-none');
         document.getElementById('statusDetailView').classList.remove('d-none');
@@ -1551,7 +1593,6 @@
             }
         });
 
-        // حساب عدد الليدز الكلي لكل موظف خلال الفترة لغرض استخراج النسبة بدقة متناهية
         allPeriodLeads.forEach(l => {
             let code = normalizeEmpCode(l['الموظف']);
             let found = Object.values(empStats).find(e => e.oldUser === code || e.newUser === code);
@@ -1631,11 +1672,29 @@
         renderEmpSupervisorFilters();
         let stats = {};
         employeeDatabase.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, supervisor: emp.supervisor || 'بدون مشرف', oldUser: emp.oldUser || '', newUser: emp.newUser || '', oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
-        leads.forEach(l => { let code = normalizeEmpCode(l['الموظف']); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj && empObj.oldCode === code) empObj.ccLeads++; });
-        sales.forEach(s => { let code = normalizeEmpCode(s['الموظف']); if(!code) return; let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); if(empObj) { if(empObj.oldCode === code) empObj.ccSales++; else if(empObj.newCode === code) empObj.ttSales++; } });
+        
+        // تعديل منطق العد والترشيح لضمان فرز دقيق بين CC و [TT/GG] في كل جداول الأداء
+        leads.forEach(l => { 
+            let code = normalizeEmpCode(l['الموظف']); if(!code) return; 
+            let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); 
+            if(empObj && code.startsWith('CC')) empObj.ccLeads++; 
+        });
+        
+        sales.forEach(s => { 
+            let code = normalizeEmpCode(s['الموظف']); if(!code) return; 
+            let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); 
+            if(empObj) { 
+                if(code.startsWith('CC')) empObj.ccSales++; 
+                else if(code.startsWith('TT') || code.startsWith('GG')) empObj.ttSales++; 
+            } 
+        });
+        
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
+        
+        // التصفية الشاملة للأزرار (Slicers) بناء على الهيكل الجديد (CC) مقابل (TT/GG المدمجين معاً)
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
-        else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف');
+        else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف' || item.category === 'تدريب');
+        
         if (empSupervisorFilter !== 'all') {
             rowsArray = rowsArray.filter(item => item.supervisor === empSupervisorFilter);
         }
@@ -1643,12 +1702,13 @@
         let today = new Date(); let currentDay = today.getDate();
         let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
         let proRatedTtTarget = (15 / totalDays) * currentDay;
+        
         rowsArray.forEach(row => {
             let ccRateNum = row.ccLeads > 0 ? parseFloat((row.ccSales / row.ccLeads * 100).toFixed(1)) : 0;
             row.calculatedCcRate = ccRateNum;
             
             let statusWeight = 0; 
-            if (row.category === 'استهداف' || row.ttSales > 0) {
+            if (row.category === 'استهداف' || row.category === 'تدريب' || row.ttSales > 0) {
                  if (row.ttSales >= proRatedTtTarget) statusWeight = 2; 
                 else statusWeight = 1; 
             } else {
@@ -1678,7 +1738,7 @@
                 <th rowspan="2">كود الموظف</th>
                 <th rowspan="2">المشرف</th>
                 <th colspan="3" style="background-color: #2563eb !important; color: #ffffff !important;">قناة طلبات مران (CC)</th>
-                <th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة إعادة الاستهداف (TT / GG)</th>
+                <th colspan="2" style="background-color: #7c3aed !important; color: #ffffff !important;">قناة الاستهداف والتدريب (TT / GG)</th>
                 <th rowspan="2" onclick="setEmpSort('status')" style="cursor: pointer; user-select: none; background-color: #1e3a8a !important;">الحالة التشغيلية للتارجت ${getSortIcon('status')}</th>
             </tr>
             <tr>
@@ -1695,7 +1755,7 @@
             let ttTargetAchieved = ((row.ttSales / 15) * 100).toFixed(1);
             let statusText = "", statusStyle = "";
 
-            if (row.category === 'استهداف' || row.ttSales > 0) {
+            if (row.category === 'استهداف' || row.category === 'تدريب' || row.ttSales > 0) {
                 if (row.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
@@ -1721,7 +1781,7 @@
         employeeMatrixChartInstance = new Chart(document.getElementById('employeeMatrixChart').getContext('2d'), {
             type: 'bar',
             plugins: [customTopLabelsPlugin],
-            data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
+            data: { labels: rowsArray.map(r => r.name), datasets: [{ label: 'إتمامات مران CC', data: rowsArray.map(r => r.ccSales), backgroundColor: '#3b82f6', borderColor: '#1d4ed8', borderWidth: 1, borderRadius: 4 }, { label: 'إتمامات الاستهداف والتدريب TT/GG', data: rowsArray.map(r => r.ttSales), backgroundColor: '#8b5cf6', borderColor: '#6d28d9', borderWidth: 1, borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, layout: { padding: { top: 25 } }, scales: { y: { beginAtZero: true, grid: { color: dynamicGridColor }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } }, x: { grid: { display: false }, ticks: { color: dynamicTextColor, font: { family: 'Cairo', weight: 'bold' } } } }, plugins: { legend: { labels: { font: { family: 'Cairo', weight: 'bold' }, color: dynamicTextColor } } } }
         });
     }
@@ -1763,38 +1823,43 @@
         let oldCode = empObj ? normalizeEmpCode(empObj.oldUser) : normalizeEmpCode(empName);
         let newCode = empObj ? normalizeEmpCode(empObj.newUser) : normalizeEmpCode(empName);
 
+        // تعديل منطق الفلترة لجمع ليدز وإتمامات الموظف الشاملة بشكل دقيق
         const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
         const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
-        let totalLeads = empLeads.length; let totalSales = empSales.length;
-        let convRate = totalLeads > 0 ? ((totalSales / totalLeads) * 100).toFixed(1) : 0;
+        
+        let totalLeads = empLeads.filter(l => normalizeEmpCode(l['الموظف']).startsWith('CC')).length; 
+        let totalCcSales = empSales.filter(s => normalizeEmpCode(s['الموظف']).startsWith('CC')).length;
+        let totalTtSales = empSales.filter(s => normalizeEmpCode(s['الموظف']).startsWith('TT') || normalizeEmpCode(s['الموظف']).startsWith('GG')).length;
 
         document.getElementById('employeeDetailTitle').innerHTML = `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`;
-        let isTtGg = empObj && empObj.category === 'استهداف';
+        let isTtGg = empObj && (empObj.category === 'استهداف' || empObj.category === 'تدريب');
 
         if (isTtGg) {
             document.getElementById('empCard1Label').innerText = "مسار العمل ونوع الكفاءة";
-            document.getElementById('empDetailLeads').innerText = "إعادة استهداف داتا";
-            document.getElementById('empDetailSales').innerText = totalSales;
+            document.getElementById('empDetailLeads').innerText = `إعادة استهداف داتا (${empObj.category})`;
+            document.getElementById('empDetailSales').innerText = totalTtSales;
             
             let today = new Date(); let currentDay = today.getDate();
             let totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
             let proRatedTarget = (15 / totalDays) * currentDay;
-            let targetPct = ((totalSales / 15) * 100).toFixed(1);
+            let targetPct = ((totalTtSales / 15) * 100).toFixed(1);
             
             document.getElementById('empCard3Label').innerText = `حالة تحقيق التارجت (المستهدف 15 إتمام)`;
-            document.getElementById('empDetailConversion').innerText = totalSales >= proRatedTarget ? `على التراك البيعي 🟢 (${targetPct}%)` : `متأخر عن التراك 🔴 (${targetPct}%)`;
+            document.getElementById('empDetailConversion').innerText = totalTtSales >= proRatedTarget ? `على التراك البيعي 🟢 (${targetPct}%)` : `متأخر عن التراك 🔴 (${targetPct}%)`;
         } else {
             document.getElementById('empCard1Label').innerText = "إجمالي الليدز المستلمة";
             document.getElementById('empDetailLeads').innerText = totalLeads;
-            document.getElementById('empDetailSales').innerText = totalSales;
+            document.getElementById('empDetailSales').innerText = totalCcSales;
             document.getElementById('empCard3Label').innerText = "معدل التحويل الفردي الكلي";
+            let convRate = totalLeads > 0 ? ((totalCcSales / totalLeads) * 100).toFixed(1) : 0;
             document.getElementById('empDetailConversion').innerText = convRate + "%";
             document.getElementById('empDetailConversion').style.color = "#0dcaf0";
         }
 
         let statuses = {};
         empLeads.forEach(l => { let s = String(l['الحالة 1'] || 'غيرحدد').trim(); statuses[s] = (statuses[s] || 0) + 1; });
-        let sortedStatuses = Object.keys(statuses).map(s => { return { status: s, count: statuses[s], pct: totalLeads > 0 ? parseFloat(((statuses[s] / totalLeads) * 100).toFixed(1)) : 0 }; }).sort((a, b) => b.count - a.count);
+        let totalEmpLeads = empLeads.length;
+        let sortedStatuses = Object.keys(statuses).map(s => { return { status: s, count: statuses[s], pct: totalEmpLeads > 0 ? parseFloat(((statuses[s] / totalEmpLeads) * 100).toFixed(1)) : 0 }; }).sort((a, b) => b.count - a.count);
         if (sortedStatuses.length === 0) {
             document.getElementById('employeeStatusTableBody').innerHTML = `<tr><td colspan="3" class="text-muted py-4 small">لا توجد حالات ليدز مسجلة للفترة (مسار داتا المتابعات المباشرة)</td></tr>`;
         } else {
@@ -1821,7 +1886,6 @@
         document.getElementById('employeeDetailView').classList.remove('d-none');
     }
 
-    // دالة إجبار السكرول لأعلى عند الإغلاق أو التنقل
     function hideEmployeeDetails() {
         document.getElementById('employeeDetailView').classList.add('d-none');
         document.getElementById('employeeMainView').classList.remove('d-none');
