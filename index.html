@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحليل بيانات المبيعات المباشرة</title>
-    <!-- إضافة أيقونة احترافية للتبويب (Favicon) تتماشى مع طبيعة الموقع -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9322/9322127.png">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
@@ -277,7 +276,6 @@
 
             <div class="tab-content" id="v-pills-tabContent">
                 
-                <!-- التبويب الرئيسي -->
                 <div class="tab-pane fade show active" id="home-pane" role="tabpanel">
                     <div class="card p-2 text-center mb-2 text-white border-0" id="syncStatusContainer" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); transition: all 0.4s ease;">
                         <div id="syncLoadingElement">
@@ -393,7 +391,6 @@
                     </div>
                 </div>
 
-                <!-- تحليل المشرفين -->
                 <div class="tab-pane fade" id="supervisor-pane" role="tabpanel">
                     <div id="supervisorMainView" class="card p-4">
                         <h4 class="fw-bold text-primary mb-4"><i class="fa-solid fa-user-gear me-2"></i> لوحة الفحص والمطابقة الرقمية لأداء المشرفين</h4>
@@ -440,7 +437,6 @@
                     </div>
                 </div>
 
-                <!-- أداء الموظفين -->
                 <div class="tab-pane fade" id="employee-pane" role="tabpanel">
                     <div class="card p-4">
                         <div id="employeeMainView">
@@ -456,8 +452,8 @@
                             <div class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);">
                                 <span class="fw-bold text-secondary me-2"><i class="fa-solid fa-filter me-1"></i> تصفية الفئة المحددة (Slicers):</span>
                                 <button class="btn btn-info btn-sm fw-bold px-3 active" id="btnEmpAll" onclick="filterEmployees('all')">كل الموظفين</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران (CC)</button>
-                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي الاستهداف والتدريب (TT/GG)</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpCC" onclick="filterEmployees('cc')">موظفي طلبات مران (طلبات مران)</button>
+                                <button class="btn btn-outline-info btn-sm fw-bold px-3" id="btnEmpTTGG" onclick="filterEmployees('tt_gg')">موظفي الاستهداف والتدريب (استهداف / تدريب)</button>
                             </div>
 
                             <div id="empSupervisorFilterContainer" class="p-3 mb-2 rounded d-flex align-items-center gap-2 flex-wrap" style="background-color: var(--bs-tertiary-bg); border: 1px solid rgba(128,128,128,0.15);"></div>
@@ -536,7 +532,6 @@
                     </div>
                 </div>
 
-                <!-- قاعدة بيانات الموظفين -->
                 <div class="tab-pane fade" id="employee-db-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -552,10 +547,8 @@
                     </div>
                 </div>
 
-                <!-- تحليل السورس -->
                 <div class="tab-pane fade" id="source-pane" role="tabpanel">
                     <div class="card p-4">
-                        <!-- العرض الرئيسي لتحليل السورس -->
                         <div id="sourceMainView">
                             <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                                 <h4 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i> الأداء التسويقي للأكواد (السورس الإعلاني)</h4>
@@ -578,7 +571,6 @@
                             <div id="sourceSummaryBox"></div>
                         </div>
 
-                        <!-- عرض تفاصيل السورس الفردي (Drilldown) -->
                         <div id="sourceDetailView" class="d-none">
                             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                 <h4 class="fw-bold text-primary mb-0" id="sourceDetailTitle">تفاصيل أداء السورس</h4>
@@ -599,10 +591,8 @@
                     </div>
                 </div>
 
-                <!-- تحليل الحالات -->
                 <div class="tab-pane fade" id="status-pane" role="tabpanel">
                     <div class="card p-4">
-                        <!-- العرض الرئيسي للحالات -->
                         <div id="statusMainView">
                             <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                                 <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-tags me-2"></i> الحالات البيعية وتوزيعها المباشر</h4>
@@ -625,7 +615,6 @@
                             <div id="statusSummaryBox"></div>
                         </div>
 
-                        <!-- عرض تفاصيل الحالة الفردية (Drilldown) -->
                         <div id="statusDetailView" class="d-none">
                             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                 <h4 class="fw-bold text-warning mb-0" id="statusDetailTitle">تفاصيل توزيع الحالة البيعية</h4>
@@ -638,7 +627,6 @@
                     </div>
                 </div>
 
-                <!-- تحليل الدورات -->
                 <div class="tab-pane fade" id="course-pane" role="tabpanel">
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
@@ -710,6 +698,9 @@
     
     let sourceDetailChartInstance = null;
 
+    // مصفوفة مرجعية لربط اسم الموظف بالفئة مباشرة لحل مشكلة تداخل اليوزرات
+    let empNameToCategoryMap = {};
+
     function normalizeEmpCode(code) {
         if (!code) return '';
         return String(code).replace(/\s+/g, '').toUpperCase().trim();
@@ -770,12 +761,19 @@
     function updateSupervisorMapsFromDatabase() {
         empToSuperMap = {};
         superTeamSizes = {};
+        empNameToCategoryMap = {};
         let uniqueSup = new Set();
         
         employeeDatabase.forEach(row => {
+            let name = String(row.name || '').trim();
             let oldUser = String(row.oldUser || '').trim();
             let newUser = String(row.newUser || '').trim();
             let sup = String(row.supervisor || '').trim();
+            let cat = String(row.category || '').trim();
+            
+            if (name) {
+                empNameToCategoryMap[name] = cat;
+            }
             
             if(sup && sup !== 'بدون مشرف' && sup !== 'null') {
                 uniqueSup.add(sup);
@@ -841,6 +839,14 @@
         document.getElementById('endDate').value = `${year}-${month}-${day}`;
     }
 
+    // دالة مساعدة لمعرفة فئة كود اليوزر الفعلي المستخرج من ليدز المبيعات أو الطلبات المباشرة
+    function getCategoryByEmpCode(code) {
+        if (!code) return 'غير محدد';
+        let norm = normalizeEmpCode(code);
+        let foundEmp = employeeDatabase.find(e => normalizeEmpCode(e.oldUser) === norm || normalizeEmpCode(e.newUser) === norm);
+        return foundEmp ? foundEmp.category : 'غير محدد';
+    }
+
     async function fetchGoogleSheetData() {
         const container = document.getElementById('syncStatusContainer');
         const loadingEl = document.getElementById('syncLoadingElement');
@@ -865,24 +871,11 @@
 
             if (employeesSheet && employeesSheet.length > 0) {
                 employeeDatabase = employeesSheet.map(row => {
-                    let cat = String(row['الفئة'] || '').trim();
-                    let oldUserCode = normalizeEmpCode(row['اليوزر القديم'] || row['اليوزر_القديم'] || '');
-                    let newUserCode = normalizeEmpCode(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '');
-                    
-                    // تصحيح الفئة وإجبار تصنيفها السليم بناء على قاعدة الأكواد المدخلة
-                    if (oldUserCode.startsWith('CC') || newUserCode.startsWith('CC')) {
-                        cat = 'طلبات مران';
-                    } else if (oldUserCode.startsWith('TT') || newUserCode.startsWith('TT')) {
-                        cat = 'استهداف';
-                    } else if (oldUserCode.startsWith('GG') || newUserCode.startsWith('GG')) {
-                        cat = 'تدريب';
-                    }
-
                     return {
                         name: String(row['اسم الموظف'] || row['اسم_الموظف'] || '').trim(),
                         oldUser: String(row['اليوزر القديم'] || row['اليوزر_القديم'] || '').trim(),
                         newUser: String(row['اليوزر الجديد'] || row['اليوزر_الجديد'] || '').trim(),
-                        category: cat,
+                        category: String(row['الفئة'] || '').trim(), // الاعتماد المطلق على عمود الفئة بالشيت
                         supervisor: String(row['المشرف'] || '').trim()
                     };
                 }).filter(emp => emp.name || emp.oldUser || emp.newUser);
@@ -1134,7 +1127,9 @@
         
         let ccData = [];
         unionEmps.forEach(emp => {
-            if (emp.startsWith('CC')) {
+            let category = getCategoryByEmpCode(emp);
+            // الفلترة والفرز المطلق للشارت بناء على عمود الفئة
+            if (category === 'طلبات مران') {
                 let norm = emp.replace(/\s+/g, '').toUpperCase(); if (norm === 'CC01' || norm === 'CC02') return; 
                 let l = empLeads[emp] || 0; let s = empSales[emp] || 0;
                 ccData.push({ name: emp, rate: l > 0 ? parseFloat((s / l * 100).toFixed(1)) : 0 });
@@ -1143,7 +1138,12 @@
         ccData.sort((a, b) => b.rate - a.rate);
 
         let ttggData = [];
-        unionEmps.forEach(emp => { if (emp.startsWith('TT') || emp.startsWith('GG')) { ttggData.push({ name: emp, sales: empSales[emp] || 0 }); } });
+        unionEmps.forEach(emp => { 
+            let category = getCategoryByEmpCode(emp);
+            if (category === 'استهداف' || category === 'تدريب') { 
+                ttggData.push({ name: emp, sales: empSales[emp] || 0 }); 
+            } 
+        });
         ttggData.sort((a, b) => b.sales - a.sales);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -1201,11 +1201,12 @@
 
             unionEmps.forEach(cleanEmp => {
                 if (empToSuperMap[cleanEmp] === sup) {
-                    if (cleanEmp.startsWith('CC')) {
+                    let category = getCategoryByEmpCode(cleanEmp);
+                    if (category === 'طلبات مران') {
                         let l = empLeads[cleanEmp] || 0; let s = empSales[cleanEmp] || 0;
                         totalCcLeads += l; totalCcSales += s;
                         if ((l > 0 ? (s / l * 100) : 0) < 17.0) lowCcCount++;
-                    } else if (cleanEmp.startsWith('TT') || cleanEmp.startsWith('GG')) {
+                    } else if (category === 'استهداف' || category === 'تدريب') {
                         totalTtggSales += (empSales[cleanEmp] || 0);
                     }
                 }
@@ -1281,19 +1282,22 @@
         let stats = {};
         teamEmps.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
         
-        // تعديل منطق الإسناد السليم للمجموع بناء على طبيعة كود اليوزر الفعلي المستخرج من الشيت المباشر
         leads.forEach(l => {
             let code = normalizeEmpCode(l['الموظف']);
             let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code);
-            if(empObj && stats[empObj.name] && code.startsWith('CC')) stats[empObj.name].ccLeads++;
+            if(empObj && stats[empObj.name]) {
+                let category = empObj.category;
+                if (category === 'طلبات مران') stats[empObj.name].ccLeads++;
+            }
         });
 
         sales.forEach(s => {
             let code = normalizeEmpCode(s['الموظف']);
             let empObj = teamEmps.find(e => normalizeEmpCode(e.oldUser) === code || normalizeEmpCode(e.newUser) === code);
             if(empObj && stats[empObj.name]) {
-                if(code.startsWith('CC')) stats[empObj.name].ccSales++;
-                else if(code.startsWith('TT') || code.startsWith('GG')) stats[empObj.name].ttSales++;
+                let category = empObj.category;
+                if(category === 'طلبات مران') stats[empObj.name].ccSales++;
+                else if(category === 'استهداف' || category === 'تدريب') stats[empObj.name].ttSales++;
             }
         });
         let today = new Date(); let currentDay = today.getDate();
@@ -1318,7 +1322,7 @@
             let ttTargetAchieved = ((emp.ttSales / 15) * 100).toFixed(1);
             let statusText = "", statusStyle = "";
 
-            if (emp.category === 'استهداف' || emp.category === 'تدريب' || emp.ttSales > 0) {
+            if (emp.category === 'استهداف' || emp.category === 'تدريب') {
                 if (emp.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
@@ -1395,8 +1399,14 @@
         let empSortedArray = Array.from(unionEmps).map(name => { return { name: name, leadsCount: employeeLeadsMap[name] || 0, salesCount: employeeSalesMap[name] || 0 }; });
         empSortedArray = empSortedArray.filter(item => { let clean = normalizeEmpCode(item.name); return clean !== 'CC01' && clean !== 'CC02'; });
         
-        if (homeEmployeeFilterType === 'cc') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('CC'));
-        else if (homeEmployeeFilterType === 'tt_gg') empSortedArray = empSortedArray.filter(item => item.name.toUpperCase().startsWith('TT') || item.name.toUpperCase().startsWith('GG'));
+        if (homeEmployeeFilterType === 'cc') {
+            empSortedArray = empSortedArray.filter(item => getCategoryByEmpCode(item.name) === 'طلبات مران');
+        } else if (homeEmployeeFilterType === 'tt_gg') {
+            empSortedArray = empSortedArray.filter(item => {
+                let cat = getCategoryByEmpCode(item.name);
+                return cat === 'استهداف' || cat === 'تدريب';
+            });
+        }
         empSortedArray.sort((a, b) => b.salesCount - a.salesCount);
 
         const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -1673,25 +1683,25 @@
         let stats = {};
         employeeDatabase.forEach(emp => { stats[emp.name] = { name: emp.name, category: emp.category, supervisor: emp.supervisor || 'بدون مشرف', oldUser: emp.oldUser || '', newUser: emp.newUser || '', oldCode: normalizeEmpCode(emp.oldUser), newCode: normalizeEmpCode(emp.newUser), ccLeads: 0, ccSales: 0, ttSales: 0 }; });
         
-        // تعديل منطق العد والترشيح لضمان فرز دقيق بين CC و [TT/GG] في كل جداول الأداء
+        // تعديل المطابقة: الفرز والترشيح البيعي يعتمد كلياً على فئة الموظف المستخرجة من مصفوفة الشيت الفعلي
         leads.forEach(l => { 
             let code = normalizeEmpCode(l['الموظف']); if(!code) return; 
             let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); 
-            if(empObj && code.startsWith('CC')) empObj.ccLeads++; 
+            if(empObj && empObj.category === 'طلبات مران') empObj.ccLeads++; 
         });
         
         sales.forEach(s => { 
             let code = normalizeEmpCode(s['الموظف']); if(!code) return; 
             let empObj = Object.values(stats).find(e => e.oldCode === code || e.newCode === code); 
             if(empObj) { 
-                if(code.startsWith('CC')) empObj.ccSales++; 
-                else if(code.startsWith('TT') || code.startsWith('GG')) empObj.ttSales++; 
+                if(empObj.category === 'طلبات مران') empObj.ccSales++; 
+                else if(empObj.category === 'استهداف' || empObj.category === 'تدريب') empObj.ttSales++; 
             } 
         });
         
         let rowsArray = Object.values(stats).filter(item => item.oldCode !== 'CC01' && item.oldCode !== 'CC02');
         
-        // التصفية الشاملة للأزرار (Slicers) بناء على الهيكل الجديد (CC) مقابل (TT/GG المدمجين معاً)
+        // تطبيق الفلتر الخاص بأزرار لوحة التحكم التفاعلية بشكل معتمد كلياً على عمود الفئة البيعية
         if (employeeFilterType === 'cc') rowsArray = rowsArray.filter(item => item.category === 'طلبات مران');
         else if (employeeFilterType === 'tt_gg') rowsArray = rowsArray.filter(item => item.category === 'استهداف' || item.category === 'تدريب');
         
@@ -1708,7 +1718,7 @@
             row.calculatedCcRate = ccRateNum;
             
             let statusWeight = 0; 
-            if (row.category === 'استهداف' || row.category === 'تدريب' || row.ttSales > 0) {
+            if (row.category === 'استهداف' || row.category === 'تدريب') {
                  if (row.ttSales >= proRatedTtTarget) statusWeight = 2; 
                 else statusWeight = 1; 
             } else {
@@ -1755,7 +1765,7 @@
             let ttTargetAchieved = ((row.ttSales / 15) * 100).toFixed(1);
             let statusText = "", statusStyle = "";
 
-            if (row.category === 'استهداف' || row.category === 'تدريب' || row.ttSales > 0) {
+            if (row.category === 'استهداف' || row.category === 'تدريب') {
                 if (row.ttSales >= proRatedTtTarget) { statusText = `على التراك 🟢`; statusStyle = "color: #10b981;"; } 
                 else { statusText = `متأخر عن التراك 🔴`; statusStyle = "color: #ef4444;"; }
             } else {
@@ -1823,16 +1833,23 @@
         let oldCode = empObj ? normalizeEmpCode(empObj.oldUser) : normalizeEmpCode(empName);
         let newCode = empObj ? normalizeEmpCode(empObj.newUser) : normalizeEmpCode(empName);
 
-        // تعديل منطق الفلترة لجمع ليدز وإتمامات الموظف الشاملة بشكل دقيق
         const empLeads = rawLeads.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
         const empSales = rawSales.filter(item => { let c = normalizeEmpCode(item['الموظف']); return item['التاريخ'] && item['التاريخ'] >= startDate && item['التاريخ'] <= endDate && (c === oldCode || c === newCode); });
         
-        let totalLeads = empLeads.filter(l => normalizeEmpCode(l['الموظف']).startsWith('CC')).length; 
-        let totalCcSales = empSales.filter(s => normalizeEmpCode(s['الموظف']).startsWith('CC')).length;
-        let totalTtSales = empSales.filter(s => normalizeEmpCode(s['الموظف']).startsWith('TT') || normalizeEmpCode(s['الموظف']).startsWith('GG')).length;
+        let isTtGg = empObj && (empObj.category === 'استهداف' || empObj.category === 'تدريب');
+        
+        let totalLeads = 0;
+        let totalCcSales = 0;
+        let totalTtSales = 0;
+
+        if (isTtGg) {
+            totalTtSales = empSales.length;
+        } else {
+            totalLeads = empLeads.length;
+            totalCcSales = empSales.length;
+        }
 
         document.getElementById('employeeDetailTitle').innerHTML = `<i class="fa-solid fa-id-card text-info me-2"></i> تحليل أداء موظف المبيعات: <span class="text-success">${empName}</span>`;
-        let isTtGg = empObj && (empObj.category === 'استهداف' || empObj.category === 'تدريب');
 
         if (isTtGg) {
             document.getElementById('empCard1Label').innerText = "مسار العمل ونوع الكفاءة";
